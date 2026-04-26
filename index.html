@@ -619,8 +619,10 @@ function syncToSheets(){
     var lastAct='';for(var k=DATA.completions.length-1;k>=0;k--){if(DATA.completions[k].userId===u.id){lastAct=DATA.completions[k].date;break;}}
     rows.push({jmeno:u.name,email:u.email,role:u.role==='provozni'?'Provozní':'Prodavačka',prodejna:s?s.name:'',body_osobni:userPts,body_prodejna:storePts,sankce:pen,celkem:userPts+storePts,liga:getLeague(userPts).name,posledni_aktivita:lastAct,sezona:DATA.season.title});
   }
-  var xhr=new XMLHttpRequest();xhr.open('POST',url);xhr.setRequestHeader('Content-Type','application/json');
-  xhr.send(JSON.stringify({rows:rows,updated:today()}));
+  // Use no-cors mode - Apps Script doesn't support CORS preflight
+  try{
+    fetch(url,{method:'POST',mode:'no-cors',body:JSON.stringify({rows:rows,updated:today()})});
+  }catch(e){}
 }
 
 // ====================== INIT / LOGIN ======================
