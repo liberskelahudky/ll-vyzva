@@ -389,11 +389,11 @@ button{font-family:inherit;}
   </div>
   <div class="adm-content" id="adminContent"></div>
   <div class="adm-nav">
-    <button class="adm-nav-btn on" id="an0" onclick="setAdminTab('overview',this)"><div class="adm-nav-ico">&#x1F4CA;</div>Prehled</button>
-    <button class="adm-nav-btn" id="an1" onclick="setAdminTab('users',this)"><div class="adm-nav-ico">&#x1F464;</div>Uzivatele</button>
-    <button class="adm-nav-btn" id="an2" onclick="setAdminTab('challenges',this)"><div class="adm-nav-ico">&#x26A1;</div>Vyzvy</button>
+    <button class="adm-nav-btn on" id="an0" onclick="setAdminTab('overview',this)"><div class="adm-nav-ico">&#x1F4CA;</div>Přehled</button>
+    <button class="adm-nav-btn" id="an1" onclick="setAdminTab('users',this)"><div class="adm-nav-ico">&#x1F464;</div>Uživatelé</button>
+    <button class="adm-nav-btn" id="an2" onclick="setAdminTab('challenges',this)"><div class="adm-nav-ico">&#x26A1;</div>Výzvy</button>
     <button class="adm-nav-btn" id="an3" onclick="setAdminTab('stores',this)"><div class="adm-nav-ico">&#x1F3EA;</div>Prodejny</button>
-    <button class="adm-nav-btn" id="an4" onclick="setAdminTab('prizes',this)"><div class="adm-nav-ico">&#x1F381;</div>Odmeny</button>
+    <button class="adm-nav-btn" id="an4" onclick="setAdminTab('prizes',this)"><div class="adm-nav-ico">&#x1F381;</div>Odměny</button>
     <button class="adm-nav-btn" id="an5" onclick="setAdminTab('settings',this)"><div class="adm-nav-ico">&#x1F527;</div>Nastav.</button>
   </div>Přehled</button>
     <button class="adm-nav-btn" id="an1" onclick="setAdminTab('challenges',this)"><div class="adm-nav-ico">⚡</div>Výzvy</button>
@@ -422,7 +422,7 @@ var LOG_ACTIONS=[
   {id:'sale-drink', label:'Prodej - napoj / vino',     points:10, cat:'vykon',    icon:'\uD83E\uDD42',  scope:'personal'},
   {id:'review5',    label:'Recenze 5 hvezdicky',       points:50, cat:'marketing',icon:'\u2B50',  scope:'both'},
   {id:'review4',    label:'Recenze 4 hvezdicky',       points:20, cat:'marketing',icon:'\uD83C\uDF1F',  scope:'both'},
-  {id:'open-time',  label:'Otevreni vcas',             points:10, cat:'provoz',   icon:'\u2705',  scope:'store'},
+  {id:'open-time',  label:'Otevření včas',             points:10, cat:'provoz',   icon:'\u2705',  scope:'store'},
   {id:'zero-waste', label:'Den bez odpisu',            points:30, cat:'provoz',   icon:'\u267B\uFE0F',  scope:'store'}
 ];
 var PENALTY_PRESETS=[
@@ -449,78 +449,78 @@ var DEFAULT_DATA={
   ],
   stores:[
     {id:'s1', code:'64',name:'Florenc',              pin:'1064',category:'A',hcp:1.0,reviews:8,  avgRating:4.13},
-    {id:'s2', code:'53',name:'Vodiczkova',            pin:'1053',category:'A',hcp:1.0,reviews:9,  avgRating:5.0},
+    {id:'s2', code:'53',name:'Vodičkova',            pin:'1053',category:'A',hcp:1.0,reviews:9,  avgRating:5.0},
     {id:'s9', code:'52',name:'Letna',                 pin:'1052',category:'A',hcp:1.0,reviews:3,  avgRating:3.67},
-    {id:'s10',code:'73',name:'Holesovice',            pin:'1073',category:'A',hcp:1.0,reviews:6,  avgRating:4.83},
+    {id:'s10',code:'73',name:'Holešovice',            pin:'1073',category:'A',hcp:1.0,reviews:6,  avgRating:4.83},
     {id:'s11',code:'71',name:'Dejvice',               pin:'1071',category:'A',hcp:1.0,reviews:8,  avgRating:5.0},
     {id:'s12',code:'51',name:'Palmovka',              pin:'1051',category:'A',hcp:1.0,reviews:115,avgRating:4.9},
     {id:'s13',code:'50',name:'Andel',                 pin:'1050',category:'A',hcp:1.0,reviews:1,  avgRating:1.0},
     {id:'s20',code:'75',name:'I.P. Pavlova',          pin:'1075',category:'A',hcp:1.0,reviews:6,  avgRating:5.0},
-    {id:'s21',code:'76',name:'OC Novy Smichov',       pin:'1076',category:'A',hcp:1.0,reviews:3,  avgRating:4.33},
-    {id:'s22',code:'54',name:'Hlavni nadrazi',        pin:'1054',category:'A',hcp:1.0,reviews:7,  avgRating:4.57},
-    {id:'s3', code:'68',name:'Haje',                  pin:'1068',category:'B',hcp:1.2,reviews:4,  avgRating:5.0},
-    {id:'s4', code:'69',name:'Arkady Pankrac',        pin:'1069',category:'B',hcp:1.2,reviews:13, avgRating:4.69},
-    {id:'s5', code:'66',name:'Poliklinika Modrany',   pin:'1066',category:'B',hcp:1.2,reviews:0,  avgRating:0},
+    {id:'s21',code:'76',name:'OC Nový Smíchov',       pin:'1076',category:'A',hcp:1.0,reviews:3,  avgRating:4.33},
+    {id:'s22',code:'54',name:'Hlavní nádraží',        pin:'1054',category:'A',hcp:1.0,reviews:7,  avgRating:4.57},
+    {id:'s3', code:'68',name:'Háje',                  pin:'1068',category:'B',hcp:1.2,reviews:4,  avgRating:5.0},
+    {id:'s4', code:'69',name:'Arkády Pankrác',        pin:'1069',category:'B',hcp:1.2,reviews:13, avgRating:4.69},
+    {id:'s5', code:'66',name:'Poliklinika Modřany',   pin:'1066',category:'B',hcp:1.2,reviews:0,  avgRating:0},
     {id:'s6', code:'70',name:'DBK Olbrachtova',       pin:'1070',category:'B',hcp:1.2,reviews:4,  avgRating:4.75},
-    {id:'s7', code:'65',name:'Poliklinika Budejovicka',pin:'1065',category:'B',hcp:1.2,reviews:7, avgRating:3.43},
+    {id:'s7', code:'65',name:'Poliklinika Budějovická',pin:'1065',category:'B',hcp:1.2,reviews:7, avgRating:3.43},
     {id:'s8', code:'60',name:'Krc',                   pin:'1060',category:'B',hcp:1.2,reviews:4,  avgRating:4.0},
-    {id:'s14',code:'51',name:'Palmovka Cukrarna',     pin:'2051',category:'B',hcp:1.2,reviews:0,  avgRating:0},
-    {id:'s15',code:'67',name:'Ruzyne',                pin:'1067',category:'B',hcp:1.2,reviews:7,  avgRating:4.71},
-    {id:'s16',code:'72',name:'Poliklinika Vysocany',  pin:'1072',category:'B',hcp:1.2,reviews:13, avgRating:4.69},
+    {id:'s14',code:'51',name:'Palmovka Cukrárna',     pin:'2051',category:'B',hcp:1.2,reviews:0,  avgRating:0},
+    {id:'s15',code:'67',name:'Ruzyně',                pin:'1067',category:'B',hcp:1.2,reviews:7,  avgRating:4.71},
+    {id:'s16',code:'72',name:'Poliklinika Vysočany',  pin:'1072',category:'B',hcp:1.2,reviews:13, avgRating:4.69},
     {id:'s17',code:'58',name:'Jesenice',              pin:'1058',category:'C',hcp:1.5,reviews:1,  avgRating:5.0},
     {id:'s18',code:'57',name:'Liber',                 pin:'1057',category:'C',hcp:1.5,reviews:9,  avgRating:4.44},
-    {id:'s19',code:'74',name:'Ceske Budejovice',      pin:'1074',category:'C',hcp:1.5,reviews:7,  avgRating:4.86}
+    {id:'s19',code:'74',name:'České Budějovice',      pin:'1074',category:'C',hcp:1.5,reviews:7,  avgRating:4.86}
   ],
   challenges:[
-    {id:'ch1',type:'quiz',category:'marketing',title:'Znas nase novinky?',emoji:'\uD83C\uDF53',description:'Otestuj znalost aktualni nabidky.',rules:'Kviz je anonymni. Body dostanes hned po dokonceni. Lze hrat jednou za sezonu.',pointsEach:10,active:true,questions:[
-      {q:'Jak se jmenuje nase letni novinka?',opts:['Jahodovy cheesecake','Boruvkovy zavin','Malinovy dort','Tresnovy croissant'],correct:0},
-      {q:'Kolik prichuti zmrzliny mame aktualne?',opts:['4','6','8','10'],correct:2}
+    {id:'ch1',type:'quiz',category:'marketing',title:'Znáš naše novinky?',emoji:'\uD83C\uDF53',description:'Otestuj znalost aktuální nabídky.',rules:'Kviz je anonymni. Body dostanes hned po dokonceni. Lze hrat jednou za sezonu.',pointsEach:10,active:true,questions:[
+      {q:'Jak se jmenuje naše letní novinka?',opts:['Jahodový cheesecake','Borůvkový závin','Malinový dort','Třešňový croissant'],correct:0},
+      {q:'Kolik příchutí zmrzliny máme aktuálně?',opts:['4','6','8','10'],correct:2}
     ]},
-    {id:'ch2',type:'quiz',category:'provoz',title:'Alergeny - minimum',emoji:'\uD83D\uDD2C',description:'14 povinnych alergenu - vite je?',rules:'Povinne pro vsechny. Body pouze pri skore 100 %. Lze opakovat.',pointsEach:15,active:true,questions:[
-      {q:'Kolik povinnych alergenu musime oznacovat?',opts:['10','12','14','16'],correct:2},
+    {id:'ch2',type:'quiz',category:'provoz',title:'Alergeny – minimum',emoji:'\uD83D\uDD2C',description:'14 povinných alergenů – víte je?',rules:'Povinne pro vsechny. Body pouze pri skore 100 %. Lze opakovat.',pointsEach:15,active:true,questions:[
+      {q:'Kolik povinných alergenů musíme označovat?',opts:['10','12','14','16'],correct:2},
       {q:'Co je alergen c. 1 (lepek)?',opts:['Mleko','Obiloviny s lepkem','Vejce','Arasidy'],correct:1},
-      {q:'Kde musi byt info o alergenech?',opts:['Jen na webu','Jen na obale','Na obale nebo ustne','Vzdy pisemne'],correct:2}
+      {q:'Kde musí být info o alergenech?',opts:['Jen na webu','Jen na obale','Na obale nebo ústně','Vždy písemně'],correct:2}
     ]},
-    {id:'ch3',type:'quiz',category:'vykon',title:'Umeni upsellingu',emoji:'\uD83D\uDCAC',description:'Jak spravne nabidnout doplnek.',rules:'Body dostane kazdy clen tymu ktery kviz splni. Jednou za sezonu.',pointsEach:10,active:true,questions:[
-      {q:'Kdy nabidnout zakaznikovi napoj?',opts:['Az zaplati','Pred vyberem','Pri objednavce','Nikdy'],correct:2},
-      {q:'Zakaznik bere 3 chlebicky. Co nabidnes?',opts:['Nic','Tasku','Napoj nebo dezert','Slevu'],correct:2},
-      {q:'Jak prirozene nabidnout tasku?',opts:['"Chcete tasku?"','"To by se vam tady neslo..."','"Mame krasne tasky"','Nijak'],correct:1}
+    {id:'ch3',type:'quiz',category:'vykon',title:'Umění upsellingu',emoji:'\uD83D\uDCAC',description:'Jak správně nabídnout doplněk.',rules:'Body dostane kazdy clen tymu ktery kviz splni. Jednou za sezonu.',pointsEach:10,active:true,questions:[
+      {q:'Kdy nabídnout zákazníkovi nápoj?',opts:['Až zaplatí','Před výběrem','Při objednávce','Nikdy'],correct:2},
+      {q:'Zákazník bere 3 chlebíčky. Co nabídneš?',opts:['Nic','Tasku','Nápoj nebo dezert','Slevu'],correct:2},
+      {q:'Jak přirozeně nabídnout tašku?',opts:['"Chcete tašku?"','"To by se vám tady neslo..."','"Máme krásné tašky"','Nijak'],correct:1}
     ]},
-    {id:'ch20',type:'quiz',category:'tym',title:'Vedeni tymu',emoji:'\uD83D\uDC65',description:'Jak funguje skvely kolektiv.',rules:'Primo pro provozni, ale i prodavacky dostanou body za zajem.',pointsEach:12,active:true,questions:[
-      {q:'Co je zaklad fungujiciho tymu?',opts:['Prisna pravidla','Jasna komunikace a duvera','Caste kontroly','Odmeny za malickosti'],correct:1},
-      {q:'Jak resit konflikt mezi zamestnanci?',opts:['Ignorujes','Resis hned a soukrome','Cekas az projde','Hlasis vedeni'],correct:1}
+    {id:'ch20',type:'quiz',category:'tym',title:'Vedení týmu',emoji:'\uD83D\uDC65',description:'Jak funguje skvělý kolektiv.',rules:'Primo pro provozni, ale i prodavacky dostanou body za zajem.',pointsEach:12,active:true,questions:[
+      {q:'Co je zaklad fungujiciho tymu?',opts:['Přísná pravidla','Jasná komunikace a důvěra','Časté kontroly','Odměny za maličkosti'],correct:1},
+      {q:'Jak resit konflikt mezi zamestnanci?',opts:['Ignoruješ','Řešíš hned a soukromě','Čekáš až projde','Hlásíš vedení'],correct:1}
     ]},
-    {id:'ch4', type:'progress',category:'vykon',title:'Plan trzeb splnen',emoji:'\uD83D\uDCC8',description:'Sledovani plneni mesicniho planu.',rules:'Plan stanovi vedeni kazdy mesic. Admin zadava % plneni kazdy patek z Vyrexu. Body (200) pri 100 %.',points:200,target:100,targetLabel:'% planu',active:true},
-    {id:'ch5', type:'progress',category:'vykon',title:'Prodej tasek',emoji:'\uD83D\uDECD\uFE0F',description:'Aktivni nabidka LL tasek. Cil: 30 tasek.',rules:'Zaznamenej pres Log. Admin overuje z Vyrexu.',points:100,target:30,targetLabel:'tasek',active:true},
-    {id:'ch6', type:'progress',category:'vykon',title:'Upsell dezertu',emoji:'\uD83C\uDF70',description:'Aktivni nabidka dezertu/doplnku. Cil: 40x.',rules:'Zaznamenej pres Log. Vedouci potvrzuje pokrok.',points:80,target:40,targetLabel:'upsellu',active:true},
-    {id:'ch_r1',type:'progress',category:'marketing',title:'Recenze - 1. stupen',emoji:'\u2B50',description:'10 novych Google recenzi v sezone.',rules:'Pocitaji se recenze po 1.4.2026. Admin overuje v Google Business kazdy tyden.',points:50,target:10,targetLabel:'novych recenzi',active:true},
-    {id:'ch_r2',type:'progress',category:'marketing',title:'Recenze - 2. stupen',emoji:'\uD83C\uDF1F',description:'25 novych Google recenzi v sezone.',rules:'Navazuje na 1. stupen. Body za celych 25.',points:120,target:25,targetLabel:'novych recenzi',active:true},
-    {id:'ch_r3',type:'progress',category:'marketing',title:'Recenze - 3. stupen',emoji:'\uD83C\uDF96\uFE0F',description:'50 novych Google recenzi v sezone.',rules:'Zlata hranice. Admin overuje mesicne.',points:250,target:50,targetLabel:'novych recenzi',active:true},
-    {id:'ch7', type:'progress',category:'marketing',title:'Foto produktu pro IG',emoji:'\uD83D\uDCF8',description:'Posli 5 kvalitnich fotek produktu.',rules:'Foto posli pres WhatsApp nebo email adminu. Musi byt ostre, bez filtru.',points:60,target:5,targetLabel:'fotek',active:true},
-    {id:'ch9', type:'progress',category:'provoz',title:'Nulove odpisy',emoji:'\u267B\uFE0F',description:'10 dni bez odpisu za mesic.',rules:'Admin sleduje odpisy. Kazdy den bez odpisu = 1 bod do pokroku.',points:100,target:10,targetLabel:'dni bez odpisu',active:true},
-    {id:'ch10',type:'progress',category:'provoz',title:'Otevreni vcas',emoji:'\u23F0',description:'20 otevreni presne dle otevraci doby.',rules:'Zaznamenej sam pres Log. Vedouci overuje namazkove.',points:60,target:20,targetLabel:'otevreni vcas',active:true},
-    {id:'ch11',type:'onetime',category:'vykon',title:'Trzby letos vs. loni +10 %',emoji:'\uD83D\uDE80',description:'Prodejna prekonala trzby stejneho mesice loni o 10 % a vice.',rules:'Porovnava se stejny mesic 2025 vs 2026. Data z Vyrexu. Lze splnit jednou za mesic.',points:200,active:true},
-    {id:'ch12',type:'onetime',category:'vykon',title:'Rekordni den',emoji:'\uD83C\uDFC5',description:'Nejvyssi denni trzba prodejny v historii.',rules:'Potvrzuje admin z dat Vyrexu. Body ke konci tydne.',points:100,active:true},
-    {id:'ch13',type:'onetime',category:'vykon',title:'Catering objednavka',emoji:'\uD83C\uDF89',description:'Zpracuj catering nad 2 000 Kc.',rules:'Posli potvrzeni adminu pres WhatsApp. Body do 24 hodin.',points:60,active:true},
+    {id:'ch4', type:'progress',category:'vykon',title:'Plán tržeb splněn',emoji:'\uD83D\uDCC8',description:'Sledování plnění měsíčního plánu.',rules:'Plan stanovi vedeni kazdy mesic. Admin zadava % plneni kazdy patek z Vyrexu. Body (200) pri 100 %.',points:200,target:100,targetLabel:'% plánu',active:true},
+    {id:'ch5', type:'progress',category:'vykon',title:'Prodej tašek',emoji:'\uD83D\uDECD\uFE0F',description:'Aktivní nabídka LL tašek. Cíl: 30 tašek.',rules:'Zaznamenej pres Log. Admin overuje z Vyrexu.',points:100,target:30,targetLabel:'tašek',active:true},
+    {id:'ch6', type:'progress',category:'vykon',title:'Upsell dezertů',emoji:'\uD83C\uDF70',description:'Aktivní nabídka dezertů/doplňků. Cíl: 40×.',rules:'Zaznamenej pres Log. Vedouci potvrzuje pokrok.',points:80,target:40,targetLabel:'upsellů',active:true},
+    {id:'ch_r1',type:'progress',category:'marketing',title:'Recenze – 1. stupeň',emoji:'\u2B50',description:'10 nových Google recenzí v sezóně.',rules:'Pocitaji se recenze po 1.4.2026. Admin overuje v Google Business kazdy tyden.',points:50,target:10,targetLabel:'nových recenzí',active:true},
+    {id:'ch_r2',type:'progress',category:'marketing',title:'Recenze – 2. stupeň',emoji:'\uD83C\uDF1F',description:'25 nových Google recenzí v sezóně.',rules:'Navazuje na 1. stupen. Body za celych 25.',points:120,target:25,targetLabel:'nových recenzí',active:true},
+    {id:'ch_r3',type:'progress',category:'marketing',title:'Recenze – 3. stupeň',emoji:'\uD83C\uDF96\uFE0F',description:'50 nových Google recenzí v sezóně.',rules:'Zlata hranice. Admin overuje mesicne.',points:250,target:50,targetLabel:'nových recenzí',active:true},
+    {id:'ch7', type:'progress',category:'marketing',title:'Foto produktů pro IG',emoji:'\uD83D\uDCF8',description:'Pošli 5 kvalitních fotek produktů.',rules:'Foto posli pres WhatsApp nebo email adminu. Musi byt ostre, bez filtru.',points:60,target:5,targetLabel:'fotek',active:true},
+    {id:'ch9', type:'progress',category:'provoz',title:'Nulové odpisy',emoji:'\u267B\uFE0F',description:'10 dní bez odpisů za měsíc.',rules:'Admin sleduje odpisy. Kazdy den bez odpisu = 1 bod do pokroku.',points:100,target:10,targetLabel:'dní bez odpisů',active:true},
+    {id:'ch10',type:'progress',category:'provoz',title:'Otevření včas',emoji:'\u23F0',description:'20 otevření přesně dle otevírací doby.',rules:'Zaznamenej sam pres Log. Vedouci overuje namazkove.',points:60,target:20,targetLabel:'otevření včas',active:true},
+    {id:'ch11',type:'onetime',category:'vykon',title:'Tržby letos vs. loni +10 %',emoji:'\uD83D\uDE80',description:'Prodejna překonala tržby stejného měsíce loni o 10 % a více.',rules:'Porovnava se stejny mesic 2025 vs 2026. Data z Vyrexu. Lze splnit jednou za mesic.',points:200,active:true},
+    {id:'ch12',type:'onetime',category:'vykon',title:'Rekordní den',emoji:'\uD83C\uDFC5',description:'Nejvyšší denní tržba prodejny v historii.',rules:'Potvrzuje admin z dat Vyrexu. Body ke konci tydne.',points:100,active:true},
+    {id:'ch13',type:'onetime',category:'vykon',title:'Catering objednávka',emoji:'\uD83C\uDF89',description:'Zpracuj catering nad 2 000 Kč.',rules:'Posli potvrzeni adminu pres WhatsApp. Body do 24 hodin.',points:60,active:true},
     {id:'ch14',type:'onetime',category:'marketing',title:'QR aktivace na pultu',emoji:'\uD83D\uDCF1',description:'Postav QR stojan s odkazem na Google recenze.',rules:'Posli foto stojanu na pultu adminu. Stojany jsou u Jitky.',points:30,active:true},
-    {id:'ch15',type:'onetime',category:'marketing',title:'Video z prodejny pro IG',emoji:'\uD83C\uDF9E\uFE0F',description:'Natocte 30s video z prodejny.',rules:'Poslete video pres WhatsApp do skupiny Marketing.',points:40,active:true},
-    {id:'ch16',type:'onetime',category:'provoz',title:'Cistota 10/10',emoji:'\u2728',description:'Prodejna prosla kontrolou bez jedine poznamky.',rules:'Admin nebo Jitka provede nahlasenou kontrolu. Vysledek zaeviduje sam.',points:80,active:true},
-    {id:'ch22',type:'onetime',category:'tym',title:'Samostatne reseni situace',emoji:'\uD83D\uDCA1',description:'Nestandardni situace vyresena bez eskalace na vedeni.',rules:'Napis kratky popis co se stalo. Posli adminu. Body do 48 hodin.',points:50,active:true},
-    {id:'ch23',type:'onetime',category:'tym',title:'Zaskoleni noveho kolegy',emoji:'\uD83C\uDF93',description:'Kompletni zaskoleni noveho zamestnance.',rules:'Posli foto podepsaneho zaskolovaciho protokolu adminu.',points:60,active:true},
-    {id:'ch24',type:'onetime',category:'tym',title:'Tyden bez konfliktu',emoji:'\uD83E\uDD1D',description:'Cely pracovni tyden bez tymoveho konfliktu.',rules:'Potvrduje admin nebo provozni. Hlasi se retrospektivne ke konci tydne.',points:40,active:true}
+    {id:'ch15',type:'onetime',category:'marketing',title:'Video z prodejny pro IG',emoji:'\uD83C\uDF9E\uFE0F',description:'Natočte 30s video z prodejny.',rules:'Poslete video pres WhatsApp do skupiny Marketing.',points:40,active:true},
+    {id:'ch16',type:'onetime',category:'provoz',title:'Čistota 10/10',emoji:'\u2728',description:'Prodejna prošla kontrolou bez jediné poznámky.',rules:'Admin nebo Jitka provede nahlasenou kontrolu. Vysledek zaeviduje sam.',points:80,active:true},
+    {id:'ch22',type:'onetime',category:'tym',title:'Samostatné řešení situace',emoji:'\uD83D\uDCA1',description:'Nestandardní situace vyřešena bez eskalace na vedení.',rules:'Napis kratky popis co se stalo. Posli adminu. Body do 48 hodin.',points:50,active:true},
+    {id:'ch23',type:'onetime',category:'tym',title:'Zaškolení nového kolegy',emoji:'\uD83C\uDF93',description:'Kompletní zaškolení nového zaměstnance.',rules:'Posli foto podepsaneho zaskolovaciho protokolu adminu.',points:60,active:true},
+    {id:'ch24',type:'onetime',category:'tym',title:'Týden bez konfliktu',emoji:'\uD83E\uDD1D',description:'Celý pracovní týden bez týmového konfliktu.',rules:'Potvrduje admin nebo provozni. Hlasi se retrospektivne ke konci tydne.',points:40,active:true}
   ],
   progress:[],
   completions:[],
   prizes:[
-    {id:'p1',emoji:'\u2615',title:'Kava zdarma (tyden)',description:'Kava pro kazdeho v tymu kazdy den po cely tyden.',rules:'Plati pro cely tym prodejny po dobu jednoho pracovniho tydne. Kava z nasi nabidky dle vyberu. Termin dohodne vedouci s adminem.',imageUrl:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80',points:150,tier:'Tymova',inventory:'Dostupne'},
-    {id:'p2',emoji:'\uD83C\uDF7D\uFE0F',title:'Obed pro tym',description:'Spolecny obed ve vybrane restauraci pro cely tym.',rules:'Prodejna si vybere restauraci (do 500 Kc/osoba). Admin zajisti rezervaci. Max 8 osob. Bez alkoholu.',imageUrl:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80',points:350,tier:'Tymova',inventory:'Zbýva 5'},
-    {id:'p3',emoji:'\uD83C\uDFD6\uFE0F',title:'Teambuilding vylet',description:'Celodenni vylet nebo zazittek pro cely tym.',rules:'Admin spolu s vedoucim vybere program. Planuuje se 2 tydny dopredu. Zahrnuje dopravu a program.',imageUrl:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',points:600,tier:'Tymova',inventory:'Zbýva 3'},
-    {id:'p4',emoji:'\uD83D\uDCB0',title:'Bonus 2 000 Kc pro tym',description:'Financni odmena pro cely tym prodejny.',rules:'2 000 Kc hrubého rozdelených dle poctu odpracovanych hodin v sezone. Vyplaceno s nejblizsi vyplatou.',imageUrl:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&q=80',points:1000,tier:'Tymova',inventory:'Zbýva 2'},
-    {id:'p5',emoji:'\uD83D\uDC85',title:'Volne odpoledne',description:'Jedno volne odpoledne navic (3 hodiny) - osobni cas pro tebe.',rules:'Plati pro konkretni zamestnankyni, ne cely tym. Termin dohodes s vedoucim min. 5 dni dopredu. Nelze prevest.',imageUrl:'https://images.unsplash.com/photo-1560472355-536de3962603?w=600&q=80',points:180,tier:'Osobní – prodavačka',inventory:'Dostupne'},
-    {id:'p6',emoji:'\uD83C\uDF81',title:'Poukazka 500 Kc',description:'Nakupni poukazka 500 Kc do obchodu dle vlastniho vyberu.',rules:'Poukazku vydá Jitka do 7 pracovnich dnu. Plati pouze pro aktivni zamestnance. Nelze vyplatit v hotovosti.',imageUrl:'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&q=80',points:300,tier:'Osobní – prodavačka',inventory:'Dostupne'},
-    {id:'p7',emoji:'\uD83C\uDF38',title:'Wellness poukazka',description:'Poukazka na masaz nebo wellness proceduru dle vyberu.',rules:'Hodnota 800 Kc. Proplaci admin na zaklade faktury. Platnost 3 mesice.',imageUrl:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80',points:500,tier:'Osobní – prodavačka',inventory:'Zbýva 4'},
-    {id:'p8',emoji:'\uD83D\uDCDA',title:'Vzdelavaci kurz',description:'Kurz nebo workshop dle vlastniho vyberu.',rules:'Hodnota do 2 000 Kc. Admin proplaci na zaklade faktury po schvaleni Jitkou. Relevantni pro praci v LL.',imageUrl:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80',points:400,tier:'Osobní – provozní',inventory:'Dostupne'},
-    {id:'p9',emoji:'\uD83C\uDFC6',title:'Provozni sezony - titul',description:'Oficialny titul s certifikatem a financnim bonusem 1 000 Kc.',rules:'Udeluje se jedenkrat za sezonu nejlepsimu provoznimu dle HCP bodu. Admin vyhlasi na konci sezony.',imageUrl:'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=600&q=80',points:800,tier:'Osobní – provozní',inventory:'1x za sezonu'},
+    {id:'p1',emoji:'\u2615',title:'Káva zdarma (týden)',description:'Kava pro kazdeho v tymu kazdy den po cely tyden.',rules:'Plati pro cely tym prodejny po dobu jednoho pracovniho tydne. Kava z nasi nabidky dle vyberu. Termin dohodne vedouci s adminem.',imageUrl:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80',points:150,tier:'Týmová',inventory:'Dostupne'},
+    {id:'p2',emoji:'\uD83C\uDF7D\uFE0F',title:'Oběd pro tým',description:'Spolecny obed ve vybrane restauraci pro cely tym.',rules:'Prodejna si vybere restauraci (do 500 Kč/osoba). Admin zajisti rezervaci. Max 8 osob. Bez alkoholu.',imageUrl:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80',points:350,tier:'Týmová',inventory:'Zbýva 5'},
+    {id:'p3',emoji:'\uD83C\uDFD6\uFE0F',title:'Teambuilding výlet',description:'Celodenni vylet nebo zazittek pro cely tym.',rules:'Admin spolu s vedoucim vybere program. Planuuje se 2 tydny dopredu. Zahrnuje dopravu a program.',imageUrl:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',points:600,tier:'Týmová',inventory:'Zbýva 3'},
+    {id:'p4',emoji:'\uD83D\uDCB0',title:'Bonus 2 000 Kč pro tým',description:'Financni odmena pro cely tym prodejny.',rules:'2 000 Kč hrubého rozdelených dle poctu odpracovanych hodin v sezone. Vyplaceno s nejblizsi vyplatou.',imageUrl:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&q=80',points:1000,tier:'Týmová',inventory:'Zbýva 2'},
+    {id:'p5',emoji:'\uD83D\uDC85',title:'Volné odpoledne',description:'Jedno volne odpoledne navic (3 hodiny) - osobni cas pro tebe.',rules:'Plati pro konkretni zamestnankyni, ne cely tym. Termin dohodes s vedoucim min. 5 dni dopredu. Nelze prevest.',imageUrl:'https://images.unsplash.com/photo-1560472355-536de3962603?w=600&q=80',points:180,tier:'Osobní – prodavačka',inventory:'Dostupne'},
+    {id:'p6',emoji:'\uD83C\uDF81',title:'Poukázka 500 Kč',description:'Nakupni poukazka 500 Kč do obchodu dle vlastniho vyberu.',rules:'Poukazku vydá Jitka do 7 pracovnich dnu. Plati pouze pro aktivni zamestnance. Nelze vyplatit v hotovosti.',imageUrl:'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&q=80',points:300,tier:'Osobní – prodavačka',inventory:'Dostupne'},
+    {id:'p7',emoji:'\uD83C\uDF38',title:'Wellness poukázka',description:'Poukazka na masaz nebo wellness proceduru dle vyberu.',rules:'Hodnota 800 Kč. Proplaci admin na zaklade faktury. Platnost 3 mesice.',imageUrl:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80',points:500,tier:'Osobní – prodavačka',inventory:'Zbýva 4'},
+    {id:'p8',emoji:'\uD83D\uDCDA',title:'Vzdělávací kurz',description:'Kurz nebo workshop dle vlastniho vyberu.',rules:'Hodnota do 2 000 Kč. Admin proplaci na zaklade faktury po schvaleni Jitkou. Relevantni pro praci v LL.',imageUrl:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80',points:400,tier:'Osobní – provozní',inventory:'Dostupne'},
+    {id:'p9',emoji:'\uD83C\uDFC6',title:'Provozní sezóny – titul',description:'Oficialny titul s certifikatem a financnim bonusem 1 000 Kč.',rules:'Udeluje se jedenkrat za sezonu nejlepsimu provoznimu dle HCP bodu. Admin vyhlasi na konci sezony.',imageUrl:'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=600&q=80',points:800,tier:'Osobní – provozní',inventory:'1x za sezonu'},
     {id:'p10',emoji:'\uD83D\uDCBC',title:'Den s Jitkou',description:'Den stinování Jitky a nahled do vedeni firmy.',rules:'Termin zavisi na dostupnosti Jitky. Min. 2 tydny dopredu. Plati pro provozni s min. 600 HCP body.',imageUrl:'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80',points:700,tier:'Osobní – provozní',inventory:'Dostupne'}
   ],
   season:{title:'Jaro 2026',startDate:'1. 4. 2026',active:true},
@@ -856,7 +856,7 @@ function renderRewardsTab(){
   html+='<div style="color:var(--muted);font-size:13px;margin-bottom:14px;">Tym: <span style="color:var(--accent);font-weight:700;">'+fmtNum(storePts)+' b</span> - Osobni: <span style="color:oklch(0.72 0.16 300);font-weight:700;">'+fmtNum(userPts)+' b</span></div></div>';
   html+='<div style="padding:0 16px;">';
   var tierGroups=[
-    {key:'Tymova',label:'\uD83C\uDFEA Tymove odmeny',sub:'Body celé prodejny',pts:storePts},
+    {key:'Týmová',label:'\uD83C\uDFEA Tymove odmeny',sub:'Body celé prodejny',pts:storePts},
     {key:'Osobní – prodavačka',label:'\uD83D\uDC9B Pro prodavacky',sub:'Tvoje osobní body',pts:userPts,roleOnly:'prodavacka'},
     {key:'Osobní – provozní',label:'\uD83C\uDFC6 Pro provozni',sub:'Tvoje osobní body',pts:userPts,roleOnly:'provozni'}
   ];
@@ -884,7 +884,7 @@ function renderRewardsTab(){
 function openRewardDetail(pid){
   var pr=null;for(var i=0;i<DATA.prizes.length;i++)if(DATA.prizes[i].id===pid)pr=DATA.prizes[i];if(!pr)return;
   var role=SESSION.role;var storePts=getStoreEffPts(SESSION.storeId);var userPts=getUserPoints(SESSION.userId);
-  var pts=pr.tier==='Tymova'?storePts:userPts;
+  var pts=pr.tier==='Týmová'?storePts:userPts;
   var avail=pts>=pr.points;var pct=Math.min(100,Math.round(pts/pr.points*100));
   var body='';
   if(pr.imageUrl){body+='<div style="margin:-22px -18px 16px;height:180px;overflow:hidden;border-radius:12px 12px 0 0;"><img src="'+esc(pr.imageUrl)+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.style.display=\'none\'"></div>';}
@@ -1008,7 +1008,7 @@ function renderAdminOverview(){
   html+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;"><div style="font-family:Space Grotesk,system-ui;font-size:32px;font-weight:700;color:var(--accent);">'+DATA.completions.length+'</div><div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;">Akci</div></div>';
   html+='</div>';
   // User table
-  html+='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px;">\uD83D\uDC64 Prehled uzivatelu</div>';
+  html+='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px;">\uD83D\uDC64 Přehled uživatelů</div>';
   html+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px;">';
   html+='<div style="display:grid;grid-template-columns:1fr 56px 56px;padding:10px 14px;border-bottom:1px solid var(--border);font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;"><div>Jmeno / Email</div><div style="text-align:right;">Osobni</div><div style="text-align:right;">Tym</div></div>';
   for(var ui=0;ui<rankedU.length;ui++){
@@ -1160,7 +1160,7 @@ function saveStore(sid){var name=document.getElementById('nsName').value.trim();
 
 function renderAdminPrizes(){
   var html='<button onclick="openPrizeModal(null)" style="width:100%;padding:13px;background:var(--up);color:white;border:none;border-radius:12px;font-family:Inter,system-ui;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px;">+ Nova odmena</button>';
-  var tiers=['Tymova','Osobní – prodavačka','Osobní – provozní'];
+  var tiers=['Týmová','Osobní – prodavačka','Osobní – provozní'];
   var tierLabels=['\uD83C\uDFEA Tymove','\uD83D\uDC9B Prodavacky','\uD83C\uDFC6 Provozni'];
   for(var t=0;t<tiers.length;t++){
     var tierPrizes=DATA.prizes.filter(function(p){return p.tier===tiers[t];}).sort(function(a,b){return a.points-b.points;});
@@ -1186,9 +1186,9 @@ function openPrizeModal(pid){
     '<div class="frow"><label class="flabel">Pravidla</label><textarea class="ftarea" id="prRules" style="min-height:90px;">'+( pr?esc(pr.rules||''):'')+'</textarea></div>'+
     '<div class="frow"><label class="flabel">URL fotky</label><input class="finput" id="prImg" value="'+(pr?esc(pr.imageUrl||''):'')+'"></div>'+
     '<div class="frow"><label class="flabel">Kategorie odmeny</label><select class="fsel" id="prTier">'+
-    '<option value="Tymova" '+(pr&&pr.tier==="Tymova"?'selected':'')+'>Tymova (body prodejny)</option>'+
-    '<option value="Osobní – prodavačka" '+(pr&&pr.tier==="Osobní – prodavačka"?'selected':'')+'>Osobni - prodavacka</option>'+
-    '<option value="Osobní – provozní" '+(pr&&pr.tier==="Osobní – provozní"?'selected':'')+'>Osobni - provozni</option>'+
+    '<option value="Týmová" '+(pr&&pr.tier==="Týmová"?'selected':'')+'>Týmová (body prodejny)</option>'+
+    '<option value="Osobní – prodavačka" '+(pr&&pr.tier==="Osobní – prodavačka"?'selected':'')+'>Osobní – prodavačka</option>'+
+    '<option value="Osobní – provozní" '+(pr&&pr.tier==="Osobní – provozní"?'selected':'')+'>Osobní – provozní</option>'+
     '</select></div>'+
     '<div class="frow"><label class="flabel">Dostupnost</label><input class="finput" id="prInv" value="'+(pr?esc(pr.inventory||'Dostupne'):'Dostupne')+'"></div>'+
     '<button class="btn-p" onclick="savePrize(\''+( pid||'')+'\')">Ulozit odmenu</button><div class="msg" id="prMsg"></div>');
