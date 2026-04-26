@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LL Výzva — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0D0D0F;
+  --surface:#161618;
+  --surface2:#1E1E21;
+  --border:rgba(255,255,255,0.08);
+  --border2:rgba(255,255,255,0.14);
+  --text:#F0EEE8;
+  --muted:#7A7875;
+  --dim:#4A4845;
+  --accent:#E8A020;
+  --accent2:#E85520;
+  --up:#2DB87A;
+  --down:#E05050;
+  --purple:#9B6DFF;
+  --font:'Sora',system-ui;
+  --mono:'DM Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;overflow-x:hidden;}
+
+/* ── LOGIN ─────────────────────────────────────────── */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:40px 24px;
+  background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(232,160,32,0.12) 0%,transparent 70%),
+             radial-gradient(ellipse 60% 40% at 90% 90%,rgba(155,109,255,0.08) 0%,transparent 60%),
+             var(--bg);}
+.login-box{width:100%;max-width:400px;}
+.login-logo{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);margin-bottom:40px;}
+.login-logo span{color:var(--accent);}
+.login-title{font-size:36px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:8px;}
+.login-sub{font-size:14px;color:var(--muted);margin-bottom:40px;}
+.login-field{position:relative;margin-bottom:16px;}
+.login-field input{width:100%;padding:16px 18px;background:var(--surface);border:1.5px solid var(--border2);border-radius:12px;color:var(--text);font-family:var(--mono);font-size:15px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;letter-spacing:2px;}
+.login-field input::placeholder{letter-spacing:0;color:var(--dim);font-family:var(--font);}
+.login-field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,160,32,0.12);}
+.login-btn{width:100%;padding:16px;background:var(--accent);color:#0D0D0F;border:none;border-radius:12px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:opacity 0.15s,transform 0.1s;letter-spacing:-0.2px;}
+.login-btn:hover{opacity:0.92;}
+.login-btn:active{transform:scale(0.99);}
+.login-err{font-size:13px;color:var(--down);font-weight:600;margin-top:12px;min-height:20px;}
+.login-hint{font-size:12px;color:var(--dim);margin-top:24px;font-family:var(--mono);}
+
+/* ── MAIN LAYOUT ───────────────────────────────────── */
+#adminMain{display:none;min-height:100vh;}
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh;}
+
+/* ── SIDEBAR ───────────────────────────────────────── */
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:28px 0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sb-logo{padding:0 24px 28px;border-bottom:1px solid var(--border);}
+.sb-logo-tag{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-family:var(--mono);margin-bottom:4px;}
+.sb-logo-name{font-size:18px;font-weight:800;letter-spacing:-0.5px;}
+.sb-logo-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.sb-nav{padding:20px 12px;flex:1;}
+.sb-section{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);font-family:var(--mono);padding:0 12px;margin-bottom:8px;margin-top:20px;}
+.sb-section:first-child{margin-top:0;}
+.sb-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:8px;border:none;background:none;color:var(--muted);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;text-align:left;}
+.sb-btn:hover{background:var(--surface2);color:var(--text);}
+.sb-btn.on{background:rgba(232,160,32,0.12);color:var(--accent);font-weight:600;}
+.sb-btn .ico{width:18px;text-align:center;font-size:15px;}
+.sb-footer{padding:20px 24px;border-top:1px solid var(--border);}
+.sb-status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:12px;}
+.sb-status .dot{width:7px;height:7px;border-radius:50%;background:var(--up);box-shadow:0 0 8px var(--up);}
+.sb-logout{width:100%;padding:9px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.sb-logout:hover{border-color:var(--down);color:var(--down);}
+
+/* ── MAIN CONTENT ──────────────────────────────────── */
+.main{padding:0;overflow-x:hidden;}
+.page-header{padding:36px 40px 28px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(232,160,32,0.03) 0%,transparent 100%);}
+.page-title{font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--muted);}
+.page-body{padding:32px 40px;}
+
+/* ── CARDS & COMPONENTS ────────────────────────────── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px;}
+.card-title{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);margin-bottom:16px;}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.stat-val{font-size:32px;font-weight:800;font-family:var(--mono);letter-spacing:-1px;color:var(--accent);line-height:1;}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:6px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
+.table{width:100%;border-collapse:collapse;}
+.table th{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dim);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);font-family:var(--mono);}
+.table td{padding:13px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;}
+.table tr:last-child td{border-bottom:none;}
+.table tr:hover td{background:var(--surface2);}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;font-family:var(--mono);}
+.badge-prod{background:rgba(232,160,32,0.12);color:var(--accent);}
+.badge-prov{background:rgba(155,109,255,0.12);color:var(--purple);}
+.badge-a{background:rgba(45,184,122,0.12);color:var(--up);}
+.badge-b{background:rgba(232,85,32,0.12);color:var(--accent2);}
+.badge-c{background:rgba(224,80,80,0.12);color:var(--down);}
+
+/* ── FORMS ─────────────────────────────────────────── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid.three{grid-template-columns:1fr 1fr 1fr;}
+.form-grid.full{grid-template-columns:1fr;}
+.frow{display:flex;flex-direction:column;gap:6px;}
+.flabel{font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);}
+.finput,.fsel,.ftarea{padding:11px 14px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:9px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;width:100%;}
+.finput:focus,.fsel:focus,.ftarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,160,32,0.1);}
+.fsel option{background:var(--surface2);}
+.ftarea{resize:vertical;min-height:80px;line-height:1.5;}
+.btn-primary{padding:11px 20px;background:var(--accent);color:#0D0D0F;border:none;border-radius:9px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;transition:opacity 0.15s;}
+.btn-primary:hover{opacity:0.9;}
+.btn-secondary{padding:10px 18px;background:var(--surface2);border:1.5px solid var(--border2);color:var(--text);border-radius:9px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.btn-danger{padding:10px 18px;background:rgba(224,80,80,0.1);border:1.5px solid rgba(224,80,80,0.25);color:var(--down);border-radius:9px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.btn-danger:hover{background:rgba(224,80,80,0.2);}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:7px;}
+.msg{font-size:12px;font-weight:700;min-height:18px;font-family:var(--mono);}
+.sep{height:1px;background:var(--border);margin:24px 0;}
+.actions{display:flex;gap:8px;align-items:center;}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;font-family:var(--mono);}
+.pill-green{background:rgba(45,184,122,0.12);color:var(--up);}
+.pill-red{background:rgba(224,80,80,0.12);color:var(--down);}
+.pill-orange{background:rgba(232,160,32,0.12);color:var(--accent);}
+
+/* ── MODAL ─────────────────────────────────────────── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;}
+.modal-ov.hidden{display:none;}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
+.modal-title{font-size:18px;font-weight:700;letter-spacing:-0.3px;}
+.modal-close{width:32px;height:32px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* ── TABS ──────────────────────────────────────────── */
+.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:0;}
+.tab{padding:10px 16px;border-radius:8px 8px 0 0;border:none;background:none;color:var(--muted);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;margin-bottom:-1px;border-bottom:2px solid transparent;}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);background:rgba(232,160,32,0.05);}
+
+/* ── SECTION HEADER ────────────────────────────────── */
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.sec-title{font-size:15px;font-weight:700;letter-spacing:-0.2px;}
+
+/* ── QUIZ BUILDER ──────────────────────────────────── */
+.q-block{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;}
+.q-block-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-family:var(--mono);}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.correct-btns{display:flex;gap:6px;margin-top:8px;}
+.correct-btn{padding:6px 12px;border-radius:7px;border:1.5px solid var(--border);background:none;color:var(--text);font-size:12px;font-weight:700;cursor:pointer;transition:all 0.15s;font-family:var(--mono);}
+.correct-btn.on{border-color:var(--up);background:rgba(45,184,122,0.12);color:var(--up);}
+
+/* ── PROGRESS ADMIN ────────────────────────────────── */
+.prog-row{display:grid;grid-template-columns:1fr 140px 80px;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.prog-bar-wrap{height:4px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;}
+.prog-bar-fill{height:100%;border-radius:999px;background:var(--accent);transition:width 0.4s;}
+
+/* ── SETTINGS ──────────────────────────────────────── */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.settings-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.settings-card-title{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);margin-bottom:16px;}
+.code-block{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;font-family:var(--mono);font-size:11px;color:var(--text);line-height:1.6;max-height:280px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;}
+
+/* ── INFO BOX ──────────────────────────────────────── */
+.info-box{background:rgba(232,160,32,0.06);border:1px solid rgba(232,160,32,0.2);border-radius:9px;padding:12px 14px;font-size:13px;color:var(--muted);line-height:1.6;}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.page-body{animation:fadeIn 0.25s ease-out;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo"><span>LL</span> Výzva / Admin</div>
+    <div class="login-title">Správa<br>sezóny</div>
+    <div class="login-sub">Přihlaste se administrátorským heslem</div>
+    <div class="login-field">
+      <input type="password" id="pwInput" placeholder="Heslo" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Přihlásit se →</button>
+    <div class="login-err" id="loginErr"></div>
+    <div class="login-hint">LL Výzva Admin Panel · v4</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="adminMain">
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-tag">LL <span style="color:var(--muted);">·</span> Admin</div>
+        <div class="sb-logo-name">Výzva Panel</div>
+        <div class="sb-logo-sub" id="sbSeason">Jaro 2026</div>
+      </div>
+      <div class="sb-nav">
+        <div class="sb-section">Přehled</div>
+        <button class="sb-btn on" id="sbn-overview" onclick="nav('overview',this)"><span class="ico">📊</span> Dashboard</button>
+        <button class="sb-btn" id="sbn-users" onclick="nav('users',this)"><span class="ico">👤</span> Uživatelé</button>
+        <button class="sb-btn" id="sbn-stores" onclick="nav('stores',this)"><span class="ico">🏪</span> Prodejny</button>
+
+        <div class="sb-section">Obsah</div>
+        <button class="sb-btn" id="sbn-challenges" onclick="nav('challenges',this)"><span class="ico">⚡</span> Výzvy</button>
+        <button class="sb-btn" id="sbn-prizes" onclick="nav('prizes',this)"><span class="ico">🎁</span> Odměny</button>
+
+        <div class="sb-section">Systém</div>
+        <button class="sb-btn" id="sbn-backup" onclick="nav('backup',this)"><span class="ico">💾</span> Zálohy</button>
+        <button class="sb-btn" id="sbn-settings" onclick="nav('settings',this)"><span class="ico">🔧</span> Nastavení</button>
+      </div>
+      <div class="sb-footer">
+        <div class="sb-status"><div class="dot"></div><span id="syncStatus">Data načtena</span></div>
+        <button class="sb-logout" onclick="doLogout()">Odhlásit se</button>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main" id="mainContent"></div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-ov hidden" id="modalOv" onclick="closeModalOv(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ====================== CONFIG ======================
+var ADMIN_PASSWORD_KEY = 'll_v4_admin_pw';
+var GH_TOKEN_KEY = 'll_v4_token';
+var GH_GIST_KEY = 'll_v4_gist';
+var DATA_KEY = 'll_v4_data';
+var GIST_FILE = 'll-vyzva4-data.json';
+var DEFAULT_PW = '0000';
+
+var DATA = null;
+var GH = {token:'', gistId:''};
+var CURRENT_PAGE = 'overview';
+var NEWQUIZ = {title:'',emoji:'🧠',category:'marketing',pointsEach:10,questions:[]};
+
+// ====================== AUTH ======================
+function doLogin(){
+  var pw = document.getElementById('pwInput').value;
+  var stored = localStorage.getItem(ADMIN_PASSWORD_KEY) || DEFAULT_PW;
+  if(pw === stored){
+    sessionStorage.setItem('ll_admin_auth','1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminMain').style.display = 'block';
+    loadData(function(){ nav('overview', document.getElementById('sbn-overview')); });
+  } else {
+    document.getElementById('loginErr').textContent = 'Nesprávné heslo';
+    document.getElementById('pwInput').value = '';
+  }
+}
+function doLogout(){
+  sessionStorage.removeItem('ll_admin_auth');
+  location.reload();
+}
+function checkAuth(){
+  if(sessionStorage.getItem('ll_admin_auth')==='1'){
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminMain').style.display = 'block';
+    loadData(function(){ nav('overview', document.getElementById('sbn-overview')); });
+  }
+}
+
+// ====================== DATA ======================
+function loadData(cb){
+  GH.token = localStorage.getItem(GH_TOKEN_KEY)||'';
+  GH.gistId = localStorage.getItem(GH_GIST_KEY)||'';
+  if(GH.token && GH.gistId){
+    setSyncStatus('Načítání z Gistu…');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET','https://api.github.com/gists/'+GH.gistId);
+    xhr.setRequestHeader('Authorization','token '+GH.token);
+    xhr.onload = function(){
+      if(xhr.status===200){
+        try{
+          var d = JSON.parse(xhr.responseText);
+          var f = d.files[GIST_FILE];
+          if(f && f.content){ DATA = JSON.parse(f.content); localStorage.setItem(DATA_KEY, f.content); setSyncStatus('Synced s Gistem ✓');}
+        }catch(e){ loadLocal(); }
+      } else { loadLocal(); }
+      if(cb) cb();
+    };
+    xhr.onerror = function(){ loadLocal(); if(cb) cb(); };
+    xhr.send();
+  } else { loadLocal(); if(cb) cb(); }
+}
+function loadLocal(){
+  var s = localStorage.getItem(DATA_KEY);
+  if(s){ try{ DATA = JSON.parse(s); setSyncStatus('Lokální data'); }catch(e){} }
+  if(!DATA) DATA = {users:[],stores:[],challenges:[],progress:[],completions:[],prizes:[],season:{title:'Jaro 2026',startDate:'1. 4. 2026',active:true},sheetsUrl:''};
+}
+function saveData(cb){
+  var json = JSON.stringify(DATA, null, 2);
+  localStorage.setItem(DATA_KEY, json);
+  syncToSheets();
+  if(!GH.token || !GH.gistId){ setSyncStatus('Uloženo lokálně'); if(cb) cb(true); return; }
+  var files = {}; files[GIST_FILE] = {content: json};
+  setSyncStatus('Ukládání…');
+  var xhr = new XMLHttpRequest();
+  xhr.open('PATCH','https://api.github.com/gists/'+GH.gistId);
+  xhr.setRequestHeader('Authorization','token '+GH.token);
+  xhr.setRequestHeader('Content-Type','application/json');
+  xhr.onload = function(){
+    setSyncStatus(xhr.status===200 ? '✓ Synced '+now() : '⚠ Lokálně');
+    if(cb) cb(xhr.status===200);
+  };
+  xhr.onerror = function(){ setSyncStatus('⚠ Chyba sync'); if(cb) cb(false); };
+  xhr.send(JSON.stringify({files:files}));
+}
+function syncToSheets(){
+  var url = DATA.sheetsUrl || localStorage.getItem('ll_v4_sheets') || '';
+  if(!url) return;
+  var rows = [];
+  for(var i=0;i<DATA.users.length;i++){
+    var u=DATA.users[i]; if(!u.active) continue;
+    var s=getStore(u.storeId);
+    var uPts=getUserPoints(u.id); var sPts=getStoreEffPts(u.storeId);
+    var pen=0; for(var j=0;j<DATA.completions.length;j++){ var c=DATA.completions[j]; if(c.userId===u.id&&c.points<0)pen+=c.points; }
+    var last=''; for(var k=DATA.completions.length-1;k>=0;k--){ if(DATA.completions[k].userId===u.id){last=DATA.completions[k].date;break;} }
+    rows.push({jmeno:u.name,email:u.email,role:u.role==='provozni'?'Provozní':'Prodavačka',prodejna:s?s.name:'',body_osobni:uPts,body_prodejna:sPts,sankce:pen,celkem:uPts+sPts,liga:getLeague(uPts).name,posledni_aktivita:last,sezona:DATA.season.title});
+  }
+  try{ fetch(url,{method:'POST',mode:'no-cors',body:JSON.stringify({rows:rows,updated:today()})}); }catch(e){}
+}
+function setSyncStatus(txt){ var el=document.getElementById('syncStatus'); if(el) el.textContent=txt; }
+
+// ====================== HELPERS ======================
+var LEAGUES=[{name:'Bronzová',min:0,color:'#B87333'},{name:'Stříbrná',min:200,color:'#C0C0C0'},{name:'Zlatá',min:500,color:'#E8A020'},{name:'Diamantová',min:900,color:'#9B6DFF'}];
+function getLeague(pts){var l=LEAGUES[0];for(var i=0;i<LEAGUES.length;i++){if(pts>=LEAGUES[i].min)l=LEAGUES[i];}return l;}
+function getStore(id){for(var i=0;i<DATA.stores.length;i++)if(DATA.stores[i].id===id)return DATA.stores[i];return null;}
+function getUser(id){for(var i=0;i<DATA.users.length;i++)if(DATA.users[i].id===id)return DATA.users[i];return null;}
+function getCh(id){for(var i=0;i<DATA.challenges.length;i++)if(DATA.challenges[i].id===id)return DATA.challenges[i];return null;}
+function getUserPoints(uid){var p=0;for(var i=0;i<DATA.completions.length;i++){var c=DATA.completions[i];if(c.userId===uid&&(c.scope==='personal'||c.scope==='both'||!c.scope))p+=c.points;}return Math.max(0,p);}
+function getStoreRaw(sid){var p=0;for(var i=0;i<DATA.completions.length;i++){var c=DATA.completions[i];if(c.storeId===sid&&(c.scope==='store'||c.scope==='both'||!c.scope))p+=c.points;}return p;}
+function getStoreEffPts(sid){var s=getStore(sid);return Math.max(0,Math.round(getStoreRaw(sid)*(s?s.hcp:1)));}
+function getProgress(sid,chid){for(var i=0;i<DATA.progress.length;i++){var p=DATA.progress[i];if(p.storeId===sid&&p.challengeId===chid)return p.current;}return 0;}
+function setProgress(sid,chid,val){for(var i=0;i<DATA.progress.length;i++){if(DATA.progress[i].storeId===sid&&DATA.progress[i].challengeId===chid){DATA.progress[i].current=val;return;}}DATA.progress.push({storeId:sid,challengeId:chid,current:val});}
+function isCompleteStore(sid,chid){for(var i=0;i<DATA.completions.length;i++){var c=DATA.completions[i];if(c.storeId===sid&&c.challengeId===chid)return true;}return false;}
+function today(){var d=new Date();return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear();}
+function now(){var d=new Date();var p=function(n){return n<10?'0'+n:String(n);};return p(d.getHours())+':'+p(d.getMinutes());}
+function fmtNum(n){return Math.round(n).toLocaleString('cs-CZ').replace(/,/g,' ');}
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function nl2br(s){var r='';for(var i=0;i<s.length;i++){r+=s[i]==='\n'?'<br>':s[i];}return r;}
+
+// ====================== NAVIGATION ======================
+function nav(page, btn){
+  CURRENT_PAGE = page;
+  document.querySelectorAll('.sb-btn').forEach(function(b){ b.classList.remove('on'); });
+  if(btn) btn.classList.add('on');
+  renderPage();
+}
+function renderPage(){
+  if(CURRENT_PAGE==='overview') renderOverview();
+  else if(CURRENT_PAGE==='users') renderUsers();
+  else if(CURRENT_PAGE==='stores') renderStores();
+  else if(CURRENT_PAGE==='challenges') renderChallenges();
+  else if(CURRENT_PAGE==='prizes') renderPrizes();
+  else if(CURRENT_PAGE==='backup') renderBackup();
+  else if(CURRENT_PAGE==='settings') renderSettings();
+}
+
+// ====================== OVERVIEW ======================
+function renderOverview(){
+  document.getElementById('sbSeason').textContent = DATA.season.title;
+  var activeUsers = DATA.users.filter(function(u){return u.active;}).length;
+  var totalComps = DATA.completions.length;
+  var totalPts = 0; for(var i=0;i<DATA.stores.length;i++) totalPts += getStoreRaw(DATA.stores[i].id);
+  var penalties = DATA.completions.filter(function(c){return c.points<0;}).length;
+
+  var ranked = DATA.stores.slice().map(function(s){return {s:s,effPts:getStoreEffPts(s.id),rawPts:getStoreRaw(s.id)};}).sort(function(a,b){return b.effPts-a.effPts;});
+  var rankedU = DATA.users.filter(function(u){return u.active;}).map(function(u){return {u:u,pts:getUserPoints(u.id)};}).sort(function(a,b){return b.pts-a.pts;});
+
+  var html = '<div class="page-header"><div class="page-title">Dashboard</div><div class="page-sub">'+esc(DATA.season.title)+' · Aktualizováno '+today()+'</div></div>';
+  html += '<div class="page-body">';
+
+  // Stats
+  html += '<div class="stat-grid">';
+  html += '<div class="stat"><div class="stat-val">'+activeUsers+'</div><div class="stat-lbl">Uživatelů</div></div>';
+  html += '<div class="stat"><div class="stat-val">'+DATA.stores.length+'</div><div class="stat-lbl">Prodejen</div></div>';
+  html += '<div class="stat"><div class="stat-val">'+totalComps+'</div><div class="stat-lbl">Akcí</div></div>';
+  html += '<div class="stat"><div class="stat-val" style="color:var(--down);">'+penalties+'</div><div class="stat-lbl">Sankcí</div></div>';
+  html += '</div>';
+
+  // User table
+  html += '<div class="card"><div class="sec-header"><div class="card-title" style="margin:0;">Uživatelé — přehled bodů</div>';
+  html += '<div class="actions"><button class="btn-secondary btn-sm" onclick="exportCSV()">⬇ Export CSV</button><button class="btn-secondary btn-sm" onclick="syncToSheets();setSyncStatus(\'Sheets sync odeslán\')">🔄 Sync Sheets</button></div></div>';
+  html += '<table class="table"><thead><tr><th>Jméno</th><th>Email</th><th>Role</th><th>Prodejna</th><th style="text-align:right;">Osobní</th><th style="text-align:right;">Tým (HCP)</th><th style="text-align:right;">Sankce</th><th>Liga</th></tr></thead><tbody>';
+  for(var ui=0;ui<rankedU.length;ui++){
+    var ru=rankedU[ui];var u=ru.u;var s=getStore(u.storeId);var sPts=getStoreEffPts(u.storeId);
+    var pen=0;for(var pj=0;pj<DATA.completions.length;pj++){var pc=DATA.completions[pj];if(pc.userId===u.id&&pc.points<0)pen+=pc.points;}
+    var league=getLeague(ru.pts);
+    html += '<tr>';
+    html += '<td style="font-weight:700;">'+esc(u.name)+'</td>';
+    html += '<td style="color:var(--muted);font-family:var(--mono);font-size:12px;">'+esc(u.email)+'</td>';
+    html += '<td><span class="badge '+(u.role==='provozni'?'badge-prov':'badge-prod')+'">'+(u.role==='provozni'?'Provozní':'Prodavačka')+'</span></td>';
+    html += '<td style="color:var(--muted);">'+esc(s?s.name:'-')+'</td>';
+    html += '<td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--up);">'+fmtNum(ru.pts)+'</td>';
+    html += '<td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--accent);">'+fmtNum(sPts)+'</td>';
+    html += '<td style="text-align:right;font-family:var(--mono);color:'+(pen<0?'var(--down)':'var(--muted)')+';">'+pen+'</td>';
+    html += '<td><span style="color:'+league.color+';font-size:12px;font-weight:700;">'+esc(league.name)+'</span></td>';
+    html += '</tr>';
+  }
+  html += '</tbody></table></div>';
+
+  // Store ranking
+  html += '<div class="card"><div class="sec-header"><div class="card-title" style="margin:0;">Prodejny — žebříček (HCP body)</div>';
+  html += '<div class="actions"><button class="btn-secondary btn-sm" onclick="nav(\'stores\',document.getElementById(\'sbn-stores\'))">Správa prodejen</button></div></div>';
+  html += '<table class="table"><thead><tr><th>#</th><th>Prodejna</th><th>Kat.</th><th style="text-align:right;">Raw body</th><th style="text-align:right;">HCP body</th><th></th></tr></thead><tbody>';
+  for(var ri=0;ri<ranked.length;ri++){
+    var rs=ranked[ri];
+    html += '<tr>';
+    html += '<td style="font-family:var(--mono);font-weight:700;color:var(--muted);">'+(ri+1)+'</td>';
+    html += '<td style="font-weight:600;">'+esc(rs.s.name)+'</td>';
+    html += '<td><span class="badge badge-'+rs.s.category.toLowerCase()+'">'+rs.s.category+' ×'+rs.s.hcp.toFixed(1)+'</span></td>';
+    html += '<td style="text-align:right;font-family:var(--mono);color:var(--muted);">'+fmtNum(rs.rawPts)+'</td>';
+    html += '<td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--accent);">'+fmtNum(rs.effPts)+'</td>';
+    html += '<td><div class="actions"><button class="btn-secondary btn-sm" onclick="openBonusModal(\''+rs.s.id+'\')">+body</button><button class="btn-danger btn-sm" onclick="openPenaltyModal(\''+rs.s.id+'\')">−sankce</button></div></td>';
+    html += '</tr>';
+  }
+  html += '</tbody></table></div>';
+
+  // Recent activity
+  var recent = DATA.completions.slice(-10).reverse();
+  if(recent.length > 0){
+    html += '<div class="card"><div class="card-title">Poslední aktivita</div>';
+    html += '<table class="table"><thead><tr><th>Akce</th><th>Prodejna</th><th>Datum</th><th style="text-align:right;">Body</th></tr></thead><tbody>';
+    for(var ai=0;ai<recent.length;ai++){
+      var ac=recent[ai];var acs=getStore(ac.storeId);
+      html += '<tr>';
+      html += '<td>'+esc(ac.title)+'</td>';
+      html += '<td style="color:var(--muted);">'+esc(acs?acs.name:'-')+'</td>';
+      html += '<td style="color:var(--muted);font-family:var(--mono);font-size:12px;">'+esc(ac.date)+'</td>';
+      html += '<td style="text-align:right;font-family:var(--mono);font-weight:700;color:'+(ac.points<0?'var(--down)':'var(--up)')+';">'+(ac.points>=0?'+':'')+ac.points+'</td>';
+      html += '</tr>';
+    }
+    html += '</tbody></table></div>';
+  }
+
+  html += '</div>';
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+// ====================== USERS ======================
+function renderUsers(){
+  var html = '<div class="page-header"><div class="page-title">Uživatelé</div><div class="page-sub">Správa účtů, emailů a PINů</div></div>';
+  html += '<div class="page-body">';
+  html += '<div class="sec-header"><div class="sec-title"></div><button class="btn-primary" onclick="openUserModal(null)">+ Nový uživatel</button></div>';
+  html += '<div class="card"><table class="table"><thead><tr><th>Jméno</th><th>Email</th><th>PIN</th><th>Role</th><th>Prodejna</th><th style="text-align:right;">Body</th><th>Stav</th><th></th></tr></thead><tbody>';
+  for(var i=0;i<DATA.users.length;i++){
+    var u=DATA.users[i];var s=getStore(u.storeId);var pts=getUserPoints(u.id);
+    html += '<tr>';
+    html += '<td style="font-weight:700;">'+esc(u.name)+'</td>';
+    html += '<td style="font-family:var(--mono);font-size:12px;color:var(--muted);">'+esc(u.email)+'</td>';
+    html += '<td style="font-family:var(--mono);font-weight:700;letter-spacing:2px;">'+esc(u.pin)+'</td>';
+    html += '<td><span class="badge '+(u.role==='provozni'?'badge-prov':'badge-prod')+'">'+(u.role==='provozni'?'Provozní':'Prodavačka')+'</span></td>';
+    html += '<td style="color:var(--muted);font-size:12px;">'+esc(s?s.name:'-')+'</td>';
+    html += '<td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--up);">'+fmtNum(pts)+'</td>';
+    html += '<td><span class="pill '+(u.active?'pill-green':'pill-red')+'">'+(u.active?'aktivní':'neaktivní')+'</span></td>';
+    html += '<td><div class="actions"><button class="btn-secondary btn-sm" onclick="openUserModal(\''+u.id+'\')">Upravit</button><button class="btn-secondary btn-sm" onclick="toggleUser(\''+u.id+'\')">'+( u.active?'Deaktiv.':'Aktivovat')+'</button></div></td>';
+    html += '</tr>';
+  }
+  html += '</tbody></table></div></div>';
+  document.getElementById('mainContent').innerHTML = html;
+}
+function openUserModal(uid){
+  var u=uid?getUser(uid):null;
+  var storeOpts='';for(var i=0;i<DATA.stores.length;i++){var s=DATA.stores[i];storeOpts+='<option value="'+s.id+'" '+(u&&u.storeId===s.id?'selected':'')+'>'+esc(s.name)+'</option>';}
+  var body='<div class="form-grid">';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">Jméno a příjmení</label><input class="finput" id="uName" value="'+(u?esc(u.name):'')+'"></div>';
+  body+='<div class="frow"><label class="flabel">Email (login)</label><input class="finput" id="uEmail" type="email" value="'+(u?esc(u.email):'')+'"></div>';
+  body+='<div class="frow"><label class="flabel">PIN (4 číslice)</label><input class="finput" id="uPin" type="text" maxlength="4" value="'+(u?esc(u.pin):'')+'"></div>';
+  body+='<div class="frow"><label class="flabel">Role</label><select class="fsel" id="uRole"><option value="prodavacka" '+(u&&u.role==='prodavacka'?'selected':'')+'>Prodavačka</option><option value="provozni" '+(u&&u.role==='provozni'?'selected':'')+'>Provozní</option></select></div>';
+  body+='<div class="frow"><label class="flabel">Prodejna</label><select class="fsel" id="uStore">'+storeOpts+'</select></div>';
+  body+='</div>';
+  body+='<div class="sep"></div><div class="actions"><button class="btn-primary" onclick="saveUser(\''+( uid||'')+'\')">Uložit uživatele</button><button class="btn-secondary" onclick="closeModal()">Zrušit</button></div>';
+  body+='<div class="msg" id="uMsg" style="margin-top:10px;"></div>';
+  openModal(u?'Upravit uživatele':'Nový uživatel', body);
+}
+function saveUser(uid){
+  var name=document.getElementById('uName').value.trim();
+  var email=document.getElementById('uEmail').value.trim().toLowerCase();
+  var pin=document.getElementById('uPin').value.trim();
+  var role=document.getElementById('uRole').value;
+  var storeId=document.getElementById('uStore').value;
+  if(!name||!email||pin.length!==4){showMsg('uMsg','Vyplňte jméno, email a 4místný PIN','var(--down)');return;}
+  var exists=false;for(var i=0;i<DATA.users.length;i++){if(DATA.users[i].email.toLowerCase()===email&&DATA.users[i].id!==uid){exists=true;break;}}
+  if(exists){showMsg('uMsg','Email již existuje','var(--down)');return;}
+  if(uid){for(var j=0;j<DATA.users.length;j++){if(DATA.users[j].id===uid){DATA.users[j].name=name;DATA.users[j].email=email;DATA.users[j].pin=pin;DATA.users[j].role=role;DATA.users[j].storeId=storeId;break;}}}
+  else DATA.users.push({id:'u_'+Date.now(),name:name,email:email,pin:pin,role:role,storeId:storeId,active:true});
+  saveData(function(){closeModal();renderUsers();});
+}
+function toggleUser(uid){for(var i=0;i<DATA.users.length;i++){if(DATA.users[i].id===uid){DATA.users[i].active=!DATA.users[i].active;break;}}saveData(null);renderUsers();}
+
+// ====================== STORES ======================
+function renderStores(){
+  var html='<div class="page-header"><div class="page-title">Prodejny</div><div class="page-sub">HCP systém: A ×1.0 · B ×1.2 · C ×1.5</div></div>';
+  html+='<div class="page-body">';
+  html+='<div class="sec-header"><div></div><button class="btn-primary" onclick="openStoreModal(null)">+ Přidat prodejnu</button></div>';
+  html+='<div class="card"><table class="table"><thead><tr><th>Prodejna</th><th>PIN</th><th>Kategorie</th><th style="text-align:right;">Raw body</th><th style="text-align:right;">HCP body</th><th>Recenze</th><th></th></tr></thead><tbody>';
+  var sorted=DATA.stores.slice().sort(function(a,b){return getStoreEffPts(b.id)-getStoreEffPts(a.id);});
+  for(var i=0;i<sorted.length;i++){
+    var s=sorted[i];var eff=getStoreEffPts(s.id);var raw=getStoreRaw(s.id);
+    html+='<tr>';
+    html+='<td style="font-weight:700;">'+esc(s.name)+'</td>';
+    html+='<td style="font-family:var(--mono);letter-spacing:2px;color:var(--muted);">'+esc(s.pin)+'</td>';
+    html+='<td><span class="badge badge-'+s.category.toLowerCase()+'">'+s.category+' ×'+s.hcp.toFixed(1)+'</span></td>';
+    html+='<td style="text-align:right;font-family:var(--mono);color:var(--muted);">'+fmtNum(raw)+'</td>';
+    html+='<td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--accent);">'+fmtNum(eff)+'</td>';
+    html+='<td style="font-family:var(--mono);font-size:12px;">'+s.reviews+' ★ '+s.avgRating+'</td>';
+    html+='<td><div class="actions"><button class="btn-secondary btn-sm" onclick="openStoreModal(\''+s.id+'\')">Upravit</button><button class="btn-secondary btn-sm" onclick="openBonusModal(\''+s.id+'\')">+body</button><button class="btn-danger btn-sm" onclick="openPenaltyModal(\''+s.id+'\')">−sankce</button></div></td>';
+    html+='</tr>';
+  }
+  html+='</tbody></table></div></div>';
+  document.getElementById('mainContent').innerHTML=html;
+}
+function openStoreModal(sid){
+  var s=sid?getStore(sid):null;
+  var body='<div class="form-grid">';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">Název prodejny</label><input class="finput" id="nsName" value="'+(s?esc(s.name):'')+'"></div>';
+  body+='<div class="frow"><label class="flabel">PIN (4 číslice)</label><input class="finput" id="nsPin" maxlength="4" value="'+(s?esc(s.pin):'')+'"></div>';
+  body+='<div class="frow"><label class="flabel">Kategorie HCP</label><select class="fsel" id="nsCat"><option value="A" '+(s&&s.category==="A"?'selected':'')+'>A – Velká/centrum (×1.0)</option><option value="B" '+(s&&s.category==="B"?'selected':'')+'>B – Střední/poliklinika (×1.2)</option><option value="C" '+(s&&s.category==="C"?'selected':'')+'>C – Malá/mimopražská (×1.5)</option></select></div>';
+  body+='<div class="frow"><label class="flabel">Počet recenzí</label><input class="finput" id="nsRevs" type="number" value="'+(s?s.reviews:0)+'"></div>';
+  body+='<div class="frow"><label class="flabel">Průměrné hodnocení</label><input class="finput" id="nsRating" type="number" step="0.01" value="'+(s?s.avgRating:0)+'"></div>';
+  body+='</div>';
+  body+='<div class="sep"></div><div class="actions"><button class="btn-primary" onclick="saveStore(\''+( sid||'')+'\')">Uložit</button><button class="btn-secondary" onclick="closeModal()">Zrušit</button></div>';
+  body+='<div class="msg" id="storeSaveMsg" style="margin-top:10px;"></div>';
+  openModal(s?'Upravit prodejnu':'Nová prodejna', body);
+}
+function saveStore(sid){
+  var name=document.getElementById('nsName').value.trim();var pin=document.getElementById('nsPin').value.trim();var cat=document.getElementById('nsCat').value;
+  var revs=parseInt(document.getElementById('nsRevs').value)||0;var rating=parseFloat(document.getElementById('nsRating').value)||0;
+  var hcp=cat==='A'?1.0:cat==='B'?1.2:1.5;
+  if(!name||pin.length!==4){showMsg('storeSaveMsg','Název + 4místný PIN','var(--down)');return;}
+  if(DATA.stores.some(function(s){return s.pin===pin&&s.id!==sid;})){showMsg('storeSaveMsg','PIN již existuje','var(--down)');return;}
+  if(sid){for(var i=0;i<DATA.stores.length;i++){if(DATA.stores[i].id===sid){DATA.stores[i].name=name;DATA.stores[i].pin=pin;DATA.stores[i].category=cat;DATA.stores[i].hcp=hcp;DATA.stores[i].reviews=revs;DATA.stores[i].avgRating=rating;break;}}}
+  else DATA.stores.push({id:'s'+Date.now(),name:name,pin:pin,category:cat,hcp:hcp,reviews:revs,avgRating:rating});
+  saveData(function(){closeModal();renderStores();});
+}
+
+// ====================== CHALLENGES ======================
+function renderChallenges(){
+  var html='<div class="page-header"><div class="page-title">Výzvy</div><div class="page-sub">Správa výzev a průběžný pokrok</div></div>';
+  html+='<div class="page-body">';
+
+  var tabs=['all','quiz','progress','onetime'];var tabLabels=['Vše','Kvízy','Průběžné','Jednorázové'];
+  var activeTab=window._chTab||'all';
+  html+='<div class="tabs">';
+  for(var ti=0;ti<tabs.length;ti++){html+='<button class="tab'+(activeTab===tabs[ti]?' on':'')+'" onclick="window._chTab=\''+tabs[ti]+'\';renderChallenges()">'+tabLabels[ti]+'</button>';}
+  html+='</div>';
+
+  html+='<div class="sec-header"><div></div><button class="btn-primary" onclick="openNewChModal()">+ Nová výzva</button></div>';
+
+  var chs=DATA.challenges.filter(function(c){return activeTab==='all'||c.type===activeTab;});
+
+  var cats=[{k:'vykon',l:'💰 Výkon'},{k:'marketing',l:'📢 Marketing'},{k:'provoz',l:'🏪 Provoz'},{k:'tym',l:'👥 Tým'}];
+  for(var ci=0;ci<cats.length;ci++){
+    var catChs=chs.filter(function(c){return c.category===cats[ci].k;});
+    if(catChs.length===0)continue;
+    html+='<div class="card"><div class="card-title">'+cats[ci].l+'</div>';
+    html+='<table class="table"><thead><tr><th>Výzva</th><th>Typ</th><th>Body</th><th>Splnění</th><th>Stav</th><th></th></tr></thead><tbody>';
+    for(var i=0;i<catChs.length;i++){
+      var ch=catChs[i];var maxPts=ch.type==='quiz'?(ch.questions.length*ch.pointsEach):ch.points;
+      var compCt=DATA.completions.filter(function(c){return c.challengeId===ch.id;}).length;
+      html+='<tr>';
+      html+='<td><span style="margin-right:6px;">'+esc(ch.emoji)+'</span><strong>'+esc(ch.title)+'</strong></td>';
+      html+='<td style="color:var(--muted);font-size:12px;">'+(ch.type==='quiz'?'Kvíz':ch.type==='progress'?'Průběžná':'Jednorázová')+'</td>';
+      html+='<td style="font-family:var(--mono);font-weight:700;color:var(--accent);">'+maxPts+'</td>';
+      html+='<td style="font-family:var(--mono);">'+compCt+'×</td>';
+      html+='<td><span class="pill '+(ch.active?'pill-green':'pill-red')+'">'+(ch.active?'aktivní':'skrytá')+'</span></td>';
+      html+='<td><div class="actions">';
+      if(ch.type==='progress')html+='<button class="btn-secondary btn-sm" onclick="openProgressAdmin(\''+ch.id+'\')">📊 Pokrok</button>';
+      html+='<button class="btn-secondary btn-sm" onclick="toggleCh(\''+ch.id+'\')">'+(ch.active?'Skrýt':'Aktivovat')+'</button>';
+      html+='<button class="btn-danger btn-sm" onclick="deleteCh(\''+ch.id+'\')">✕</button>';
+      html+='</div></td>';
+      html+='</tr>';
+    }
+    html+='</tbody></table></div>';
+  }
+  if(chs.length===0)html+='<div class="info-box">Žádné výzvy v této kategorii.</div>';
+  html+='</div>';
+  document.getElementById('mainContent').innerHTML=html;
+}
+function toggleCh(id){var ch=getCh(id);if(ch)ch.active=!ch.active;saveData(null);renderChallenges();}
+function deleteCh(id){if(!confirm('Smazat výzvu?'))return;DATA.challenges=DATA.challenges.filter(function(c){return c.id!==id;});saveData(null);renderChallenges();}
+function openNewChModal(){
+  openModal('Typ výzvy','<div style="display:flex;flex-direction:column;gap:10px;padding:4px 0;">'+
+    '<button class="btn-secondary" style="padding:14px;text-align:left;" onclick="closeModal();openQuizModal()">🧠 Kvíz — sada otázek s bodováním</button>'+
+    '<button class="btn-secondary" style="padding:14px;text-align:left;" onclick="closeModal();openProgressChallengeModal()">📊 Průběžná — sledování postupu k cíli</button>'+
+    '<button class="btn-secondary" style="padding:14px;text-align:left;" onclick="closeModal();openOnetimeModal()">✅ Jednorázová — splní se jedním potvrzením</button>'+
+    '</div>');
+}
+function openProgressAdmin(chid){
+  var ch=getCh(chid);if(!ch)return;
+  var html='<div class="info-box" style="margin-bottom:16px;">Cíl: <strong>'+ch.target+' '+esc(ch.targetLabel)+'</strong>. Body se přidají automaticky při splnění.</div>';
+  html+='<table class="table"><thead><tr><th>Prodejna</th><th style="text-align:right;">Pokrok</th><th>Bar</th><th></th></tr></thead><tbody>';
+  for(var i=0;i<DATA.stores.length;i++){
+    var s=DATA.stores[i];var cur=getProgress(s.id,chid);var done=isCompleteStore(s.id,chid);var pct=Math.min(100,Math.round(cur/ch.target*100));
+    html+='<tr>';
+    html+='<td style="font-weight:600;">'+esc(s.name)+'</td>';
+    if(done){html+='<td style="text-align:right;"><span class="pill pill-green">✓ Splněno</span></td><td></td><td></td>';}
+    else{
+      html+='<td style="text-align:right;"><input id="pi_'+s.id+'" type="number" min="0" max="'+ch.target+'" value="'+cur+'" style="width:70px;padding:6px 8px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:7px;color:var(--text);font-family:var(--mono);font-size:13px;font-weight:700;text-align:center;outline:none;">/ '+ch.target+'</td>';
+      html+='<td style="min-width:120px;"><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:'+pct+'%;"></div></div></td>';
+      html+='<td style="font-family:var(--mono);font-size:12px;color:var(--muted);">'+pct+' %</td>';
+    }
+    html+='</tr>';
+  }
+  html+='</tbody></table>';
+  html+='<div class="sep"></div><div class="actions"><button class="btn-primary" onclick="saveProgressAdmin(\''+chid+'\')">Uložit pokrok</button><button class="btn-secondary" onclick="closeModal()">Zavřít</button></div>';
+  html+='<div class="msg" id="progMsg" style="margin-top:10px;"></div>';
+  openModal('📊 '+esc(ch.title), html);
+}
+function saveProgressAdmin(chid){
+  var ch=getCh(chid);
+  for(var i=0;i<DATA.stores.length;i++){
+    var s=DATA.stores[i];var inp=document.getElementById('pi_'+s.id);if(!inp)continue;
+    var val=Math.max(0,Math.min(ch.target,parseInt(inp.value)||0));
+    setProgress(s.id,chid,val);
+    if(val>=ch.target&&!isCompleteStore(s.id,chid))DATA.completions.push({storeId:s.id,userId:null,challengeId:chid,title:ch.title,category:ch.category,points:ch.points,scope:'store',date:today()});
+  }
+  saveData(function(){showMsg('progMsg','✓ Uloženo','var(--up)');});
+}
+function openQuizModal(){
+  NEWQUIZ={title:'',emoji:'🧠',category:'marketing',pointsEach:10,questions:[{q:'',opts:['','','',''],correct:0}]};
+  renderQuizModal();
+}
+function renderQuizModal(){
+  var letters=['A','B','C','D'];var qh='';
+  for(var i=0;i<NEWQUIZ.questions.length;i++){
+    var q=NEWQUIZ.questions[i];
+    qh+='<div class="q-block"><div class="q-block-header"><span>Otázka '+(i+1)+'</span>';
+    if(NEWQUIZ.questions.length>1)qh+='<button class="btn-danger btn-sm" onclick="removeQ('+i+')">Odebrat</button>';
+    qh+='</div>';
+    qh+='<div class="frow" style="margin-bottom:10px;"><input class="finput" placeholder="Text otázky" value="'+esc(q.q)+'" oninput="NEWQUIZ.questions['+i+'].q=this.value"></div>';
+    qh+='<div class="opts-grid">';
+    for(var j=0;j<4;j++)qh+='<input class="finput" placeholder="Možnost '+letters[j]+'" value="'+esc(q.opts[j])+'" oninput="NEWQUIZ.questions['+i+'].opts['+j+']=this.value">';
+    qh+='</div>';
+    qh+='<div style="font-size:11px;color:var(--muted);margin:8px 0 6px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;font-family:var(--mono);">Správná odpověď:</div>';
+    qh+='<div class="correct-btns">';
+    for(var k=0;k<4;k++)qh+='<button class="correct-btn'+(q.correct===k?' on':'')+'" onclick="setQC('+i+','+k+')">'+letters[k]+'</button>';
+    qh+='</div></div>';
+  }
+  var body='<div class="form-grid three"><div class="frow"><label class="flabel">Název</label><input class="finput" id="nqTitle" value="'+esc(NEWQUIZ.title)+'" oninput="NEWQUIZ.title=this.value"></div>';
+  body+='<div class="frow"><label class="flabel">Emoji</label><input class="finput" maxlength="2" value="'+esc(NEWQUIZ.emoji)+'" oninput="NEWQUIZ.emoji=this.value"></div>';
+  body+='<div class="frow"><label class="flabel">Body/otázku</label><input class="finput" type="number" value="'+NEWQUIZ.pointsEach+'" oninput="NEWQUIZ.pointsEach=parseInt(this.value)||10"></div>';
+  body+='<div class="frow"><label class="flabel">Kategorie</label><select class="fsel" onchange="NEWQUIZ.category=this.value"><option value="vykon">💰 Výkon</option><option value="marketing">📢 Marketing</option><option value="provoz">🏪 Provoz</option><option value="tym">👥 Tým</option></select></div></div>';
+  body+='<div class="sep"></div>'+qh;
+  body+='<button class="btn-secondary" style="width:100%;margin-bottom:12px;" onclick="addQ()">+ Přidat otázku</button>';
+  body+='<div class="sep"></div><div class="actions"><button class="btn-primary" onclick="saveQuizCh()">Uložit kvíz</button><button class="btn-secondary" onclick="closeModal()">Zrušit</button></div>';
+  body+='<div class="msg" id="qsMsg" style="margin-top:10px;"></div>';
+  openModal('🧠 Nový kvíz', body);
+}
+function setQC(i,k){NEWQUIZ.questions[i].correct=k;renderQuizModal();}
+function addQ(){NEWQUIZ.questions.push({q:'',opts:['','','',''],correct:0});renderQuizModal();}
+function removeQ(i){NEWQUIZ.questions.splice(i,1);renderQuizModal();}
+function saveQuizCh(){if(!NEWQUIZ.title.trim()){showMsg('qsMsg','Zadejte název','var(--down)');return;}DATA.challenges.push({id:'ch'+Date.now(),type:'quiz',category:NEWQUIZ.category,title:NEWQUIZ.title,emoji:NEWQUIZ.emoji||'🧠',description:'',rules:'',pointsEach:NEWQUIZ.pointsEach||10,active:true,questions:NEWQUIZ.questions});saveData(function(){closeModal();renderChallenges();});}
+function openProgressChallengeModal(){
+  var body='<div class="form-grid"><div class="frow" style="grid-column:1/-1;"><label class="flabel">Název</label><input class="finput" id="npTitle"></div>';
+  body+='<div class="frow"><label class="flabel">Emoji</label><input class="finput" id="npEmoji" maxlength="2" value="📊"></div>';
+  body+='<div class="frow"><label class="flabel">Body za splnění</label><input class="finput" id="npPts" type="number" value="100"></div>';
+  body+='<div class="frow"><label class="flabel">Cíl (číslo)</label><input class="finput" id="npTarget" type="number" value="10"></div>';
+  body+='<div class="frow"><label class="flabel">Jednotka</label><input class="finput" id="npUnit" placeholder="recenzí"></div>';
+  body+='<div class="frow"><label class="flabel">Kategorie</label><select class="fsel" id="npCat"><option value="vykon">💰 Výkon</option><option value="marketing">📢 Marketing</option><option value="provoz">🏪 Provoz</option><option value="tym">👥 Tým</option></select></div>';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">Popis</label><textarea class="ftarea" id="npDesc"></textarea></div>';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">Pravidla</label><textarea class="ftarea" id="npRules"></textarea></div></div>';
+  body+='<div class="sep"></div><div class="actions"><button class="btn-primary" onclick="saveProgCh()">Uložit</button><button class="btn-secondary" onclick="closeModal()">Zrušit</button></div>';
+  body+='<div class="msg" id="npMsg" style="margin-top:10px;"></div>';
+  openModal('📊 Průběžná výzva', body);
+}
+function saveProgCh(){var title=document.getElementById('npTitle').value.trim();if(!title){showMsg('npMsg','Název','var(--down)');return;}DATA.challenges.push({id:'ch'+Date.now(),type:'progress',category:document.getElementById('npCat').value,title:title,emoji:document.getElementById('npEmoji').value||'📊',description:document.getElementById('npDesc').value.trim(),rules:document.getElementById('npRules').value.trim(),points:parseInt(document.getElementById('npPts').value)||100,target:parseInt(document.getElementById('npTarget').value)||10,targetLabel:document.getElementById('npUnit').value.trim()||'kroků',active:true});saveData(function(){closeModal();renderChallenges();});}
+function openOnetimeModal(){
+  var body='<div class="form-grid"><div class="frow" style="grid-column:1/-1;"><label class="flabel">Název</label><input class="finput" id="noTitle"></div>';
+  body+='<div class="frow"><label class="flabel">Emoji</label><input class="finput" id="noEmoji" maxlength="2" value="✅"></div>';
+  body+='<div class="frow"><label class="flabel">Body</label><input class="finput" id="noPts" type="number" value="30"></div>';
+  body+='<div class="frow"><label class="flabel">Kategorie</label><select class="fsel" id="noCat"><option value="vykon">💰 Výkon</option><option value="marketing">📢 Marketing</option><option value="provoz">🏪 Provoz</option><option value="tym">👥 Tým</option></select></div>';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">Popis</label><textarea class="ftarea" id="noDesc"></textarea></div>';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">Pravidla</label><textarea class="ftarea" id="noRules"></textarea></div></div>';
+  body+='<div class="sep"></div><div class="actions"><button class="btn-primary" onclick="saveOnceCh()">Uložit</button><button class="btn-secondary" onclick="closeModal()">Zrušit</button></div>';
+  body+='<div class="msg" id="noMsg" style="margin-top:10px;"></div>';
+  openModal('✅ Jednorázová výzva', body);
+}
+function saveOnceCh(){var title=document.getElementById('noTitle').value.trim();if(!title){showMsg('noMsg','Název','var(--down)');return;}DATA.challenges.push({id:'ch'+Date.now(),type:'onetime',category:document.getElementById('noCat').value,title:title,emoji:document.getElementById('noEmoji').value||'✅',description:document.getElementById('noDesc').value.trim(),rules:document.getElementById('noRules').value.trim(),points:parseInt(document.getElementById('noPts').value)||30,active:true});saveData(function(){closeModal();renderChallenges();});}
+
+// ====================== PRIZES ======================
+function renderPrizes(){
+  var html='<div class="page-header"><div class="page-title">Odměny</div><div class="page-sub">Týmové a osobní odměny</div></div>';
+  html+='<div class="page-body">';
+  html+='<div class="sec-header"><div></div><button class="btn-primary" onclick="openPrizeModal(null)">+ Nová odměna</button></div>';
+  var tiers=['Týmová','Osobní – prodavačka','Osobní – provozní'];
+  var tierLabels=['🏪 Týmové odměny','💛 Pro prodavačky','🏆 Pro provozní'];
+  for(var t=0;t<tiers.length;t++){
+    var tierPrizes=DATA.prizes.filter(function(p){return p.tier===tiers[t];}).sort(function(a,b){return a.points-b.points;});
+    html+='<div class="card"><div class="card-title">'+tierLabels[t]+'</div>';
+    if(tierPrizes.length===0){html+='<div style="color:var(--muted);font-size:13px;">Zatím žádné odměny.</div></div>';continue;}
+    html+='<table class="table"><thead><tr><th>Odměna</th><th style="text-align:right;">Body</th><th>Dostupnost</th><th></th></tr></thead><tbody>';
+    for(var i=0;i<tierPrizes.length;i++){
+      var pr=tierPrizes[i];
+      html+='<tr>';
+      html+='<td><span style="margin-right:8px;font-size:18px;">'+esc(pr.emoji)+'</span><strong>'+esc(pr.title)+'</strong></td>';
+      html+='<td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--accent);">'+fmtNum(pr.points)+'</td>';
+      html+='<td style="color:var(--muted);font-size:12px;">'+esc(pr.inventory||'Dostupné')+'</td>';
+      html+='<td><div class="actions"><button class="btn-secondary btn-sm" onclick="openPrizeModal(\''+pr.id+'\')">Upravit</button><button class="btn-danger btn-sm" onclick="deletePrize(\''+pr.id+'\')">✕</button></div></td>';
+      html+='</tr>';
+    }
+    html+='</tbody></table></div>';
+  }
+  html+='</div>';
+  document.getElementById('mainContent').innerHTML=html;
+}
+function openPrizeModal(pid){
+  var pr=pid?DATA.prizes.find(function(p){return p.id===pid;}):null;
+  var body='<div class="form-grid"><div class="frow"><label class="flabel">Emoji</label><input class="finput" id="prEmoji" maxlength="2" value="'+(pr?esc(pr.emoji):'🏆')+'"></div>';
+  body+='<div class="frow"><label class="flabel">Body</label><input class="finput" id="prPts" type="number" value="'+(pr?pr.points:200)+'"></div>';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">Název</label><input class="finput" id="prTitle" value="'+(pr?esc(pr.title):'')+'"></div>';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">Krátký popis</label><input class="finput" id="prDesc" value="'+(pr?esc(pr.description):'')+'"></div>';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">Detailní pravidla</label><textarea class="ftarea" id="prRules">'+( pr?esc(pr.rules||''):'')+'</textarea></div>';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">URL fotky (Unsplash)</label><input class="finput" id="prImg" value="'+(pr?esc(pr.imageUrl||''):'')+'"></div>';
+  body+='<div class="frow"><label class="flabel">Kategorie</label><select class="fsel" id="prTier"><option value="Týmová" '+(pr&&pr.tier==="Týmová"?'selected':'')+'>🏪 Týmová</option><option value="Osobní – prodavačka" '+(pr&&pr.tier==="Osobní – prodavačka"?'selected':'')+'>💛 Osobní – prodavačka</option><option value="Osobní – provozní" '+(pr&&pr.tier==="Osobní – provozní"?'selected':'')+'>🏆 Osobní – provozní</option></select></div>';
+  body+='<div class="frow"><label class="flabel">Dostupnost</label><input class="finput" id="prInv" value="'+(pr?esc(pr.inventory||'Dostupné'):'Dostupné')+'"></div></div>';
+  body+='<div class="sep"></div><div class="actions"><button class="btn-primary" onclick="savePrize(\''+( pid||'')+'\')">Uložit odměnu</button><button class="btn-secondary" onclick="closeModal()">Zrušit</button></div>';
+  body+='<div class="msg" id="prMsg" style="margin-top:10px;"></div>';
+  openModal(pr?'Upravit odměnu':'Nová odměna', body);
+}
+function savePrize(pid){
+  var title=document.getElementById('prTitle').value.trim();var pts=parseInt(document.getElementById('prPts').value)||200;
+  if(!title){showMsg('prMsg','Zadejte název','var(--down)');return;}
+  var data={id:pid||'p'+Date.now(),emoji:document.getElementById('prEmoji').value||'🏆',title:title,description:document.getElementById('prDesc').value.trim(),rules:document.getElementById('prRules').value.trim(),imageUrl:document.getElementById('prImg').value.trim(),points:pts,tier:document.getElementById('prTier').value,inventory:document.getElementById('prInv').value.trim()};
+  if(pid){for(var i=0;i<DATA.prizes.length;i++){if(DATA.prizes[i].id===pid){DATA.prizes[i]=data;break;}}}
+  else DATA.prizes.push(data);
+  saveData(function(){closeModal();renderPrizes();});
+}
+function deletePrize(id){if(!confirm('Smazat odměnu?'))return;DATA.prizes=DATA.prizes.filter(function(p){return p.id!==id;});saveData(null);renderPrizes();}
+
+// ====================== BONUS / PENALTY ======================
+function openBonusModal(sid){
+  var s=getStore(sid);
+  var body='<div class="form-grid"><div class="frow"><label class="flabel">Počet bodů</label><input class="finput" id="bonusPts" type="number" placeholder="50"></div>';
+  body+='<div class="frow"><label class="flabel">Kategorie</label><select class="fsel" id="bonusCat"><option value="vykon">💰 Výkon</option><option value="marketing">📢 Marketing</option><option value="provoz">🏪 Provoz</option><option value="tym">👥 Tým</option></select></div>';
+  body+='<div class="frow" style="grid-column:1/-1;"><label class="flabel">Důvod</label><input class="finput" id="bonusReason" placeholder="Nejlepší foto týdne…"></div></div>';
+  body+='<div class="sep"></div><div class="actions"><button class="btn-primary" onclick="doBonus(\''+sid+'\')">➕ Přidat body</button><button class="btn-secondary" onclick="closeModal()">Zrušit</button></div>';
+  body+='<div class="msg" id="bonusMsg" style="margin-top:10px;"></div>';
+  openModal('➕ Bonus – '+esc(s.name), body);
+}
+function doBonus(sid){
+  var pts=parseInt(document.getElementById('bonusPts').value)||0;var cat=document.getElementById('bonusCat').value;var reason=document.getElementById('bonusReason').value.trim()||'Bonus';
+  if(pts<=0){showMsg('bonusMsg','Zadejte kladné číslo','var(--down)');return;}
+  DATA.completions.push({storeId:sid,userId:null,challengeId:'bonus_'+Date.now(),title:'🎁 '+reason,category:cat,points:pts,scope:'store',date:today()});
+  saveData(function(){closeModal();renderPage();});
+}
+function openPenaltyModal(sid){
+  var s=getStore(sid);
+  var PRESETS=[{l:'Recenze 1★',p:-50},{l:'Recenze 2★',p:-20},{l:'Stížnost zákazníka',p:-25},{l:'Pozdní otevření',p:-15},{l:'Hygienická závada',p:-60},{l:'Vysoké odpisy',p:-30},{l:'Konflikt v týmu',p:-20},{l:'Nesplnění pokynu',p:-25},{l:'Tržby pod plánem',p:-40}];
+  var opts='<option value="">— vlastní —</option>';
+  for(var i=0;i<PRESETS.length;i++)opts+='<option value="'+i+'">'+esc(PRESETS[i].l)+' ('+PRESETS[i].p+' b)</option>';
+  var body='<div class="form-grid"><div class="frow" style="grid-column:1/-1;"><label class="flabel">Preset sankce</label>';
+  body+='<select class="fsel" id="penPreset" onchange="var p='+JSON.stringify(PRESETS)+';var v=this.value;if(v!==\'\'){document.getElementById(\'penPts\').value=Math.abs(p[parseInt(v)].p);document.getElementById(\'penReason\').value=p[parseInt(v)].l;}">'+opts+'</select></div>';
+  body+='<div class="frow"><label class="flabel">Bodů (kladně)</label><input class="finput" id="penPts" type="number" placeholder="25"></div>';
+  body+='<div class="frow"><label class="flabel">Důvod</label><input class="finput" id="penReason" placeholder="Co se stalo…"></div></div>';
+  body+='<div class="sep"></div><div class="actions"><button class="btn-danger" onclick="doPenalty(\''+sid+'\')">⚠️ Strhnout body</button><button class="btn-secondary" onclick="closeModal()">Zrušit</button></div>';
+  body+='<div class="msg" id="penMsg" style="margin-top:10px;"></div>';
+  openModal('⚠️ Sankce – '+esc(s.name), body);
+}
+function doPenalty(sid){
+  var pts=parseInt(document.getElementById('penPts').value)||0;var reason=document.getElementById('penReason').value.trim();
+  if(pts<=0){showMsg('penMsg','Zadejte počet bodů','var(--down)');return;}
+  if(!reason){showMsg('penMsg','Zadejte důvod','var(--down)');return;}
+  DATA.completions.push({storeId:sid,userId:null,challengeId:'penalty_'+Date.now(),title:'⚠️ SANKCE: '+reason,category:'penalty',points:-pts,scope:'store',date:today()});
+  saveData(function(){closeModal();renderPage();});
+}
+
+// ====================== BACKUP ======================
+function renderBackup(){
+  var snaps=getSnapshots();
+  var html='<div class="page-header"><div class="page-title">Zálohy</div><div class="page-sub">Export, import a snapshoty dat</div></div>';
+  html+='<div class="page-body"><div class="settings-grid">';
+  html+='<div class="settings-card"><div class="settings-card-title">Ruční záloha</div>';
+  html+='<p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Uloží aktuální snapshot do lokálního úložiště prohlížeče.</p>';
+  html+='<div class="actions"><button class="btn-primary" onclick="createSnapshot(false)">📸 Záloha teď</button><button class="btn-secondary" onclick="exportJSON()">⬇ JSON soubor</button></div>';
+  html+='<div class="msg" id="backupMsg" style="margin-top:10px;"></div></div>';
+  html+='<div class="settings-card"><div class="settings-card-title">Import dat</div>';
+  html+='<p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Nahrání zálohy přepíše všechna aktuální data.</p>';
+  html+='<label class="btn-secondary" style="display:block;text-align:center;cursor:pointer;padding:10px 18px;">📂 Vybrat JSON soubor <input type="file" accept=".json" style="display:none;" onchange="loadJSONFile(this)"></label>';
+  html+='<textarea class="ftarea" id="importJsonArea" placeholder="nebo vlož JSON text…" style="margin-top:10px;min-height:80px;font-family:var(--mono);font-size:11px;"></textarea>';
+  html+='<button class="btn-primary" style="width:100%;margin-top:10px;" onclick="importJSON()">✅ Importovat</button>';
+  html+='<div class="msg" id="importMsg" style="margin-top:10px;"></div></div></div>';
+  if(snaps.length>0){
+    html+='<div class="card" style="margin-top:16px;"><div class="card-title">Uložené zálohy</div>';
+    html+='<table class="table"><thead><tr><th>Datum a čas</th><th style="text-align:right;">Uživatelů</th><th style="text-align:right;">Akcí</th><th></th></tr></thead><tbody>';
+    for(var si=snaps.length-1;si>=Math.max(0,snaps.length-10);si--){
+      var snap=snaps[si];
+      html+='<tr><td style="font-family:var(--mono);">'+esc(snap.label)+'</td>';
+      html+='<td style="text-align:right;font-family:var(--mono);">'+(snap.users||0)+'</td>';
+      html+='<td style="text-align:right;font-family:var(--mono);">'+(snap.completions||0)+'</td>';
+      html+='<td><button class="btn-secondary btn-sm" onclick="restoreSnapshot('+si+')">Obnovit</button></td></tr>';
+    }
+    html+='</tbody></table></div>';
+  }
+  html+='</div>';
+  document.getElementById('mainContent').innerHTML=html;
+}
+function getSnapshots(){try{return JSON.parse(localStorage.getItem('ll_v4_snapshots')||'[]');}catch(e){return[];}}
+function saveSnapshots(arr){localStorage.setItem('ll_v4_snapshots',JSON.stringify(arr));}
+function createSnapshot(silent){
+  var now=new Date();var pad=function(n){return n<10?'0'+n:String(n);};
+  var label=pad(now.getDate())+'.'+pad(now.getMonth()+1)+'.'+now.getFullYear()+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+  var snap={label:label,data:JSON.parse(JSON.stringify(DATA)),users:DATA.users.length,completions:DATA.completions.length};
+  var arr=getSnapshots();arr.push(snap);if(arr.length>20)arr=arr.slice(arr.length-20);
+  saveSnapshots(arr);localStorage.setItem('ll_v4_last_save',label);
+  if(!silent){showMsg('backupMsg','✓ Záloha uložena: '+label,'var(--up)');setTimeout(renderBackup,1500);}
+}
+function restoreSnapshot(idx){var arr=getSnapshots();if(!arr[idx])return;if(!confirm('Obnovit zálohu z '+arr[idx].label+'?'))return;DATA=JSON.parse(JSON.stringify(arr[idx].data));saveData(null);renderBackup();}
+function exportJSON(){var json=JSON.stringify(DATA,null,2);var now=new Date();var pad=function(n){return n<10?'0'+n:String(n);};var fname='LL-vyzva-backup-'+now.getFullYear()+pad(now.getMonth()+1)+pad(now.getDate())+'-'+pad(now.getHours())+pad(now.getMinutes())+'.json';var blob=new Blob([json],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=fname;a.click();URL.revokeObjectURL(url);}
+function loadJSONFile(input){var file=input.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){var ta=document.getElementById('importJsonArea');if(ta)ta.value=e.target.result;};reader.readAsText(file);}
+function importJSON(){var raw=document.getElementById('importJsonArea').value.trim();if(!raw){showMsg('importMsg','Vložte JSON nebo vyberte soubor','var(--down)');return;}try{var parsed=JSON.parse(raw);if(!parsed.stores||!parsed.challenges){showMsg('importMsg','Neplatný formát dat','var(--down)');return;}if(!confirm('Importovat? Přepíše vše aktuální.'))return;DATA=parsed;saveData(null);showMsg('importMsg','✓ Importováno','var(--up)');setTimeout(renderBackup,1000);}catch(e){showMsg('importMsg','Chyba parsování JSON','var(--down)');}}
+
+// ====================== SETTINGS ======================
+function renderSettings(){
+  var adminPw=localStorage.getItem(ADMIN_PASSWORD_KEY)||DEFAULT_PW;
+  var sheetsUrl=DATA.sheetsUrl||localStorage.getItem('ll_v4_sheets')||'';
+  var html='<div class="page-header"><div class="page-title">Nastavení</div><div class="page-sub">GitHub, Sheets, sezóna, přístup</div></div>';
+  html+='<div class="page-body"><div class="settings-grid">';
+
+  // Season
+  html+='<div class="settings-card"><div class="settings-card-title">Sezóna</div>';
+  html+='<div class="frow" style="margin-bottom:12px;"><label class="flabel">Název sezóny</label><input class="finput" id="sTitle" value="'+esc(DATA.season.title)+'"></div>';
+  html+='<div class="actions"><button class="btn-primary" onclick="saveSeason()">Uložit</button><button class="btn-danger" onclick="confirmReset()">🔄 Reset bodů</button></div>';
+  html+='<div class="msg" id="seasonMsg" style="margin-top:10px;"></div></div>';
+
+  // Admin password
+  html+='<div class="settings-card"><div class="settings-card-title">Admin heslo (aktuální: '+esc(adminPw)+')</div>';
+  html+='<div class="frow" style="margin-bottom:12px;"><label class="flabel">Nové heslo</label><input class="finput" id="sAdminPw" type="password" placeholder="Nové heslo"></div>';
+  html+='<button class="btn-primary" onclick="saveAdminPw()">Změnit heslo</button>';
+  html+='<div class="msg" id="pwMsg" style="margin-top:10px;"></div></div>';
+
+  // GitHub
+  html+='<div class="settings-card"><div class="settings-card-title">GitHub Gist</div>';
+  html+='<div class="frow" style="margin-bottom:12px;"><label class="flabel">Token</label><input class="finput" id="sToken" type="password" value="'+esc(GH.token)+'"></div>';
+  html+='<div class="frow" style="margin-bottom:12px;"><label class="flabel">Gist ID</label><input class="finput" id="sGist" value="'+esc(GH.gistId)+'"></div>';
+  html+='<button class="btn-primary" onclick="saveGH()">Uložit</button><div class="msg" id="ghMsg" style="margin-top:10px;"></div></div>';
+
+  // Sheets
+  html+='<div class="settings-card"><div class="settings-card-title">Google Sheets sync</div>';
+  html+='<div class="frow" style="margin-bottom:12px;"><label class="flabel">Apps Script URL</label><input class="finput" id="sSheetsUrl" value="'+esc(sheetsUrl)+'" placeholder="https://script.google.com/…"></div>';
+  html+='<div class="actions"><button class="btn-primary" onclick="saveSheetsUrl()">Uložit</button><button class="btn-secondary" onclick="syncToSheets();setSyncStatus(\'Sync odeslán\')">🔄 Sync teď</button></div>';
+  html+='<div class="msg" id="sheetsMsg" style="margin-top:10px;"></div></div>';
+
+  html+='</div>';
+
+  // Apps Script code
+  html+='<div class="card" style="margin-top:16px;"><div class="card-title">Apps Script kód pro Google Sheets</div>';
+  html+='<p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6;">Otevři Google Sheets → Rozšíření → Apps Script → smaž vše → vlož kód níže → Nasadit jako webovou aplikaci → zkopíruj URL výše.</p>';
+  var code = "function doPost(e) {\n  try {\n    var data = JSON.parse(e.postData.contents);\n    var rows = data.rows || [];\n    var ss = SpreadsheetApp.getActiveSpreadsheet();\n    var sheet = ss.getSheetByName('LL-Prehled') || ss.insertSheet('LL-Prehled');\n    sheet.clearContents();\n    sheet.appendRow(['Jméno','Email','Role','Prodejna','Osobní body','Body prodejny','Sankce','Celkem','Liga','Poslední aktivita','Sezóna','Aktualizováno']);\n    for (var i = 0; i < rows.length; i++) {\n      var r = rows[i];\n      sheet.appendRow([r.jmeno,r.email,r.role,r.prodejna,r.body_osobni,r.body_prodejna,r.sankce,r.celkem,r.liga,r.posledni_aktivita,r.sezona,data.updated]);\n    }\n    sheet.setFrozenRows(1);\n    sheet.getRange(1,1,1,12).setFontWeight('bold').setBackground('#1a1a2e').setFontColor('#ffffff');\n    sheet.autoResizeColumns(1,12);\n  } catch(err) {}\n  return ContentService.createTextOutput('ok').setMimeType(ContentService.MimeType.TEXT);\n}\n\nfunction doGet(e) {\n  return ContentService.createTextOutput('LL Vyzva API ready').setMimeType(ContentService.MimeType.TEXT);\n}";
+  html+='<div class="code-block">'+esc(code)+'</div>';
+  html+='<button class="btn-secondary" style="margin-top:12px;" onclick="try{navigator.clipboard.writeText(document.querySelector(\'.code-block\').textContent);}catch(e){}setSyncStatus(\'Kód zkopírován\')">📋 Kopírovat kód</button></div>';
+
+  html+='</div>';
+  document.getElementById('mainContent').innerHTML=html;
+}
+function saveSeason(){DATA.season.title=document.getElementById('sTitle').value.trim();saveData(function(){showMsg('seasonMsg','✓ Uloženo','var(--up)');document.getElementById('sbSeason').textContent=DATA.season.title;});}
+function confirmReset(){if(!confirm('RESET: smaže VŠECHNY body a záznamy. Nevratná akce!'))return;DATA.completions=[];DATA.progress=[];saveData(null);showMsg('seasonMsg','✓ Reset proveden','var(--up)');}
+function saveAdminPw(){var v=document.getElementById('sAdminPw').value.trim();if(!v){showMsg('pwMsg','Zadejte heslo','var(--down)');return;}localStorage.setItem(ADMIN_PASSWORD_KEY,v);document.getElementById('sAdminPw').value='';showMsg('pwMsg','✓ Heslo změněno','var(--up)');}
+function saveGH(){GH.token=document.getElementById('sToken').value.trim();GH.gistId=document.getElementById('sGist').value.trim();localStorage.setItem(GH_TOKEN_KEY,GH.token);localStorage.setItem(GH_GIST_KEY,GH.gistId);showMsg('ghMsg','✓ Uloženo','var(--up)');}
+function saveSheetsUrl(){var url=document.getElementById('sSheetsUrl').value.trim();DATA.sheetsUrl=url;localStorage.setItem('ll_v4_sheets',url);saveData(null);showMsg('sheetsMsg','✓ Uloženo, sync odeslán','var(--up)');}
+
+// ====================== CSV EXPORT ======================
+function exportCSV(){
+  var rows=[['Jméno','Email','Role','Prodejna','Kategorie','Osobní body','Body prodejny (HCP)','Sankce','Celkem','Liga','Sezóna']];
+  var sorted=DATA.users.filter(function(u){return u.active;}).map(function(u){return {u:u,pts:getUserPoints(u.id)};}).sort(function(a,b){return b.pts-a.pts;});
+  for(var i=0;i<sorted.length;i++){
+    var ru=sorted[i];var u=ru.u;var s=getStore(u.storeId);var sPts=getStoreEffPts(u.storeId);
+    var pen=0;for(var j=0;j<DATA.completions.length;j++){var c=DATA.completions[j];if(c.userId===u.id&&c.points<0)pen+=c.points;}
+    rows.push([u.name,u.email,u.role==='provozni'?'Provozní':'Prodavačka',s?s.name:'',s?s.category+' ×'+s.hcp.toFixed(1):'',ru.pts,sPts,pen,ru.pts+sPts,getLeague(ru.pts).name,DATA.season.title]);
+  }
+  var csv=rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var now=new Date();var pad=function(n){return n<10?'0'+n:String(n);};
+  var fname='LL-prehled-'+now.getFullYear()+pad(now.getMonth()+1)+pad(now.getDate())+'.csv';
+  var blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=fname;a.click();URL.revokeObjectURL(url);
+}
+
+// ====================== MODAL / SHARED ======================
+function openModal(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modalOv').classList.remove('hidden');}
+function closeModal(){document.getElementById('modalOv').classList.add('hidden');}
+function closeModalOv(e){if(e&&e.target===document.getElementById('modalOv'))closeModal();}
+function showMsg(id,txt,col){var el=document.getElementById(id);if(!el)return;el.textContent=txt;el.style.color=col||'var(--up)';}
+
+if(!Array.prototype.find){Array.prototype.find=function(fn){for(var i=0;i<this.length;i++)if(fn(this[i]))return this[i];return undefined;};}
+if(!Array.prototype.filter){Array.prototype.filter=function(fn){var r=[];for(var i=0;i<this.length;i++)if(fn(this[i]))r.push(this[i]);return r;};}
+
+// ====================== INIT ======================
+document.getElementById('pwInput').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+checkAuth();
+</script>
+</body>
+</html>
