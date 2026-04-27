@@ -2,592 +2,158 @@
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>LL Výzva</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#0A0A0D; --surface:#141419; --surface2:#1C1C24;
-  --border:rgba(255,255,255,0.07); --borderStrong:rgba(255,255,255,0.14);
-  --text:#F5F5F7; --muted:rgba(245,245,247,0.55); --dim:rgba(245,245,247,0.35);
-  --accent:oklch(0.78 0.14 85); --accent2:oklch(0.68 0.20 295);
-  --up:oklch(0.75 0.16 150); --down:oklch(0.65 0.20 25);
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#0A0A0D;--surface:#141417;--surface2:#1C1C20;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --text:#F2F0EB;--muted:#6B6868;--dim:#3D3B3B;
+  --accent:oklch(0.75 0.14 75);--up:oklch(0.72 0.16 150);--down:oklch(0.65 0.20 25);
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto;overflow-x:hidden;}
-::-webkit-scrollbar{width:0;height:0;}
-button{font-family:inherit;}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Inter',system-ui;}
 
-@keyframes toastPop {
-  0%  {transform:translateX(-50%) translateY(-12px) scale(0.85);opacity:0;}
-  15% {transform:translateX(-50%) translateY(0) scale(1.05);opacity:1;}
-  25% {transform:translateX(-50%) translateY(0) scale(1);opacity:1;}
-  85% {transform:translateX(-50%) translateY(0) scale(1);opacity:1;}
-  100%{transform:translateX(-50%) translateY(-10px) scale(0.95);opacity:0;}
-}
-@keyframes popIn {
-  0%{transform:scale(0.6);opacity:0;}
-  70%{transform:scale(1.08);}
-  100%{transform:scale(1);opacity:1;}
-}
-@keyframes slideUp {
-  from{transform:translateY(100%);}
-  to{transform:translateY(0);}
-}
-@keyframes barGrow {
-  from{height:0;}
-  to{height:var(--bar-h);}
-}
-
-/* ===== LOGIN ===== */
-#loginScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;background:radial-gradient(ellipse at 50% 0%,color-mix(in oklab,var(--accent) 12%,transparent) 0%,transparent 60%);}
-.lg-trophy{font-size:64px;animation:popIn 0.6s cubic-bezier(0.17,0.67,0.35,1.3) both;}
-.lg-label{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:var(--muted);font-size:10px;letter-spacing:2px;font-weight:600;text-transform:uppercase;font-family:'Space Grotesk',system-ui;margin:14px 0 2px;}
-.lg-label-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
-.lg-title{font-family:'Space Grotesk',system-ui;font-size:32px;font-weight:700;letter-spacing:-0.8px;margin-bottom:4px;}
-.lg-sub{color:var(--muted);font-size:13px;margin-bottom:36px;}
-.pin-card{background:var(--surface);border:1px solid var(--borderStrong);border-radius:24px;padding:28px 22px;width:100%;max-width:320px;box-shadow:0 32px 80px rgba(0,0,0,0.5);}
-.pin-card-lbl{text-align:center;font-size:13px;color:var(--muted);font-weight:500;margin-bottom:22px;}
-.pin-dots{display:flex;gap:20px;justify-content:center;margin-bottom:26px;}
-.pin-dot{width:14px;height:14px;border-radius:50%;background:var(--border);border:2px solid rgba(255,255,255,0.1);transition:all 0.2s;}
-.pin-dot.on{background:var(--accent);border-color:var(--accent);transform:scale(1.2);box-shadow:0 0 16px color-mix(in oklab,var(--accent) 60%,transparent);}
+/* ── LOGIN ── */
+#loginScreen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;z-index:10;background:radial-gradient(ellipse 80% 50% at 50% -5%,color-mix(in oklab,var(--accent) 15%,transparent) 0%,transparent 70%),var(--bg);}
+.login-logo{font-size:64px;margin-bottom:16px;}
+.login-brand{font-family:'Space Grotesk',system-ui;font-size:28px;font-weight:800;letter-spacing:-0.8px;margin-bottom:4px;}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:40px;}
+.login-card{background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:28px 22px;width:100%;max-width:320px;box-shadow:0 32px 80px rgba(0,0,0,0.5);}
+.step{transition:opacity 0.2s;}
+.flabel{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;display:block;}
+.finput{width:100%;padding:14px 16px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:12px;color:var(--text);font-family:'Inter',system-ui;font-size:15px;outline:none;transition:border-color 0.2s;}
+.finput:focus{border-color:var(--accent);}
+.btn-main{width:100%;padding:14px;background:var(--accent);color:#0A0A0D;border:none;border-radius:12px;font-family:'Inter',system-ui;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px color-mix(in oklab,var(--accent) 35%,transparent);margin-top:10px;}
+.err-msg{font-size:13px;font-weight:700;color:var(--down);text-align:center;margin-top:10px;min-height:18px;}
+/* PIN */
+.pin-dots{display:flex;gap:20px;justify-content:center;margin:20px 0;}
+.pin-dot{width:14px;height:14px;border-radius:50%;background:var(--surface2);border:2px solid var(--border2);transition:all 0.15s;}
+.pin-dot.on{background:var(--accent);border-color:var(--accent);box-shadow:0 0 12px var(--accent);}
 .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.np{height:60px;border-radius:14px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:'Space Grotesk',system-ui;font-size:22px;font-weight:600;cursor:pointer;transition:all 0.12s;}
-.np:active{transform:scale(0.92);background:color-mix(in oklab,var(--accent) 12%,var(--surface2));border-color:var(--accent);}
-.np.emp{background:transparent;border-color:transparent;pointer-events:none;}
-.np.del{font-size:17px;background:rgba(248,81,73,0.08);border-color:rgba(248,81,73,0.15);color:oklch(0.65 0.20 25);}
-.pin-err{text-align:center;font-size:13px;color:oklch(0.65 0.20 25);margin-top:14px;min-height:18px;font-weight:600;}
+.np{padding:0;height:60px;border-radius:14px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);font-family:'Space Grotesk',system-ui;font-size:22px;font-weight:600;cursor:pointer;transition:background 0.1s;}
+.np:active{background:var(--surface);}
+.np.emp{background:none;border:none;cursor:default;}
+.np.del{font-size:20px;}
+.back-btn{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;margin-bottom:16px;padding:0;display:flex;align-items:center;gap:6px;}
 
-/* ===== APP SHELL ===== */
-#storeApp{display:none;min-height:100vh;position:relative;}
-.scroll-content{overflow-y:auto;height:100vh;padding-bottom:100px;}
-
-/* ===== STATUS BAR AREA ===== */
-.status-bar{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
-.sb-time{font-family:'Space Grotesk',system-ui;font-weight:700;font-size:14px;}
-.sb-icons{display:flex;gap:4px;align-items:center;font-size:11px;}
-
-/* ===== TOP BAR (DASHBOARD) ===== */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 20px 12px;}
-.topbar-user{display:flex;align-items:center;gap:12px;}
-.topbar-greeting{font-size:12px;color:var(--muted);letter-spacing:0.2px;}
-.topbar-name{font-size:15px;font-weight:600;letter-spacing:-0.2px;}
-.topbar-right{display:flex;gap:8px;}
-.icon-btn{width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);}
-.streak-pill{display:inline-flex;align-items:center;gap:5px;padding:7px 11px;border-radius:999px;background:color-mix(in oklab,var(--accent) 14%,transparent);color:var(--accent);font-weight:700;font-size:13px;font-family:'Space Grotesk',system-ui;}
-
-/* ===== HERO CARD ===== */
-.hero-card{margin:0 16px;padding:22px;border-radius:28px;background:radial-gradient(120% 120% at 100% 0%,color-mix(in oklab,var(--accent2) 32%,transparent) 0%,transparent 55%),radial-gradient(120% 120% at 0% 100%,color-mix(in oklab,var(--accent) 28%,transparent) 0%,transparent 50%),#13131A;border:1px solid var(--border);position:relative;overflow:hidden;}
-.hero-label{font-size:11px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase;font-weight:600;font-family:'Space Grotesk',system-ui;}
-.hero-pts-row{display:flex;align-items:baseline;gap:6px;margin-top:2px;}
-.hero-pts{font-family:'Space Grotesk',system-ui;font-weight:700;font-size:42px;letter-spacing:-1.5px;line-height:1;font-variant-numeric:tabular-nums;}
-.hero-pts-lbl{font-size:14px;color:var(--muted);font-weight:500;}
-.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
-.hero-progress-lbl{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;}
-.hero-progress-lbl span:first-child{color:var(--muted);}
-.hero-progress-lbl span:last-child{color:var(--text);font-weight:600;font-family:'Space Grotesk',system-ui;font-variant-numeric:tabular-nums;}
-.prog-bar-wrap{width:100%;height:7px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;}
-.prog-bar-fill{height:100%;border-radius:999px;transition:width 0.8s cubic-bezier(0.4,0,0.2,1);}
-.mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px;}
-.mini-stat-label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:4px;font-family:'Space Grotesk',system-ui;}
-.mini-stat-val{font-family:'Space Grotesk',system-ui;font-weight:700;font-size:18px;letter-spacing:-0.3px;font-variant-numeric:tabular-nums;}
-.mini-stat-sub{font-size:10px;color:var(--dim);margin-top:1px;}
-
-/* ===== SECTION HEADER ===== */
-.sec-hdr{display:flex;align-items:baseline;justify-content:space-between;padding:0 20px;margin-bottom:10px;margin-top:22px;}
-.sec-hdr-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-family:'Space Grotesk',system-ui;}
-.sec-hdr-action{background:none;border:none;color:var(--accent);font-size:13px;font-weight:500;cursor:pointer;padding:0;font-family:'Inter',system-ui;}
-
-/* ===== CARDS ===== */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:16px;}
-.card-interactive{cursor:pointer;transition:background 0.15s;}
-.card-interactive:active{background:var(--surface2);}
-
-/* ===== CHALLENGE CARD ===== */
-.ch-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:12px;cursor:pointer;transition:background 0.15s;position:relative;overflow:hidden;}
-.ch-card:active{background:var(--surface2);}
-.ch-card.done-card{opacity:0.45;pointer-events:none;}
-.ch-cat-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;}
-.ch-title{font-size:16px;font-weight:600;letter-spacing:-0.2px;margin-bottom:2px;}
-.ch-metric{font-size:12px;color:var(--muted);}
-.ch-badge-hot{position:absolute;top:14px;right:14px;font-size:10px;letter-spacing:1.2px;font-weight:700;color:var(--accent);text-transform:uppercase;font-family:'Space Grotesk',system-ui;display:flex;align-items:center;gap:3px;}
-.ch-badge-done{position:absolute;top:14px;right:14px;font-size:10px;letter-spacing:1.2px;font-weight:700;color:var(--up);text-transform:uppercase;font-family:'Space Grotesk',system-ui;display:flex;align-items:center;gap:3px;}
-.ch-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--dim);}
-.ch-reward{font-family:'Space Grotesk',system-ui;font-weight:700;color:var(--accent);font-size:14px;font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:3px;}
-.ch-prog-lbl{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;}
-.ch-prog-lbl span:first-child{color:var(--muted);font-family:'Space Grotesk',system-ui;font-variant-numeric:tabular-nums;}
-.ch-filter-bar{display:flex;gap:6px;padding:0 16px 14px;overflow-x:auto;}
-.ch-filter-bar::-webkit-scrollbar{display:none;}
-
-/* ===== CHIP ===== */
-.chip{padding:7px 12px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:600;font-family:'Space Grotesk',system-ui;letter-spacing:0.2px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.15s;}
-.chip.active{border-color:var(--accent);background:color-mix(in oklab,var(--accent) 18%,transparent);color:var(--accent);}
-.chip.active-p{border-color:var(--up);background:color-mix(in oklab,var(--up) 18%,transparent);color:var(--up);}
-.chip.active-b{border-color:var(--blue,oklch(0.72 0.15 220));background:color-mix(in oklab,oklch(0.72 0.15 220) 18%,transparent);color:oklch(0.72 0.15 220);}
-
-/* ===== WEEK CHART ===== */
-.week-chart{display:flex;align-items:flex-end;justify-content:space-between;height:90px;gap:6px;}
-.week-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;}
-.week-bar{width:100%;border-radius:6px;background:rgba(255,255,255,0.1);min-height:3px;transition:height 0.6s cubic-bezier(0.4,0,0.2,1);}
-.week-bar.today{box-shadow:0 0 14px var(--accent);}
-.week-bar-lbl{font-size:10px;color:var(--muted);font-family:'Space Grotesk',system-ui;}
-
-/* ===== ACTIVITY FEED ===== */
-.activity-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border);}
-.activity-row:last-child{border-bottom:none;}
-.activity-icon{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
-.activity-text{flex:1;font-size:14px;letter-spacing:-0.1px;}
-.activity-time{font-size:11px;color:var(--dim);margin-top:2px;font-family:'Space Grotesk',system-ui;}
-.activity-pts{font-family:'Space Grotesk',system-ui;font-weight:700;color:var(--accent);font-size:14px;font-variant-numeric:tabular-nums;}
-
-/* ===== LEADERBOARD ===== */
-.podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:14px;height:200px;padding:20px 20px 0;background:radial-gradient(60% 60% at 50% 100%,color-mix(in oklab,var(--accent) 20%,transparent) 0%,transparent 80%);border-radius:24px;margin:0 16px;}
-.podium-slot{display:flex;flex-direction:column;align-items:center;flex:1;min-width:0;}
-.podium-name{font-size:11px;font-weight:600;color:var(--text);letter-spacing:-0.1px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:90px;margin-bottom:2px;}
-.podium-pts{font-family:'Space Grotesk',system-ui;font-weight:700;font-size:12px;font-variant-numeric:tabular-nums;margin-bottom:8px;}
-.podium-block{width:100%;border-radius:10px 10px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-family:'Space Grotesk',system-ui;font-weight:700;font-size:24px;}
-.lb-list{padding:0 16px;display:flex;flex-direction:column;gap:8px;}
-.lb-row{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:12px;display:flex;align-items:center;gap:12px;}
-.lb-row.lb-me{border-color:color-mix(in oklab,var(--accent) 40%,transparent);background:color-mix(in oklab,var(--accent) 6%,var(--surface));}
-.lb-rank-num{width:28px;text-align:center;font-family:'Space Grotesk',system-ui;font-weight:700;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;flex-shrink:0;}
-.lb-rank-num.me{color:var(--accent);}
-.lb-name-col{flex:1;min-width:0;}
-.lb-store-name{font-size:14px;font-weight:600;letter-spacing:-0.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lb-store-meta{font-size:11px;color:var(--dim);margin-top:1px;}
-.lb-pts-col{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-.lb-eff{font-family:'Space Grotesk',system-ui;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;}
-.lb-raw{font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums;}
-
-/* ===== TREND PILL ===== */
-.trend-pill{display:inline-flex;align-items:center;gap:3px;padding:3px 7px;border-radius:999px;font-size:11px;font-weight:600;font-family:'Space Grotesk',system-ui;font-variant-numeric:tabular-nums;}
-
-/* ===== LEAGUE BADGE ===== */
-.league-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;font-family:'Space Grotesk',system-ui;}
-.league-dot{border-radius:50%;box-shadow:0 0 6px currentColor;}
-
-/* ===== AVATAR ===== */
-.avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;letter-spacing:0.5px;font-family:'Space Grotesk',system-ui;flex-shrink:0;color:#0A0A0D;}
-
-/* ===== REWARDS ===== */
-.reward-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:10px;}
-.reward-card.unavailable{opacity:0.5;}
-.reward-tier{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-family:'Space Grotesk',system-ui;margin-bottom:10px;}
-.reward-title{font-size:16px;font-weight:600;letter-spacing:-0.2px;margin-bottom:6px;}
-.reward-inventory{font-size:12px;color:var(--muted);}
-.reward-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
-.reward-cost{font-family:'Space Grotesk',system-ui;font-weight:700;font-size:18px;color:var(--accent);font-variant-numeric:tabular-nums;}
-.reward-btn{padding:9px 18px;border-radius:12px;border:none;font-family:'Inter',system-ui;font-size:13px;font-weight:700;cursor:pointer;}
-.reward-btn.avail{background:var(--accent);color:#0A0A0D;}
-.reward-btn.unavail{background:rgba(255,255,255,0.08);color:var(--muted);pointer-events:none;}
-
-/* ===== BOTTOM TAB BAR ===== */
-.tab-bar-outer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:10px 16px 28px;background:linear-gradient(180deg,transparent 0%,var(--bg) 30%);pointer-events:none;z-index:100;}
-.tab-bar{display:flex;justify-content:space-around;background:rgba(20,20,25,0.85);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid var(--border);border-radius:24px;padding:8px 4px;pointer-events:auto;}
-.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;background:transparent;border:none;cursor:pointer;color:var(--muted);font-family:'Inter',system-ui;transition:color 0.15s;}
+/* ── APP SHELL ── */
+#appShell{position:fixed;inset:0;display:none;flex-direction:column;}
+.tab-bar{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);z-index:10;padding-bottom:env(safe-area-inset-bottom);}
+.tab-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;border:none;background:none;color:var(--muted);font-family:'Space Grotesk',system-ui;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;cursor:pointer;transition:color 0.15s;}
+.tab-btn .ti{font-size:20px;}
 .tab-btn.on{color:var(--accent);}
-.tab-btn-lbl{font-size:10px;font-weight:600;letter-spacing:0.2px;}
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:80px;}
+@keyframes toastPop{0%{opacity:0;transform:translateX(-50%) scale(0.85);}15%{opacity:1;transform:translateX(-50%) scale(1);}85%{opacity:1;}100%{opacity:0;transform:translateX(-50%) scale(0.95);}}
+@keyframes popIn{from{opacity:0;transform:scale(0.85);}to{opacity:1;transform:scale(1);}}
 
-/* ===== LOG BUTTON ===== */
-.log-btn{width:100%;padding:16px;background:var(--accent);color:#0A0A0D;border:none;border-radius:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',system-ui;letter-spacing:-0.2px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 28px color-mix(in oklab,var(--accent) 40%,transparent);}
+/* ── MODAL ── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);z-index:50;display:flex;align-items:flex-end;padding:0;}
+.modal-ov.hidden{display:none;}
+.modal-box{background:var(--surface);border-radius:24px 24px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding:22px 18px 32px;}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 20px;}
+.modal-title{font-family:'Space Grotesk',system-ui;font-size:18px;font-weight:700;letter-spacing:-0.3px;margin-bottom:18px;}
 
-/* ===== BOTTOM SHEET ===== */
-.sheet-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity 0.25s;}
-.sheet-overlay.open{opacity:1;pointer-events:auto;}
-.sheet-panel{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:480px;z-index:201;background:var(--bg);border-top:1px solid var(--border);border-radius:24px 24px 0 0;transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);max-height:85vh;overflow:hidden;}
-.sheet-panel.open{transform:translateX(-50%) translateY(0);}
-.sheet-handle{display:flex;justify-content:center;padding:10px 0 4px;}
-.sheet-handle-bar{width:40px;height:4px;background:rgba(255,255,255,0.15);border-radius:999px;}
-.sheet-header{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 12px;}
-.sheet-title{font-size:18px;font-weight:700;font-family:'Space Grotesk',system-ui;letter-spacing:-0.3px;}
-.sheet-close{width:32px;height:32px;border-radius:50%;background:var(--surface);border:none;color:var(--text);font-size:16px;cursor:pointer;}
-.sheet-body{max-height:70vh;overflow-y:auto;padding:4px 0 24px;}
-
-/* ===== LOG ACTIONS ===== */
-.log-action-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--border);color:var(--text);cursor:pointer;text-align:left;font-family:'Inter',system-ui;width:100%;transition:background 0.12s;}
-.log-action-btn:active{background:var(--surface2);}
-.log-action-icon{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.log-action-pts{font-family:'Space Grotesk',system-ui;font-weight:700;color:var(--accent);font-size:14px;font-variant-numeric:tabular-nums;}
-
-/* ===== TOAST ===== */
-.pts-toast{position:fixed;top:100px;left:50%;transform:translateX(-50%);z-index:300;padding:12px 22px;border-radius:999px;background:var(--accent);color:#0A0A0D;font-family:'Space Grotesk',system-ui;font-weight:700;font-size:18px;letter-spacing:-0.3px;box-shadow:0 10px 40px color-mix(in oklab,var(--accent) 50%,transparent);animation:toastPop 1.8s ease-out forwards;display:flex;align-items:center;gap:8px;pointer-events:none;}
-
-/* ===== ADMIN ===== */
-#adminApp{display:none;min-height:100vh;}
-.adm-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:10px;}
-.adm-title{font-family:'Space Grotesk',system-ui;font-size:17px;font-weight:700;flex:1;color:var(--accent);}
-.adm-sub{font-size:11px;color:var(--muted);}
-.adm-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:8px;cursor:pointer;font-family:'Inter',system-ui;font-size:12px;font-weight:700;}
-.adm-content{padding:14px 14px 90px;}
-.adm-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom);}
-.adm-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;cursor:pointer;background:none;border:none;color:var(--muted);font-family:'Inter',system-ui;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;transition:color 0.15s;}
-.adm-nav-btn.on{color:var(--accent);}
-.adm-nav-ico{font-size:18px;}
-
-/* ===== ADMIN CARDS ===== */
-.adm-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;}
-.adm-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.adm-stat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;}
-.adm-stat-num{font-family:'Space Grotesk',system-ui;font-size:32px;font-weight:700;color:var(--accent);}
-.adm-stat-lbl{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.4px;margin-top:2px;}
-.adm-store-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);}
-.adm-store-row:last-child{border-bottom:none;}
-.adm-sr-info{flex:1;min-width:0;}
-.adm-sr-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.adm-sr-meta{font-size:12px;color:var(--muted);margin-top:2px;}
-.adm-sr-pts{font-family:'Space Grotesk',system-ui;font-size:18px;font-weight:700;color:var(--up);flex-shrink:0;}
-.adm-ach-row{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);}
-.adm-ach-row:last-child{border-bottom:none;}
-.adm-ach-info{flex:1;min-width:0;}
-.adm-ach-title{font-size:14px;font-weight:700;}
-.adm-ach-meta{font-size:11px;color:var(--muted);margin-top:2px;}
-.adm-ach-actions{display:flex;flex-direction:column;gap:5px;align-items:flex-end;flex-shrink:0;}
-
-/* ===== FORMS ===== */
-.frow{margin-bottom:13px;}
-.flabel{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;}
-.finput,.fsel,.ftarea{width:100%;padding:11px 13px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Inter',system-ui;font-size:14px;outline:none;transition:border-color 0.2s;}
-.finput:focus,.fsel:focus,.ftarea:focus{border-color:var(--accent);}
-.fsel option{background:var(--surface2);}
-.ftarea{resize:vertical;min-height:76px;line-height:1.5;}
-.btn-p{width:100%;padding:13px;background:var(--up);color:white;border:none;border-radius:12px;font-family:'Inter',system-ui;font-size:15px;font-weight:700;cursor:pointer;}
-.btn-s{width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:12px;font-family:'Inter',system-ui;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;}
-.btn-del-sm{background:rgba(248,81,73,0.1);color:oklch(0.65 0.20 25);border:none;padding:6px 11px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;}
-.btn-add-sm{background:color-mix(in oklab,var(--up) 12%,transparent);color:var(--up);border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;}
-.btn-warn-sm{background:color-mix(in oklab,var(--accent) 12%,transparent);color:var(--accent);border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;}
-.msg{font-size:13px;text-align:center;margin-top:10px;min-height:18px;font-weight:700;}
-.q-builder-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;}
-.q-bhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.correct-opts{display:flex;gap:6px;}
-.copt{padding:7px 13px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:'Inter',system-ui;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;}
-.copt.sel{border-color:var(--up);background:color-mix(in oklab,var(--up) 12%,transparent);color:var(--up);}
-.info-box{background:rgba(88,166,255,0.06);border:1px solid rgba(88,166,255,0.15);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--muted);line-height:1.5;margin-top:10px;}
-.prog-store-row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border);}
-.prog-store-row:last-child{border-bottom:none;}
-.prog-name{flex:1;font-size:13px;font-weight:700;}
-.prog-input{width:70px;padding:7px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Space Grotesk',system-ui;font-size:14px;font-weight:700;text-align:center;outline:none;}
-.prog-input:focus{border-color:var(--up);}
-.adm-sec-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px;}
-.empty-st{text-align:center;padding:40px 20px;color:var(--muted);}
-.hidden{display:none!important;}
-
-/* ===== MODAL ===== */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:400;display:flex;align-items:flex-end;justify-content:center;}
-.modal-panel{background:var(--surface);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:22px 18px 48px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
-.modal-title{font-size:17px;font-weight:700;margin-bottom:18px;font-family:'Space Grotesk',system-ui;}
-
-.frow{margin-bottom:13px;}
-.flabel{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;}
-.finput,.fsel,.ftarea{width:100%;padding:11px 13px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Inter',system-ui;font-size:14px;outline:none;transition:border-color 0.2s;}
-.finput:focus,.fsel:focus,.ftarea:focus{border-color:var(--accent);}
-.fsel option{background:var(--surface2);}
-.ftarea{resize:vertical;min-height:76px;line-height:1.5;}
-.btn-p{width:100%;padding:13px;background:var(--up);color:white;border:none;border-radius:12px;font-family:'Inter',system-ui;font-size:15px;font-weight:700;cursor:pointer;}
-.btn-s{width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:12px;font-family:'Inter',system-ui;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;}
-.adm-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;}
-.adm-sec-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px;}
-.msg{font-size:13px;text-align:center;margin-top:10px;min-height:18px;font-weight:700;}
-.hidden{display:none!important;}
-
+/* ── SHARED COMPONENTS ── */
+.progress-bar{height:var(--h,6px);background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:999px;transition:width 0.6s;}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
-<div id="loginScreen" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;background:radial-gradient(ellipse at 50% 0%,color-mix(in oklab,var(--accent) 12%,transparent) 0%,transparent 60%);">
-  <div style="font-size:64px;animation:popIn 0.6s cubic-bezier(0.17,0.67,0.35,1.3) both;">&#x1F3C6;</div>
-  <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:var(--muted);font-size:10px;letter-spacing:2px;font-weight:600;text-transform:uppercase;font-family:Space Grotesk,system-ui;margin:14px 0 2px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);display:inline-block;"></span>interaktivni app</div>
-  <h1 style="font-family:Space Grotesk,system-ui;font-size:32px;font-weight:700;letter-spacing:-0.8px;margin-bottom:4px;">LL Vyzva</h1>
-  <div style="color:var(--muted);font-size:13px;margin-bottom:36px;">Body &middot; ligy &middot; odmeny</div>
-  <div id="emailStep" style="background:var(--surface);border:1px solid rgba(255,255,255,0.14);border-radius:24px;padding:28px 22px;width:100%;max-width:320px;box-shadow:0 32px 80px rgba(0,0,0,0.5);">
-    <div style="font-size:15px;font-weight:700;margin-bottom:6px;">Zadejte vas email</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:18px;">Prihlaste se pracovnim emailem.</div>
-    <input id="emailInput" type="email" inputmode="email" autocomplete="email" placeholder="vas@email.cz"
-      style="width:100%;padding:14px 16px;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:Inter,system-ui;font-size:15px;outline:none;margin-bottom:10px;"
-      onkeydown="if(event.key==='Enter')submitEmail()">
-    <button onclick="submitEmail()" style="width:100%;padding:14px;background:var(--accent);color:#0A0A0D;border:none;border-radius:12px;font-family:Inter,system-ui;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px color-mix(in oklab,var(--accent) 35%,transparent);">Pokracovat</button>
-    <div id="emailErr" style="font-size:13px;font-weight:700;text-align:center;margin-top:12px;min-height:18px;"></div>
-    <div style="text-align:center;margin-top:18px;font-size:11px;color:var(--muted);">Admin: zadejte <strong>admin</strong> jako email</div>
-  </div>
-  <div id="pinStep" style="display:none;background:var(--surface);border:1px solid rgba(255,255,255,0.14);border-radius:24px;padding:28px 22px;width:100%;max-width:320px;box-shadow:0 32px 80px rgba(0,0,0,0.5);">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
-      <button onclick="backToEmail()" style="width:34px;height:34px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:16px;cursor:pointer;flex-shrink:0;">&larr;</button>
-      <div><div style="font-size:15px;font-weight:700;" id="loginUserName"></div><div style="font-size:12px;color:var(--muted);" id="loginUserRole"></div></div>
+<div id="loginScreen">
+  <div class="login-logo">🏆</div>
+  <div class="login-brand">LL Výzva</div>
+  <div class="login-sub">Body · Ligy · Odměny</div>
+  <div class="login-card">
+    <!-- Step 1: Email -->
+    <div id="stepEmail">
+      <div class="flabel">Váš pracovní email</div>
+      <input class="finput" id="emailInput" type="email" inputmode="email" placeholder="vas@email.cz" onkeydown="if(event.key==='Enter')submitEmail()">
+      <button class="btn-main" onclick="submitEmail()">Pokračovat →</button>
+      <div class="err-msg" id="emailErr"></div>
+      <div style="text-align:center;margin-top:20px;font-size:11px;color:var(--dim);">Admin přihlášení je na samostatné stránce</div>
     </div>
-    <div style="text-align:center;font-size:13px;color:var(--muted);font-weight:500;margin-bottom:22px;">Zadejte PIN</div>
-    <div style="display:flex;gap:20px;justify-content:center;margin-bottom:26px;">
-      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
-    </div>
-    <div class="numpad">
-      <button class="np" onclick="npPress('1')">1</button><button class="np" onclick="npPress('2')">2</button><button class="np" onclick="npPress('3')">3</button>
-      <button class="np" onclick="npPress('4')">4</button><button class="np" onclick="npPress('5')">5</button><button class="np" onclick="npPress('6')">6</button>
-      <button class="np" onclick="npPress('7')">7</button><button class="np" onclick="npPress('8')">8</button><button class="np" onclick="npPress('9')">9</button>
-      <button class="np emp"></button><button class="np" onclick="npPress('0')">0</button><button class="np del" onclick="npDel()">&#x232B;</button>
-    </div>
-    <div id="pinErr" style="font-size:13px;font-weight:700;text-align:center;margin-top:14px;color:oklch(0.65 0.20 25);min-height:18px;"></div>
-  </div>
-</div>
-<!-- STORE APP -->
-<div id="storeApp">
-  <div class="scroll-content" id="scrollContent">
-    <div id="storeContent"></div>
-  </div>
-  <div class="tab-bar-outer">
-    <div class="tab-bar" id="tabBar">
-      <button class="tab-btn on" id="tb0" onclick="setTab('home',this)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2V11z"/></svg>
-        <span class="tab-btn-lbl">Přehled</span>
-      </button>
-      <button class="tab-btn" id="tb1" onclick="setTab('challenges',this)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
-        <span class="tab-btn-lbl">Výzvy</span>
-      </button>
-      <button class="tab-btn" id="tb2" onclick="setTab('leaderboard',this)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="5" height="8"/><rect x="9.5" y="7" width="5" height="14"/><rect x="16" y="10" width="5" height="11"/></svg>
-        <span class="tab-btn-lbl">Žebříček</span>
-      </button>
-      <button class="tab-btn" id="tb3" onclick="setTab('rewards',this)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7a2.5 2.5 0 1 1 0-5c3 0 5 5 5 5zM12 7h5a2.5 2.5 0 1 0 0-5c-3 0-5 5-5 5z"/></svg>
-        <span class="tab-btn-lbl">Odměny</span>
-      </button>
+    <!-- Step 2: PIN -->
+    <div id="stepPin" style="display:none;">
+      <button class="back-btn" onclick="backToEmail()">← Zpět</button>
+      <div id="pinUserName" style="font-family:'Space Grotesk',system-ui;font-size:16px;font-weight:700;margin-bottom:2px;"></div>
+      <div id="pinUserRole" style="font-size:12px;color:var(--muted);margin-bottom:20px;"></div>
+      <div class="flabel" style="text-align:center;">Zadejte PIN</div>
+      <div class="pin-dots"><div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div><div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div></div>
+      <div class="numpad">
+        <button class="np" onclick="npPress('1')">1</button><button class="np" onclick="npPress('2')">2</button><button class="np" onclick="npPress('3')">3</button>
+        <button class="np" onclick="npPress('4')">4</button><button class="np" onclick="npPress('5')">5</button><button class="np" onclick="npPress('6')">6</button>
+        <button class="np" onclick="npPress('7')">7</button><button class="np" onclick="npPress('8')">8</button><button class="np" onclick="npPress('9')">9</button>
+        <button class="np emp"></button><button class="np" onclick="npPress('0')">0</button><button class="np del" onclick="npDel()">⌫</button>
+      </div>
+      <div class="err-msg" id="pinErr"></div>
     </div>
   </div>
 </div>
 
-<!-- LOG SHEET -->
-<div class="sheet-overlay" id="logOverlay" onclick="closeSheet()"></div>
-<div class="sheet-panel" id="logSheet">
-  <div class="sheet-handle"><div class="sheet-handle-bar"></div></div>
-  <div class="sheet-header">
-    <div class="sheet-title">Zaznamenat akci</div>
-    <button class="sheet-close" onclick="closeSheet()">×</button>
+<!-- APP -->
+<div id="appShell">
+  <div class="scroll-area" id="scrollArea">
+    <div id="pageContent"></div>
   </div>
-  <div class="sheet-body" id="logSheetBody"></div>
-</div>
-
-<!-- REDEEM SHEET -->
-<div class="sheet-overlay" id="redeemOverlay" onclick="closeRedeemSheet()"></div>
-<div class="sheet-panel" id="redeemSheet">
-  <div class="sheet-handle"><div class="sheet-handle-bar"></div></div>
-  <div class="sheet-header">
-    <div class="sheet-title">Vyměnit odměnu</div>
-    <button class="sheet-close" onclick="closeRedeemSheet()">×</button>
-  </div>
-  <div class="sheet-body" id="redeemSheetBody"></div>
-</div>
-
-<!-- ADMIN APP -->
-<div id="adminApp">
-  <div class="adm-header">
-    <div style="font-size:20px;">⚙️</div>
-    <div class="adm-info" style="flex:1;">
-      <div class="adm-title">Admin · LL Výzva</div>
-    </div>
-    <button class="adm-btn" onclick="doLogout()">Odhlásit</button>
-  </div>
-  <div class="adm-content" id="adminContent"></div>
-  <div class="adm-nav">
-    <button class="adm-nav-btn on" id="an0" onclick="setAdminTab('overview',this)"><div class="adm-nav-ico">&#x1F4CA;</div>Přehled</button>
-    <button class="adm-nav-btn" id="an1" onclick="setAdminTab('users',this)"><div class="adm-nav-ico">&#x1F464;</div>Uživatelé</button>
-    <button class="adm-nav-btn" id="an2" onclick="setAdminTab('challenges',this)"><div class="adm-nav-ico">&#x26A1;</div>Výzvy</button>
-    <button class="adm-nav-btn" id="an3" onclick="setAdminTab('stores',this)"><div class="adm-nav-ico">&#x1F3EA;</div>Prodejny</button>
-    <button class="adm-nav-btn" id="an4" onclick="setAdminTab('prizes',this)"><div class="adm-nav-ico">&#x1F381;</div>Odměny</button>
-    <button class="adm-nav-btn" id="an5" onclick="setAdminTab('settings',this)"><div class="adm-nav-ico">&#x1F527;</div>Nastav.</button>
-  </div>Přehled</button>
-    <button class="adm-nav-btn" id="an1" onclick="setAdminTab('challenges',this)"><div class="adm-nav-ico">⚡</div>Výzvy</button>
-    <button class="adm-nav-btn" id="an2" onclick="setAdminTab('stores',this)"><div class="adm-nav-ico">🏪</div>Prodejny</button>
-    <button class="adm-nav-btn" id="an3" onclick="setAdminTab('rewards',this)"><div class="adm-nav-ico">🎁</div>Odměny</button>
-    <button class="adm-nav-btn" id="an4" onclick="setAdminTab('settings',this)"><div class="adm-nav-ico">🔧</div>Nastav.</button>
+  <div class="tab-bar">
+    <button class="tab-btn on" id="tb0" onclick="goTab('home',this)"><div class="ti">🏠</div>Přehled</button>
+    <button class="tab-btn" id="tb1" onclick="goTab('challenges',this)"><div class="ti">⚡</div>Výzvy</button>
+    <button class="tab-btn" id="tb2" onclick="goTab('leaderboard',this)"><div class="ti">🏆</div>Žebříček</button>
+    <button class="tab-btn" id="tb3" onclick="goTab('rewards',this)"><div class="ti">🎁</div>Odměny</button>
   </div>
 </div>
 
 <!-- MODAL -->
-<div id="modalOv" class="modal-overlay hidden" onclick="closeModalOv(event)">
-  <div class="modal-panel"><div class="modal-title" id="modalTitle"></div><div id="modalBody"></div></div>
+<div class="modal-ov hidden" id="modalOv" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div id="modalBody"></div>
+  </div>
 </div>
 
 <script>
-// ====================== CONSTANTS ======================
-var LEAGUES=[
-  {name:'Bronzova',  min:0,   color:'oklch(0.58 0.10 50)'},
-  {name:'Stribrna',  min:200, color:'oklch(0.75 0.02 260)'},
-  {name:'Zlata',     min:500, color:'oklch(0.78 0.14 85)'},
-  {name:'Diamantova',min:900, color:'oklch(0.82 0.10 210)'}
-];
-var LOG_ACTIONS=[
-  {id:'sale-bag',   label:'Prodej tasky',              points:25, cat:'vykon',    icon:'\uD83D\uDECD\uFE0F', scope:'personal'},
-  {id:'upsell',     label:'Upsell - dezert / dopl.',   points:20, cat:'vykon',    icon:'\u26A1',  scope:'personal'},
-  {id:'sale-drink', label:'Prodej - napoj / vino',     points:10, cat:'vykon',    icon:'\uD83E\uDD42',  scope:'personal'},
-  {id:'review5',    label:'Recenze 5 hvezdicky',       points:50, cat:'marketing',icon:'\u2B50',  scope:'both'},
-  {id:'review4',    label:'Recenze 4 hvezdicky',       points:20, cat:'marketing',icon:'\uD83C\uDF1F',  scope:'both'},
-  {id:'open-time',  label:'Otevření včas',             points:10, cat:'provoz',   icon:'\u2705',  scope:'store'},
-  {id:'zero-waste', label:'Den bez odpisu',            points:30, cat:'provoz',   icon:'\u267B\uFE0F',  scope:'store'}
-];
-var PENALTY_PRESETS=[
-  {id:'pen1', label:'Recenze 1 hvezdicky',      points:-50, cat:'marketing',icon:'\uD83D\uDD34',reason:'Zakaznik zanechal hodnoceni 1 hvezdicky'},
-  {id:'pen2', label:'Recenze 2 hvezdicky',      points:-20, cat:'marketing',icon:'\uD83D\uDFE0',reason:'Zakaznik zanechal hodnoceni 2 hvezdicky'},
-  {id:'pen3', label:'Stiznost zakaznika',       points:-25, cat:'marketing',icon:'\uD83D\uDE20',reason:'Overena stiznost zakaznika'},
-  {id:'pen4', label:'Pozdni otevreni',          points:-15, cat:'provoz',   icon:'\u23F0',reason:'Prodejna otevrely po otevyraci dobe'},
-  {id:'pen5', label:'Hygienicka zavada',        points:-60, cat:'provoz',   icon:'\uD83E\uDDF9',reason:'Zjistena hygienicka zavada'},
-  {id:'pen6', label:'Spatny Artemis displej',   points:-15, cat:'provoz',   icon:'\uD83D\uDDA5\uFE0F',reason:'Displej nezodpovidal nabidce'},
-  {id:'pen7', label:'Vysoke odpisy',            points:-30, cat:'provoz',   icon:'\uD83D\uDDD1\uFE0F',reason:'Odpisy vychylne prekrocily plan'},
-  {id:'pen8', label:'Nesplnena objednavka',     points:-20, cat:'provoz',   icon:'\uD83D\uDCCB',reason:'Objednavka nebyla spravne zajistena'},
-  {id:'pen9', label:'Konflikt v tymu',          points:-20, cat:'tym',      icon:'\uD83D\uDCA2',reason:'Nahlasen konflikt v tymu'},
-  {id:'pen10',label:'Nereagování na kom.',      points:-10, cat:'tym',      icon:'\uD83D\uDCF5',reason:'Opakovane nereagování na zpravy'},
-  {id:'pen11',label:'Nesplneni pokynu',         points:-25, cat:'tym',      icon:'\u274C',reason:'Pokyn nebyl splnen'},
-  {id:'pen12',label:'Trzby pod planem >20 %',  points:-40, cat:'vykon',    icon:'\uD83D\uDCC9',reason:'Trzby skoncily vice nez 20 % pod planem'}
-];
+// ── CONFIG ──────────────────────────────────────────────────
+var GH_TOKEN_KEY='ll_v4_token', GH_GIST_KEY='ll_v4_gist', DATA_KEY='ll_v4_data', SESSION_KEY='ll_v4_session', GIST_FILE='ll-vyzva4-data.json';
+var LEAGUES=[{name:'Bronzová',min:0,color:'oklch(0.58 0.10 50)'},{name:'Stříbrná',min:200,color:'oklch(0.75 0.02 260)'},{name:'Zlatá',min:500,color:'oklch(0.78 0.14 85)'},{name:'Diamantová',min:900,color:'oklch(0.82 0.10 210)'}];
 
-// ====================== DEFAULT DATA ======================
-var DEFAULT_DATA={
-  users:[
-    {id:'u_demo1',name:'Jana Novakova',  email:'jana@ll.cz',  pin:'1111',role:'prodavacka',storeId:'s12',active:true},
-    {id:'u_demo2',name:'Petra Mala',     email:'petra@ll.cz', pin:'2222',role:'provozni',  storeId:'s12',active:true},
-    {id:'u_demo3',name:'Martin Kovar',   email:'martin@ll.cz',pin:'3333',role:'prodavacka',storeId:'s2', active:true}
-  ],
-  stores:[
-    {id:'s1', code:'64',name:'Florenc',              pin:'1064',category:'A',hcp:1.0,reviews:8,  avgRating:4.13},
-    {id:'s2', code:'53',name:'Vodičkova',            pin:'1053',category:'A',hcp:1.0,reviews:9,  avgRating:5.0},
-    {id:'s9', code:'52',name:'Letna',                 pin:'1052',category:'A',hcp:1.0,reviews:3,  avgRating:3.67},
-    {id:'s10',code:'73',name:'Holešovice',            pin:'1073',category:'A',hcp:1.0,reviews:6,  avgRating:4.83},
-    {id:'s11',code:'71',name:'Dejvice',               pin:'1071',category:'A',hcp:1.0,reviews:8,  avgRating:5.0},
-    {id:'s12',code:'51',name:'Palmovka',              pin:'1051',category:'A',hcp:1.0,reviews:115,avgRating:4.9},
-    {id:'s13',code:'50',name:'Andel',                 pin:'1050',category:'A',hcp:1.0,reviews:1,  avgRating:1.0},
-    {id:'s20',code:'75',name:'I.P. Pavlova',          pin:'1075',category:'A',hcp:1.0,reviews:6,  avgRating:5.0},
-    {id:'s21',code:'76',name:'OC Nový Smíchov',       pin:'1076',category:'A',hcp:1.0,reviews:3,  avgRating:4.33},
-    {id:'s22',code:'54',name:'Hlavní nádraží',        pin:'1054',category:'A',hcp:1.0,reviews:7,  avgRating:4.57},
-    {id:'s3', code:'68',name:'Háje',                  pin:'1068',category:'B',hcp:1.2,reviews:4,  avgRating:5.0},
-    {id:'s4', code:'69',name:'Arkády Pankrác',        pin:'1069',category:'B',hcp:1.2,reviews:13, avgRating:4.69},
-    {id:'s5', code:'66',name:'Poliklinika Modřany',   pin:'1066',category:'B',hcp:1.2,reviews:0,  avgRating:0},
-    {id:'s6', code:'70',name:'DBK Olbrachtova',       pin:'1070',category:'B',hcp:1.2,reviews:4,  avgRating:4.75},
-    {id:'s7', code:'65',name:'Poliklinika Budějovická',pin:'1065',category:'B',hcp:1.2,reviews:7, avgRating:3.43},
-    {id:'s8', code:'60',name:'Krc',                   pin:'1060',category:'B',hcp:1.2,reviews:4,  avgRating:4.0},
-    {id:'s14',code:'51',name:'Palmovka Cukrárna',     pin:'2051',category:'B',hcp:1.2,reviews:0,  avgRating:0},
-    {id:'s15',code:'67',name:'Ruzyně',                pin:'1067',category:'B',hcp:1.2,reviews:7,  avgRating:4.71},
-    {id:'s16',code:'72',name:'Poliklinika Vysočany',  pin:'1072',category:'B',hcp:1.2,reviews:13, avgRating:4.69},
-    {id:'s17',code:'58',name:'Jesenice',              pin:'1058',category:'C',hcp:1.5,reviews:1,  avgRating:5.0},
-    {id:'s18',code:'57',name:'Liber',                 pin:'1057',category:'C',hcp:1.5,reviews:9,  avgRating:4.44},
-    {id:'s19',code:'74',name:'České Budějovice',      pin:'1074',category:'C',hcp:1.5,reviews:7,  avgRating:4.86}
-  ],
-  challenges:[
-    {id:'ch1',type:'quiz',category:'marketing',title:'Znáš naše novinky?',emoji:'\uD83C\uDF53',description:'Otestuj znalost aktuální nabídky.',rules:'Kviz je anonymni. Body dostanes hned po dokonceni. Lze hrat jednou za sezonu.',pointsEach:10,active:true,questions:[
-      {q:'Jak se jmenuje naše letní novinka?',opts:['Jahodový cheesecake','Borůvkový závin','Malinový dort','Třešňový croissant'],correct:0},
-      {q:'Kolik příchutí zmrzliny máme aktuálně?',opts:['4','6','8','10'],correct:2}
-    ]},
-    {id:'ch2',type:'quiz',category:'provoz',title:'Alergeny – minimum',emoji:'\uD83D\uDD2C',description:'14 povinných alergenů – víte je?',rules:'Povinne pro vsechny. Body pouze pri skore 100 %. Lze opakovat.',pointsEach:15,active:true,questions:[
-      {q:'Kolik povinných alergenů musíme označovat?',opts:['10','12','14','16'],correct:2},
-      {q:'Co je alergen c. 1 (lepek)?',opts:['Mleko','Obiloviny s lepkem','Vejce','Arasidy'],correct:1},
-      {q:'Kde musí být info o alergenech?',opts:['Jen na webu','Jen na obale','Na obale nebo ústně','Vždy písemně'],correct:2}
-    ]},
-    {id:'ch3',type:'quiz',category:'vykon',title:'Umění upsellingu',emoji:'\uD83D\uDCAC',description:'Jak správně nabídnout doplněk.',rules:'Body dostane kazdy clen tymu ktery kviz splni. Jednou za sezonu.',pointsEach:10,active:true,questions:[
-      {q:'Kdy nabídnout zákazníkovi nápoj?',opts:['Až zaplatí','Před výběrem','Při objednávce','Nikdy'],correct:2},
-      {q:'Zákazník bere 3 chlebíčky. Co nabídneš?',opts:['Nic','Tasku','Nápoj nebo dezert','Slevu'],correct:2},
-      {q:'Jak přirozeně nabídnout tašku?',opts:['"Chcete tašku?"','"To by se vám tady neslo..."','"Máme krásné tašky"','Nijak'],correct:1}
-    ]},
-    {id:'ch20',type:'quiz',category:'tym',title:'Vedení týmu',emoji:'\uD83D\uDC65',description:'Jak funguje skvělý kolektiv.',rules:'Primo pro provozni, ale i prodavacky dostanou body za zajem.',pointsEach:12,active:true,questions:[
-      {q:'Co je zaklad fungujiciho tymu?',opts:['Přísná pravidla','Jasná komunikace a důvěra','Časté kontroly','Odměny za maličkosti'],correct:1},
-      {q:'Jak resit konflikt mezi zamestnanci?',opts:['Ignoruješ','Řešíš hned a soukromě','Čekáš až projde','Hlásíš vedení'],correct:1}
-    ]},
-    {id:'ch4', type:'progress',category:'vykon',title:'Plán tržeb splněn',emoji:'\uD83D\uDCC8',description:'Sledování plnění měsíčního plánu.',rules:'Plan stanovi vedeni kazdy mesic. Admin zadava % plneni kazdy patek z Vyrexu. Body (200) pri 100 %.',points:200,target:100,targetLabel:'% plánu',active:true},
-    {id:'ch5', type:'progress',category:'vykon',title:'Prodej tašek',emoji:'\uD83D\uDECD\uFE0F',description:'Aktivní nabídka LL tašek. Cíl: 30 tašek.',rules:'Zaznamenej pres Log. Admin overuje z Vyrexu.',points:100,target:30,targetLabel:'tašek',active:true},
-    {id:'ch6', type:'progress',category:'vykon',title:'Upsell dezertů',emoji:'\uD83C\uDF70',description:'Aktivní nabídka dezertů/doplňků. Cíl: 40×.',rules:'Zaznamenej pres Log. Vedouci potvrzuje pokrok.',points:80,target:40,targetLabel:'upsellů',active:true},
-    {id:'ch_r1',type:'progress',category:'marketing',title:'Recenze – 1. stupeň',emoji:'\u2B50',description:'10 nových Google recenzí v sezóně.',rules:'Pocitaji se recenze po 1.4.2026. Admin overuje v Google Business kazdy tyden.',points:50,target:10,targetLabel:'nových recenzí',active:true},
-    {id:'ch_r2',type:'progress',category:'marketing',title:'Recenze – 2. stupeň',emoji:'\uD83C\uDF1F',description:'25 nových Google recenzí v sezóně.',rules:'Navazuje na 1. stupen. Body za celych 25.',points:120,target:25,targetLabel:'nových recenzí',active:true},
-    {id:'ch_r3',type:'progress',category:'marketing',title:'Recenze – 3. stupeň',emoji:'\uD83C\uDF96\uFE0F',description:'50 nových Google recenzí v sezóně.',rules:'Zlata hranice. Admin overuje mesicne.',points:250,target:50,targetLabel:'nových recenzí',active:true},
-    {id:'ch7', type:'progress',category:'marketing',title:'Foto produktů pro IG',emoji:'\uD83D\uDCF8',description:'Pošli 5 kvalitních fotek produktů.',rules:'Foto posli pres WhatsApp nebo email adminu. Musi byt ostre, bez filtru.',points:60,target:5,targetLabel:'fotek',active:true},
-    {id:'ch9', type:'progress',category:'provoz',title:'Nulové odpisy',emoji:'\u267B\uFE0F',description:'10 dní bez odpisů za měsíc.',rules:'Admin sleduje odpisy. Kazdy den bez odpisu = 1 bod do pokroku.',points:100,target:10,targetLabel:'dní bez odpisů',active:true},
-    {id:'ch10',type:'progress',category:'provoz',title:'Otevření včas',emoji:'\u23F0',description:'20 otevření přesně dle otevírací doby.',rules:'Zaznamenej sam pres Log. Vedouci overuje namazkove.',points:60,target:20,targetLabel:'otevření včas',active:true},
-    {id:'ch11',type:'onetime',category:'vykon',title:'Tržby letos vs. loni +10 %',emoji:'\uD83D\uDE80',description:'Prodejna překonala tržby stejného měsíce loni o 10 % a více.',rules:'Porovnava se stejny mesic 2025 vs 2026. Data z Vyrexu. Lze splnit jednou za mesic.',points:200,active:true},
-    {id:'ch12',type:'onetime',category:'vykon',title:'Rekordní den',emoji:'\uD83C\uDFC5',description:'Nejvyšší denní tržba prodejny v historii.',rules:'Potvrzuje admin z dat Vyrexu. Body ke konci tydne.',points:100,active:true},
-    {id:'ch13',type:'onetime',category:'vykon',title:'Catering objednávka',emoji:'\uD83C\uDF89',description:'Zpracuj catering nad 2 000 Kč.',rules:'Posli potvrzeni adminu pres WhatsApp. Body do 24 hodin.',points:60,active:true},
-    {id:'ch14',type:'onetime',category:'marketing',title:'QR aktivace na pultu',emoji:'\uD83D\uDCF1',description:'Postav QR stojan s odkazem na Google recenze.',rules:'Posli foto stojanu na pultu adminu. Stojany jsou u Jitky.',points:30,active:true},
-    {id:'ch15',type:'onetime',category:'marketing',title:'Video z prodejny pro IG',emoji:'\uD83C\uDF9E\uFE0F',description:'Natočte 30s video z prodejny.',rules:'Poslete video pres WhatsApp do skupiny Marketing.',points:40,active:true},
-    {id:'ch16',type:'onetime',category:'provoz',title:'Čistota 10/10',emoji:'\u2728',description:'Prodejna prošla kontrolou bez jediné poznámky.',rules:'Admin nebo Jitka provede nahlasenou kontrolu. Vysledek zaeviduje sam.',points:80,active:true},
-    {id:'ch22',type:'onetime',category:'tym',title:'Samostatné řešení situace',emoji:'\uD83D\uDCA1',description:'Nestandardní situace vyřešena bez eskalace na vedení.',rules:'Napis kratky popis co se stalo. Posli adminu. Body do 48 hodin.',points:50,active:true},
-    {id:'ch23',type:'onetime',category:'tym',title:'Zaškolení nového kolegy',emoji:'\uD83C\uDF93',description:'Kompletní zaškolení nového zaměstnance.',rules:'Posli foto podepsaneho zaskolovaciho protokolu adminu.',points:60,active:true},
-    {id:'ch24',type:'onetime',category:'tym',title:'Týden bez konfliktu',emoji:'\uD83E\uDD1D',description:'Celý pracovní týden bez týmového konfliktu.',rules:'Potvrduje admin nebo provozni. Hlasi se retrospektivne ke konci tydne.',points:40,active:true}
-  ],
-  progress:[],
-  completions:[],
-  prizes:[
-    {id:'p1',emoji:'\u2615',title:'Káva zdarma (týden)',description:'Kava pro kazdeho v tymu kazdy den po cely tyden.',rules:'Plati pro cely tym prodejny po dobu jednoho pracovniho tydne. Kava z nasi nabidky dle vyberu. Termin dohodne vedouci s adminem.',imageUrl:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80',points:150,tier:'Týmová',inventory:'Dostupne'},
-    {id:'p2',emoji:'\uD83C\uDF7D\uFE0F',title:'Oběd pro tým',description:'Spolecny obed ve vybrane restauraci pro cely tym.',rules:'Prodejna si vybere restauraci (do 500 Kč/osoba). Admin zajisti rezervaci. Max 8 osob. Bez alkoholu.',imageUrl:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80',points:350,tier:'Týmová',inventory:'Zbýva 5'},
-    {id:'p3',emoji:'\uD83C\uDFD6\uFE0F',title:'Teambuilding výlet',description:'Celodenni vylet nebo zazittek pro cely tym.',rules:'Admin spolu s vedoucim vybere program. Planuuje se 2 tydny dopredu. Zahrnuje dopravu a program.',imageUrl:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',points:600,tier:'Týmová',inventory:'Zbýva 3'},
-    {id:'p4',emoji:'\uD83D\uDCB0',title:'Bonus 2 000 Kč pro tým',description:'Financni odmena pro cely tym prodejny.',rules:'2 000 Kč hrubého rozdelených dle poctu odpracovanych hodin v sezone. Vyplaceno s nejblizsi vyplatou.',imageUrl:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&q=80',points:1000,tier:'Týmová',inventory:'Zbýva 2'},
-    {id:'p5',emoji:'\uD83D\uDC85',title:'Volné odpoledne',description:'Jedno volne odpoledne navic (3 hodiny) - osobni cas pro tebe.',rules:'Plati pro konkretni zamestnankyni, ne cely tym. Termin dohodes s vedoucim min. 5 dni dopredu. Nelze prevest.',imageUrl:'https://images.unsplash.com/photo-1560472355-536de3962603?w=600&q=80',points:180,tier:'Osobní – prodavačka',inventory:'Dostupne'},
-    {id:'p6',emoji:'\uD83C\uDF81',title:'Poukázka 500 Kč',description:'Nakupni poukazka 500 Kč do obchodu dle vlastniho vyberu.',rules:'Poukazku vydá Jitka do 7 pracovnich dnu. Plati pouze pro aktivni zamestnance. Nelze vyplatit v hotovosti.',imageUrl:'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&q=80',points:300,tier:'Osobní – prodavačka',inventory:'Dostupne'},
-    {id:'p7',emoji:'\uD83C\uDF38',title:'Wellness poukázka',description:'Poukazka na masaz nebo wellness proceduru dle vyberu.',rules:'Hodnota 800 Kč. Proplaci admin na zaklade faktury. Platnost 3 mesice.',imageUrl:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80',points:500,tier:'Osobní – prodavačka',inventory:'Zbýva 4'},
-    {id:'p8',emoji:'\uD83D\uDCDA',title:'Vzdělávací kurz',description:'Kurz nebo workshop dle vlastniho vyberu.',rules:'Hodnota do 2 000 Kč. Admin proplaci na zaklade faktury po schvaleni Jitkou. Relevantni pro praci v LL.',imageUrl:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80',points:400,tier:'Osobní – provozní',inventory:'Dostupne'},
-    {id:'p9',emoji:'\uD83C\uDFC6',title:'Provozní sezóny – titul',description:'Oficialny titul s certifikatem a financnim bonusem 1 000 Kč.',rules:'Udeluje se jedenkrat za sezonu nejlepsimu provoznimu dle HCP bodu. Admin vyhlasi na konci sezony.',imageUrl:'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=600&q=80',points:800,tier:'Osobní – provozní',inventory:'1x za sezonu'},
-    {id:'p10',emoji:'\uD83D\uDCBC',title:'Den s Jitkou',description:'Den stinování Jitky a nahled do vedeni firmy.',rules:'Termin zavisi na dostupnosti Jitky. Min. 2 tydny dopredu. Plati pro provozni s min. 600 HCP body.',imageUrl:'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80',points:700,tier:'Osobní – provozní',inventory:'Dostupne'}
-  ],
-  season:{title:'Jaro 2026',startDate:'1. 4. 2026',active:true},
-  sheetsUrl:''
-};
+// ── STATE ────────────────────────────────────────────────────
+var DATA=null, SESSION={userId:null,storeId:null,role:null,userName:'',userEmail:''};
+var UI={tab:'home',lbTab:'stores',chFilter:'all'}, GH={token:'',gistId:''};
+var PIN_BUF='', LOGIN_USER=null;
 
-// ====================== STATE ======================
-var DATA=JSON.parse(JSON.stringify(DEFAULT_DATA));
-var SESSION={userId:null,storeId:null,isAdmin:false,role:null,userName:'',userEmail:''};
-var UI={tab:'home',challengeFilter:'all',adminTab:'overview',lbTab:'stores'};
-var QUIZ={id:null,qIdx:0,score:0,answered:false};
-var GH={token:'',gistId:''};
-var PIN_BUF='';
-var LOGIN_STEP='email';
-var LOGIN_USER=null;
-var NEWQUIZ={title:'',emoji:'\uD83E\uDDE0',category:'marketing',pointsEach:10,questions:[]};
-var ADMIN_PIN_KEY='ll_v4_admin_pin';
-var GH_TOKEN_KEY='ll_v4_token';
-var GH_GIST_KEY='ll_v4_gist';
-var DATA_KEY='ll_v4_data';
-var SESSION_KEY='ll_v4_session';
-var GIST_FILE='ll-vyzva4-data.json';
-
-// ====================== HELPERS ======================
-function getLeagueIdx(pts){var idx=0;for(var i=0;i<LEAGUES.length;i++){if(pts>=LEAGUES[i].min)idx=i;}return idx;}
-function getLeague(pts){return LEAGUES[getLeagueIdx(pts)];}
-function getNextLeague(pts){var idx=getLeagueIdx(pts);return idx<LEAGUES.length-1?LEAGUES[idx+1]:null;}
-function getLeagueProgress(pts){var cur=getLeague(pts);var next=getNextLeague(pts);if(!next)return 1;return(pts-cur.min)/(next.min-cur.min);}
-function getStore(id){for(var i=0;i<DATA.stores.length;i++)if(DATA.stores[i].id===id)return DATA.stores[i];return null;}
-function getUser(id){if(!id)return null;for(var i=0;i<DATA.users.length;i++)if(DATA.users[i].id===id)return DATA.users[i];return null;}
-function getUserByEmail(email){var e=email.toLowerCase().trim();for(var i=0;i<DATA.users.length;i++)if(DATA.users[i].email.toLowerCase()===e)return DATA.users[i];return null;}
-function getCh(id){for(var i=0;i<DATA.challenges.length;i++)if(DATA.challenges[i].id===id)return DATA.challenges[i];return null;}
-function getUserPoints(uid){
-  var p=0;
-  for(var i=0;i<DATA.completions.length;i++){var c=DATA.completions[i];if(c.userId===uid&&(c.scope==='personal'||c.scope==='both'||!c.scope))p+=c.points;}
-  return Math.max(0,p);
-}
-function getStoreRawPoints(sid){
-  var p=0;
-  for(var i=0;i<DATA.completions.length;i++){var c=DATA.completions[i];if(c.storeId===sid&&(c.scope==='store'||c.scope==='both'||!c.scope))p+=c.points;}
-  return p;
-}
-function getStoreEffPts(sid){var s=getStore(sid);var raw=getStoreRawPoints(sid);return Math.max(0,Math.round(raw*(s?s.hcp:1.0)));}
-function isCompleteStore(sid,chid){for(var i=0;i<DATA.completions.length;i++){var c=DATA.completions[i];if(c.storeId===sid&&c.challengeId===chid)return true;}return false;}
-function getProgress(sid,chid){for(var i=0;i<DATA.progress.length;i++){var p=DATA.progress[i];if(p.storeId===sid&&p.challengeId===chid)return p.current;}return 0;}
-function setProgress(sid,chid,val){for(var i=0;i<DATA.progress.length;i++){if(DATA.progress[i].storeId===sid&&DATA.progress[i].challengeId===chid){DATA.progress[i].current=val;return;}}DATA.progress.push({storeId:sid,challengeId:chid,current:val});}
-function getRankedStores(){var arr=[];for(var i=0;i<DATA.stores.length;i++){var s=DATA.stores[i];arr.push({id:s.id,name:s.name,category:s.category,hcp:s.hcp,rawPts:getStoreRawPoints(s.id),effPts:getStoreEffPts(s.id)});}arr.sort(function(a,b){return b.effPts-a.effPts;});return arr;}
-function getRankedUsers(){var arr=[];for(var i=0;i<DATA.users.length;i++){var u=DATA.users[i];if(!u.active)continue;arr.push({id:u.id,name:u.name,email:u.email,role:u.role,storeId:u.storeId,pts:getUserPoints(u.id)});}arr.sort(function(a,b){return b.pts-a.pts;});return arr;}
-function getStoreRank(sid){var r=getRankedStores();for(var i=0;i<r.length;i++){if(r[i].id===sid)return i+1;}return r.length;}
-function getTodayPts(uid,sid){var d=today();var p=0;for(var i=0;i<DATA.completions.length;i++){var c=DATA.completions[i];if(c.date===d&&(c.userId===uid||c.storeId===sid))p+=Math.max(0,c.points);}return p;}
-function getStreak(sid){var streak=0;var now=new Date();for(var i=0;i<30;i++){var d=new Date(now);d.setDate(now.getDate()-i);var ds=d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear();var found=false;for(var j=0;j<DATA.completions.length;j++){if(DATA.completions[j].storeId===sid&&DATA.completions[j].date===ds){found=true;break;}}if(found)streak++;else break;}return streak;}
-function getWeekChart(sid){var now=new Date();var dow=now.getDay();var monday=new Date(now);monday.setDate(now.getDate()-(dow===0?6:dow-1));monday.setHours(0,0,0,0);var labels=['Po','Ut','St','Ct','Pa','So','Ne'];var result=[];for(var i=0;i<7;i++){var day=new Date(monday);day.setDate(monday.getDate()+i);var ds=day.getDate()+'.'+(day.getMonth()+1)+'.'+day.getFullYear();var pts=0;for(var j=0;j<DATA.completions.length;j++){var c=DATA.completions[j];if(c.storeId===sid&&c.date===ds&&c.points>0)pts+=c.points;}result.push({d:labels[i],v:pts,isToday:(i===(dow===0?6:dow-1))});}return result;}
+// ── HELPERS ──────────────────────────────────────────────────
+function getLeague(pts){var l=LEAGUES[0];for(var i=0;i<LEAGUES.length;i++)if(pts>=LEAGUES[i].min)l=LEAGUES[i];return l;}
+function getNextLeague(pts){var idx=0;for(var i=0;i<LEAGUES.length;i++)if(pts>=LEAGUES[i].min)idx=i;return idx<LEAGUES.length-1?LEAGUES[idx+1]:null;}
+function getLeaguePct(pts){var c=getLeague(pts),n=getNextLeague(pts);if(!n)return 1;return(pts-c.min)/(n.min-c.min);}
+function getStore(id){if(!DATA)return null;for(var i=0;i<DATA.stores.length;i++)if(DATA.stores[i].id===id)return DATA.stores[i];return null;}
+function getUser(id){if(!DATA)return null;for(var i=0;i<DATA.users.length;i++)if(DATA.users[i].id===id)return DATA.users[i];return null;}
+function getUserByEmail(email){var e=email.toLowerCase().trim();if(!DATA)return null;for(var i=0;i<DATA.users.length;i++)if(DATA.users[i].email.toLowerCase()===e)return DATA.users[i];return null;}
+function getCh(id){if(!DATA)return null;for(var i=0;i<DATA.challenges.length;i++)if(DATA.challenges[i].id===id)return DATA.challenges[i];return null;}
+function getUserPts(uid){var p=0;if(!DATA)return 0;for(var i=0;i<DATA.completions.length;i++){var c=DATA.completions[i];if(c.userId===uid&&(c.scope==='personal'||c.scope==='both'||!c.scope))p+=c.points;}return Math.max(0,p);}
+function getStoreRaw(sid){var p=0;if(!DATA)return 0;for(var i=0;i<DATA.completions.length;i++){var c=DATA.completions[i];if(c.storeId===sid&&(c.scope==='store'||c.scope==='both'||!c.scope))p+=c.points;}return p;}
+function getStoreEff(sid){var s=getStore(sid);return Math.max(0,Math.round(getStoreRaw(sid)*(s?s.hcp:1)));}
+function getStoreRank(sid){var arr=DATA.stores.map(function(s){return{id:s.id,e:getStoreEff(s.id)};}).sort(function(a,b){return b.e-a.e;});for(var i=0;i<arr.length;i++)if(arr[i].id===sid)return i+1;return arr.length;}
+function getProgress(sid,chid){if(!DATA)return 0;for(var i=0;i<DATA.progress.length;i++){var p=DATA.progress[i];if(p.storeId===sid&&p.challengeId===chid)return p.current;}return 0;}
+function isCompleteStore(sid,chid){if(!DATA)return false;for(var i=0;i<DATA.completions.length;i++){var c=DATA.completions[i];if(c.storeId===sid&&c.challengeId===chid)return true;}return false;}
 function today(){var d=new Date();return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear();}
 function fmtNum(n){return Math.round(n).toLocaleString('cs-CZ').replace(/,/g,' ');}
 function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function nl2br(s){var r='';for(var i=0;i<s.length;i++){r+=s[i]==='\n'?'<br>':s[i];}return r;}
-function showMsg(id,txt,col){var el=document.getElementById(id);if(!el)return;el.textContent=txt;el.style.color=col||'var(--up)';}
-function showEl(id){var el=document.getElementById(id);if(el)el.style.display='';}
-function hideEl(id){var el=document.getElementById(id);if(el)el.style.display='none';}
-var storeColors=['oklch(0.72 0.16 70)','oklch(0.70 0.16 300)','oklch(0.72 0.15 160)','oklch(0.68 0.18 25)','oklch(0.75 0.12 220)','oklch(0.70 0.14 340)','oklch(0.72 0.14 100)','oklch(0.66 0.16 40)'];
-function storeColor(idx){return storeColors[idx%storeColors.length];}
-function storeInitials(name){var parts=name.split(/[\s\-]+/);if(parts.length>=2)return(parts[0][0]+(parts[1][0]||'')).toUpperCase();return name.substring(0,2).toUpperCase();}
-function avatarHtml(initials,color,size){size=size||40;return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:'+color+';display:flex;align-items:center;justify-content:center;font-weight:600;font-size:'+(size*0.36)+'px;color:#0A0A0D;flex-shrink:0;font-family:Space Grotesk,system-ui;">'+esc(initials)+'</div>';}
-function leagueBadgeHtml(name,size){var league=LEAGUES[0];for(var i=0;i<LEAGUES.length;i++)if(LEAGUES[i].name===name)league=LEAGUES[i];var pad=size==='lg'?'5px 12px':'3px 8px';var fs=size==='lg'?'11px':'10px';var ds=size==='lg'?7:5;return '<span style="display:inline-flex;align-items:center;gap:5px;padding:'+pad+';border-radius:999px;background:color-mix(in oklab,'+league.color+' 14%,transparent);border:0.5px solid color-mix(in oklab,'+league.color+' 35%,transparent);color:'+league.color+';font-size:'+fs+';font-weight:600;font-family:Space Grotesk,system-ui;"><span style="width:'+ds+'px;height:'+ds+'px;border-radius:50%;background:'+league.color+';box-shadow:0 0 6px '+league.color+';display:inline-block;"></span>'+esc(name)+'</span>';}
-function progressBarHtml(v,max,color,h){var pct=max>0?Math.min(100,(v/max)*100):0;h=h||6;color=color||'var(--accent)';return '<div style="height:'+h+'px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;"><div style="width:'+pct+'%;height:100%;border-radius:999px;background:'+color+';box-shadow:0 0 12px '+color+';transition:width 0.6s;"></div></div>';}
+function progressBar(v,max,color,h){var pct=max>0?Math.min(100,(v/max)*100):0;h=h||6;return '<div class="progress-bar" style="--h:'+h+'px"><div class="progress-fill" style="width:'+pct+'%;background:'+color+';box-shadow:0 0 10px '+color+';"></div></div>';}
+function leagueBadge(name){var l=getLeague(0);for(var i=0;i<LEAGUES.length;i++)if(LEAGUES[i].name===name)l=LEAGUES[i];return '<span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;background:color-mix(in oklab,'+l.color+' 14%,transparent);border:0.5px solid color-mix(in oklab,'+l.color+' 35%,transparent);color:'+l.color+';font-size:10px;font-weight:600;font-family:Space Grotesk,system-ui;"><span style="width:6px;height:6px;border-radius:50%;background:'+l.color+';box-shadow:0 0 6px '+l.color+';display:inline-block;"></span>'+esc(name)+'</span>';}
+function avatar(initials,color,size){size=size||40;return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:'+color+';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:'+(size*0.36)+'px;color:#0A0A0D;flex-shrink:0;font-family:Space Grotesk,system-ui;">'+esc(initials)+'</div>';}
+var SC=['oklch(0.72 0.16 70)','oklch(0.70 0.16 300)','oklch(0.72 0.15 160)','oklch(0.68 0.18 25)','oklch(0.75 0.12 220)','oklch(0.70 0.14 340)','oklch(0.72 0.14 100)','oklch(0.66 0.16 40)'];
+function storeColor(idx){return SC[idx%SC.length];}
+function initials(name){return name.split(' ').map(function(w){return w[0];}).slice(0,2).join('').toUpperCase();}
 
-// ====================== DATA / SYNC ======================
+// ── DATA LOAD ────────────────────────────────────────────────
 function loadData(cb){
   GH.token=localStorage.getItem(GH_TOKEN_KEY)||'';GH.gistId=localStorage.getItem(GH_GIST_KEY)||'';
   if(GH.token&&GH.gistId){
@@ -597,677 +163,270 @@ function loadData(cb){
     xhr.onerror=function(){loadLocal();if(cb)cb();};xhr.send();
   }else{loadLocal();if(cb)cb();}
 }
-function loadLocal(){var s=localStorage.getItem(DATA_KEY);if(s){try{DATA=JSON.parse(s);}catch(e){}}}
-function saveData(cb){
-  var json=JSON.stringify(DATA,null,2);localStorage.setItem(DATA_KEY,json);
-  var sc=parseInt(localStorage.getItem('ll_v4_sc')||'0')+1;localStorage.setItem('ll_v4_sc',sc);if(sc%10===0)createSnapshot(true);
-  syncToSheets();
-  if(!GH.token||!GH.gistId){if(cb)cb(true,false);return;}
-  var files={};files[GIST_FILE]={content:json};
-  var xhr=new XMLHttpRequest();xhr.open('PATCH','https://api.github.com/gists/'+GH.gistId);
-  xhr.setRequestHeader('Authorization','token '+GH.token);xhr.setRequestHeader('Content-Type','application/json');
-  xhr.onload=function(){if(cb)cb(xhr.status===200,true);};xhr.onerror=function(){if(cb)cb(false,true);};
-  xhr.send(JSON.stringify({files:files}));
-}
-function syncToSheets(){
-  var url=DATA.sheetsUrl||localStorage.getItem('ll_v4_sheets')||'';if(!url)return;
-  var rows=[];
-  for(var i=0;i<DATA.users.length;i++){
-    var u=DATA.users[i];if(!u.active)continue;
-    var userPts=getUserPoints(u.id);var s=getStore(u.storeId);var storePts=getStoreEffPts(u.storeId);
-    var pen=0;for(var j=0;j<DATA.completions.length;j++){var c=DATA.completions[j];if(c.userId===u.id&&c.points<0)pen+=c.points;}
-    var lastAct='';for(var k=DATA.completions.length-1;k>=0;k--){if(DATA.completions[k].userId===u.id){lastAct=DATA.completions[k].date;break;}}
-    rows.push({jmeno:u.name,email:u.email,role:u.role==='provozni'?'Provozní':'Prodavačka',prodejna:s?s.name:'',body_osobni:userPts,body_prodejna:storePts,sankce:pen,celkem:userPts+storePts,liga:getLeague(userPts).name,posledni_aktivita:lastAct,sezona:DATA.season.title});
-  }
-  // Use no-cors mode - Apps Script doesn't support CORS preflight
-  try{
-    fetch(url,{method:'POST',mode:'no-cors',body:JSON.stringify({rows:rows,updated:today()})});
-  }catch(e){}
-}
+function loadLocal(){var s=localStorage.getItem(DATA_KEY);if(s){try{DATA=JSON.parse(s);}catch(e){}}if(!DATA)DATA={users:[],stores:[],challenges:[],progress:[],completions:[],prizes:[],season:{title:'Jaro 2026',startDate:'1. 4. 2026',active:true},sheetsUrl:''};}
 
-// ====================== INIT / LOGIN ======================
+// ── AUTH ─────────────────────────────────────────────────────
 function init(){
-  var sess=localStorage.getItem(SESSION_KEY);if(sess){try{SESSION=JSON.parse(sess);}catch(e){}}
-  loadData(function(){if(SESSION.isAdmin)openAdmin();else if(SESSION.userId)openStore();else showLoginScreen();});
+  var sess=localStorage.getItem(SESSION_KEY);
+  if(sess){try{SESSION=JSON.parse(sess);}catch(e){}}
+  loadData(function(){
+    if(SESSION.userId)showApp();
+    else showLogin();
+  });
 }
-function showLoginScreen(){
-  hideEl('storeApp');hideEl('adminApp');showEl('loginScreen');
-  LOGIN_STEP='email';LOGIN_USER=null;PIN_BUF='';
-  document.getElementById('emailStep').style.display='block';
-  document.getElementById('pinStep').style.display='none';
-  document.getElementById('emailInput').value='';
-  document.getElementById('emailErr').textContent='';
-}
+function showLogin(){document.getElementById('loginScreen').style.display='flex';document.getElementById('appShell').style.display='none';}
+function showApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('appShell').style.display='flex';goTab('home',document.getElementById('tb0'));}
 function submitEmail(){
   var email=document.getElementById('emailInput').value.trim();
-  if(email.toLowerCase()==='admin'||email.toLowerCase()==='admin@ll.cz'){LOGIN_USER={name:'Admin',role:'admin',email:'admin'};goToPin();return;}
   var user=getUserByEmail(email);
-  if(!user||!user.active){document.getElementById('emailErr').textContent='Email nenalezen nebo účet není aktivní';document.getElementById('emailErr').style.color='oklch(0.65 0.20 25)';return;}
-  LOGIN_USER=user;goToPin();
-}
-function goToPin(){
-  document.getElementById('emailStep').style.display='none';
-  document.getElementById('pinStep').style.display='block';
-  document.getElementById('loginUserName').textContent=LOGIN_USER.name;
-  var rl=LOGIN_USER.role==='provozni'?'Provozní':LOGIN_USER.role==='admin'?'Administrator':'Prodavačka';
-  document.getElementById('loginUserRole').textContent=rl;
-  PIN_BUF='';updatePinDots();
+  if(!user||!user.active){document.getElementById('emailErr').textContent='Email nenalezen nebo účet není aktivní.';return;}
+  LOGIN_USER=user;PIN_BUF='';updateDots();
+  document.getElementById('stepEmail').style.display='none';
+  document.getElementById('stepPin').style.display='block';
+  document.getElementById('pinUserName').textContent=user.name;
+  document.getElementById('pinUserRole').textContent=user.role==='provozni'?'Provozní':'Prodavačka';
   document.getElementById('pinErr').textContent='';
 }
-function backToEmail(){document.getElementById('pinStep').style.display='none';document.getElementById('emailStep').style.display='block';PIN_BUF='';}
-function npPress(d){if(PIN_BUF.length>=4)return;PIN_BUF+=d;updatePinDots();if(PIN_BUF.length===4)setTimeout(checkPin,180);}
-function npDel(){PIN_BUF=PIN_BUF.slice(0,-1);updatePinDots();document.getElementById('pinErr').textContent='';}
-function updatePinDots(){for(var i=0;i<4;i++){var el=document.getElementById('pd'+i);if(el){if(i<PIN_BUF.length)el.classList.add('on');else el.classList.remove('on');}}}
+function backToEmail(){document.getElementById('stepPin').style.display='none';document.getElementById('stepEmail').style.display='block';PIN_BUF='';}
+function npPress(d){if(PIN_BUF.length>=4)return;PIN_BUF+=d;updateDots();if(PIN_BUF.length===4)setTimeout(checkPin,180);}
+function npDel(){PIN_BUF=PIN_BUF.slice(0,-1);updateDots();document.getElementById('pinErr').textContent='';}
+function updateDots(){for(var i=0;i<4;i++){var el=document.getElementById('pd'+i);if(el){if(i<PIN_BUF.length)el.classList.add('on');else el.classList.remove('on');}}}
 function checkPin(){
-  var adminPin=localStorage.getItem(ADMIN_PIN_KEY)||'0000';
-  if(LOGIN_USER&&LOGIN_USER.role==='admin'){
-    if(PIN_BUF===adminPin){SESSION={userId:null,storeId:null,isAdmin:true,role:'admin',userName:'Admin',userEmail:'admin'};localStorage.setItem(SESSION_KEY,JSON.stringify(SESSION));openAdmin();}
-    else{document.getElementById('pinErr').textContent='Nesprávný PIN';PIN_BUF='';updatePinDots();}return;
-  }
   if(LOGIN_USER&&PIN_BUF===LOGIN_USER.pin){
-    SESSION={userId:LOGIN_USER.id,storeId:LOGIN_USER.storeId,isAdmin:false,role:LOGIN_USER.role,userName:LOGIN_USER.name,userEmail:LOGIN_USER.email};
-    localStorage.setItem(SESSION_KEY,JSON.stringify(SESSION));openStore();
-  }else{document.getElementById('pinErr').textContent='Nesprávný PIN';PIN_BUF='';updatePinDots();}
+    SESSION={userId:LOGIN_USER.id,storeId:LOGIN_USER.storeId,role:LOGIN_USER.role,userName:LOGIN_USER.name,userEmail:LOGIN_USER.email};
+    localStorage.setItem(SESSION_KEY,JSON.stringify(SESSION));showApp();
+  }else{document.getElementById('pinErr').textContent='Nesprávný PIN';PIN_BUF='';updateDots();}
 }
-function doLogout(){localStorage.removeItem(SESSION_KEY);SESSION={userId:null,storeId:null,isAdmin:false,role:null,userName:'',userEmail:''};showLoginScreen();}
+function doLogout(){localStorage.removeItem(SESSION_KEY);SESSION={userId:null,storeId:null,role:null,userName:'',userEmail:''};PIN_BUF='';LOGIN_USER=null;document.getElementById('stepPin').style.display='none';document.getElementById('stepEmail').style.display='block';document.getElementById('emailInput').value='';document.getElementById('emailErr').textContent='';showLogin();}
 
-// ====================== ROUTING ======================
-function openStore(){hideEl('loginScreen');hideEl('adminApp');showEl('storeApp');document.getElementById('storeApp').style.display='block';loadData(function(){setTab('home',document.getElementById('tb0'));});}
-function openAdmin(){hideEl('loginScreen');hideEl('storeApp');showEl('adminApp');document.getElementById('adminApp').style.display='block';loadData(function(){setAdminTab('overview',document.getElementById('an0'));});}
-function setTab(tab,btn){UI.tab=tab;document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');document.getElementById('scrollContent').scrollTop=0;renderStoreTab();}
-function setAdminTab(tab,btn){UI.adminTab=tab;document.querySelectorAll('.adm-nav-btn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');renderAdminTab();}
-function renderStoreTab(){if(UI.tab==='home')renderDashboard();else if(UI.tab==='challenges')renderChallengesTab();else if(UI.tab==='leaderboard')renderLeaderboardTab();else if(UI.tab==='rewards')renderRewardsTab();}
+// ── ROUTING ──────────────────────────────────────────────────
+function goTab(tab,btn){UI.tab=tab;document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');document.getElementById('scrollArea').scrollTop=0;render();}
+function render(){if(UI.tab==='home')renderHome();else if(UI.tab==='challenges')renderChallenges();else if(UI.tab==='leaderboard')renderLeaderboard();else if(UI.tab==='rewards')renderRewards();}
 
-// ====================== DASHBOARD ======================
-function renderDashboard(){
-  var sid=SESSION.storeId;var uid=SESSION.userId;var role=SESSION.role;
-  var store=getStore(sid);
-  var userPts=getUserPoints(uid);var storePts=getStoreEffPts(sid);
-  var rank=getStoreRank(sid);var total=DATA.stores.length;
-  var league=getLeague(userPts);var nextLeague=getNextLeague(userPts);var leagueProg=getLeagueProgress(userPts);
-  var todayPts=getTodayPts(uid,sid);var streak=getStreak(sid);
-  var weekData=getWeekChart(sid);
-  var weekMax=0;for(var w=0;w<weekData.length;w++)if(weekData[w].v>weekMax)weekMax=weekData[w].v;
-  var weekTotal=0;for(var w2=0;w2<weekData.length;w2++)weekTotal+=weekData[w2].v;
-  var penTotal=0;for(var pi=0;pi<DATA.completions.length;pi++){var pc=DATA.completions[pi];if(pc.userId===uid&&pc.points<0)penTotal+=pc.points;}
-  var hotCh=null;for(var i=0;i<DATA.challenges.length;i++){if(DATA.challenges[i].active&&!isCompleteStore(sid,DATA.challenges[i].id)){hotCh=DATA.challenges[i];break;}}
+// ── HOME ─────────────────────────────────────────────────────
+function renderHome(){
+  var uid=SESSION.userId,sid=SESSION.storeId;
+  var userPts=getUserPts(uid),storePts=getStoreEff(sid);
+  var league=getLeague(userPts),nextLeague=getNextLeague(userPts);
+  var rank=getStoreRank(sid),total=DATA.stores.length;
+  var store=getStore(sid),storeName=store?store.name.split('-')[0].trim():'Prodejna';
+  var roleLabel=SESSION.role==='provozni'?'Provozní':'Prodavačka';
+  // week chart
+  var now2=new Date(),dow=now2.getDay();
+  var monday=new Date(now2);monday.setDate(now2.getDate()-(dow===0?6:dow-1));monday.setHours(0,0,0,0);
+  var days=['Po','Út','St','Čt','Pá','So','Ne'],weekData=[];
+  for(var wi=0;wi<7;wi++){var day=new Date(monday);day.setDate(monday.getDate()+wi);var ds=day.getDate()+'.'+(day.getMonth()+1)+'.'+day.getFullYear();var pts=0;for(var wj=0;wj<DATA.completions.length;wj++){var wc=DATA.completions[wj];if((wc.storeId===sid||wc.userId===uid)&&wc.date===ds&&wc.points>0)pts+=wc.points;}weekData.push({d:days[wi],v:pts,isToday:(wi===(dow===0?6:dow-1))});}
+  var weekMax=0,weekTotal=0;for(var wk=0;wk<weekData.length;wk++){if(weekData[wk].v>weekMax)weekMax=weekData[wk].v;weekTotal+=weekData[wk].v;}
+  // recent comps
   var recentComps=DATA.completions.filter(function(c){return c.storeId===sid||c.userId===uid;}).slice(-5).reverse();
-  var storeName=store?store.name.split('-')[0].trim():'Prodejna';
-  var roleLabel=role==='provozni'?'Provozní':'Prodavačka';
-  var html='';
-  // TOP BAR
-  html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px 10px;">';
-  html+=avatarHtml((SESSION.userName||'?').split(' ').map(function(w){return w[0];}).slice(0,2).join('').toUpperCase(),storeColor(rank-1),40);
-  html+='<div style="flex:1;margin-left:12px;"><div style="font-size:12px;color:var(--muted);">'+esc(roleLabel)+' - '+esc(storeName)+'</div><div style="font-size:15px;font-weight:600;letter-spacing:-0.2px;">'+esc(SESSION.userName)+'</div></div>';
-  html+='<div style="display:inline-flex;align-items:center;gap:5px;padding:7px 11px;border-radius:999px;background:color-mix(in oklab,var(--accent) 14%,transparent);color:var(--accent);font-weight:700;font-size:13px;">\uD83D\uDD25 '+streak+'</div>';
-  html+='<button onclick="doLogout()" style="width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:16px;margin-left:8px;">\u238B</button>';
-  html+='</div>';
-  // HERO CARD
-  html+='<div style="padding:4px 16px 0;">';
-  html+='<div style="position:relative;padding:22px;border-radius:28px;overflow:hidden;background:radial-gradient(120% 120% at 100% 0%,color-mix(in oklab,oklch(0.68 0.20 295) 30%,transparent) 0%,transparent 55%),radial-gradient(120% 120% at 0% 100%,color-mix(in oklab,var(--accent) 26%,transparent) 0%,transparent 50%),#13131A;border:1px solid rgba(255,255,255,0.07);">';
-  html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">';
-  html+='<div><div style="font-size:11px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase;font-weight:600;font-family:Space Grotesk,system-ui;">Moje body</div>';
-  html+='<div style="display:flex;align-items:baseline;gap:6px;margin-top:2px;"><span id="ptsCounter" style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:42px;letter-spacing:-1.5px;color:var(--text);font-variant-numeric:tabular-nums;line-height:1;">'+fmtNum(userPts)+'</span>';
-  html+='<span style="font-size:14px;color:var(--muted);">osobni</span></div></div>';
-  html+=leagueBadgeHtml(league.name,'lg')+'</div>';
-  if(nextLeague){html+='<div style="display:flex;justify-content:space-between;margin-bottom:7px;font-size:12px;"><span style="color:var(--muted);">Do ligy '+esc(nextLeague.name)+'</span><span style="color:var(--text);font-weight:600;font-family:Space Grotesk,system-ui;">'+fmtNum(nextLeague.min-userPts)+' bodu</span></div>';html+=progressBarHtml(leagueProg*100,100,nextLeague.color,7);}
-  else{html+='<div style="display:flex;justify-content:space-between;margin-bottom:7px;font-size:12px;"><span style="color:var(--muted);">Maximalni liga</span><span style="color:var(--accent);font-weight:700;">\uD83C\uDFC6 Diamant</span></div>';html+=progressBarHtml(100,100,league.color,7);}
-  html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);margin-top:18px;gap:6px;">';
-  html+='<div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:4px;font-family:Space Grotesk,system-ui;">Prodejna</div><div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:16px;color:var(--text);">#'+rank+'</div><div style="font-size:9px;color:var(--dim);">z '+total+'</div></div>';
-  html+='<div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:4px;font-family:Space Grotesk,system-ui;">Tym</div><div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:16px;color:var(--accent);">'+fmtNum(storePts)+'</div><div style="font-size:9px;color:var(--dim);">HCP bodu</div></div>';
-  html+='<div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:4px;font-family:Space Grotesk,system-ui;">HCP</div><div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:16px;color:var(--text);">x'+(store?store.hcp.toFixed(1):'1.0')+'</div><div style="font-size:9px;color:var(--dim);">kat. '+(store?store.category:'A')+'</div></div>';
-  html+='<div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:4px;font-family:Space Grotesk,system-ui;">Dnes</div><div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:16px;color:var(--up);">+'+(todayPts||0)+'</div><div style="font-size:9px;color:var(--dim);">bodu</div></div>';
-  html+='</div>';
-  if(penTotal<0){html+='<div style="display:flex;align-items:center;gap:8px;margin-top:14px;padding:9px 12px;background:rgba(248,81,73,0.07);border-radius:12px;border:1px solid rgba(248,81,73,0.18);"><span>\u26A0\uFE0F</span><span style="font-size:12px;color:oklch(0.65 0.20 25);font-weight:700;">Sankce: '+penTotal+' bodu</span></div>';}
-  html+='</div></div>';
-  // HOT CHALLENGE
-  if(hotCh){html+='<div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 20px;margin:22px 0 10px;"><h3 style="margin:0;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-family:Space Grotesk,system-ui;">Prave probiha</h3><button onclick="setTab(\'challenges\',document.getElementById(\'tb1\'))" style="background:none;border:none;color:var(--accent);font-size:13px;font-weight:500;cursor:pointer;">Zobrazit vse</button></div>';html+='<div style="padding:0 16px;">'+renderFeaturedChallengeCard(hotCh,sid)+'</div>';}
-  // WEEK CHART
-  html+='<div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 20px;margin:22px 0 10px;"><h3 style="margin:0;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-family:Space Grotesk,system-ui;">Body tento tyden</h3></div>';
-  html+='<div style="padding:0 16px;"><div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;">';
-  html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;"><div><div style="font-size:22px;font-weight:700;font-family:Space Grotesk,system-ui;">'+fmtNum(weekTotal)+'</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">bodu tento tyden</div></div>';
-  html+='<div style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:999px;background:color-mix(in oklab,var(--up) 12%,transparent);font-size:11px;font-weight:600;color:var(--up);">\u2191 aktivni</div></div>';
-  html+='<div style="display:flex;align-items:flex-end;justify-content:space-between;height:90px;gap:6px;">';
-  for(var w3=0;w3<weekData.length;w3++){var wd=weekData[w3];var barH=weekMax>0?Math.max(3,Math.round((wd.v/weekMax)*70)):3;html+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;"><div style="width:100%;border-radius:6px;background:'+(wd.isToday?'var(--accent)':'rgba(255,255,255,0.1)')+';height:'+barH+'px;'+(wd.isToday?'box-shadow:0 0 14px var(--accent);':'')+'"></div><span style="font-size:10px;color:'+(wd.isToday?'var(--accent)':'var(--muted)')+';font-family:Space Grotesk,system-ui;">'+esc(wd.d)+'</span></div>';}
-  html+='</div></div></div>';
-  // ACTIVITY
+  var storeIdx=0;for(var si2=0;si2<DATA.stores.length;si2++)if(DATA.stores[si2].id===sid){storeIdx=si2;break;}
+
+  var h='';
+  // top bar
+  h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 10px;">';
+  h+=avatar(initials(SESSION.userName),storeColor(storeIdx),40);
+  h+='<div style="flex:1;margin-left:12px;"><div style="font-size:11px;color:var(--muted);">'+esc(roleLabel)+' · '+esc(storeName)+'</div><div style="font-size:15px;font-weight:600;letter-spacing:-0.2px;">'+esc(SESSION.userName)+'</div></div>';
+  h+='<button onclick="doLogout()" style="width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:14px;">⎋</button>';
+  h+='</div>';
+  // hero card
+  h+='<div style="padding:4px 16px 0;"><div style="padding:22px;border-radius:28px;background:radial-gradient(120% 120% at 100% 0%,color-mix(in oklab,oklch(0.68 0.20 295) 28%,transparent) 0%,transparent 55%),radial-gradient(120% 120% at 0% 100%,color-mix(in oklab,var(--accent) 24%,transparent) 0%,transparent 50%),#13131A;border:1px solid rgba(255,255,255,0.07);">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">';
+  h+='<div><div style="font-size:11px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase;font-weight:600;font-family:Space Grotesk,system-ui;">Moje body</div>';
+  h+='<div style="display:flex;align-items:baseline;gap:6px;margin-top:2px;"><span id="ptsAnim" style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:42px;letter-spacing:-1.5px;color:var(--text);line-height:1;">'+fmtNum(userPts)+'</span><span style="font-size:13px;color:var(--muted);">osobní</span></div></div>';
+  h+=leagueBadge(league.name);
+  h+='</div>';
+  if(nextLeague){h+='<div style="display:flex;justify-content:space-between;margin-bottom:7px;font-size:12px;"><span style="color:var(--muted);">Do ligy '+esc(nextLeague.name)+'</span><span style="color:var(--text);font-weight:600;font-family:Space Grotesk,system-ui;">'+fmtNum(nextLeague.min-userPts)+' bodů</span></div>';h+=progressBar(getLeaguePct(userPts)*100,100,nextLeague.color,7);}
+  else{h+=progressBar(100,100,league.color,7);h+='<div style="text-align:right;font-size:12px;color:var(--accent);font-weight:700;margin-top:4px;">🏆 Diamantová liga</div>';}
+  h+='<div style="display:grid;grid-template-columns:repeat(3,1fr);margin-top:18px;gap:6px;">';
+  h+='<div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:4px;font-family:Space Grotesk,system-ui;">Prodejna</div><div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:18px;color:var(--text);">#'+rank+'</div><div style="font-size:9px;color:var(--dim);">z '+total+'</div></div>';
+  h+='<div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:4px;font-family:Space Grotesk,system-ui;">Tým</div><div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:18px;color:var(--accent);">'+fmtNum(storePts)+'</div><div style="font-size:9px;color:var(--dim);">HCP bodů</div></div>';
+  h+='<div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:4px;font-family:Space Grotesk,system-ui;">HCP</div><div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:18px;color:var(--text);">×'+(store?store.hcp.toFixed(1):'1.0')+'</div><div style="font-size:9px;color:var(--dim);">kat. '+(store?store.category:'A')+'</div></div>';
+  h+='</div></div></div>';
+  // info box
+  h+='<div style="padding:14px 16px 0;"><div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:14px;padding:14px 16px;font-size:13px;color:var(--muted);line-height:1.6;">📊 Body zadává admin na základě dat z Vyrexu a splněných výzev. V případě dotazů kontaktujte Jitku nebo Meggy.</div></div>';
+  // week chart
+  h+='<div style="padding:0 20px;margin:20px 0 10px;"><h3 style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-family:Space Grotesk,system-ui;">Body tento týden</h3></div>';
+  h+='<div style="padding:0 16px;"><div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;"><div><div style="font-size:22px;font-weight:700;font-family:Space Grotesk,system-ui;">'+fmtNum(weekTotal)+'</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">bodů tento týden</div></div></div>';
+  h+='<div style="display:flex;align-items:flex-end;justify-content:space-between;height:80px;gap:6px;">';
+  for(var wb=0;wb<weekData.length;wb++){var wd=weekData[wb];var bh=weekMax>0?Math.max(3,Math.round((wd.v/weekMax)*60)):3;h+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;"><div style="width:100%;border-radius:6px;background:'+(wd.isToday?'var(--accent)':'rgba(255,255,255,0.1)')+';height:'+bh+'px;'+(wd.isToday?'box-shadow:0 0 12px var(--accent);':'')+'"></div><span style="font-size:9px;color:'+(wd.isToday?'var(--accent)':'var(--muted)')+';font-family:Space Grotesk,system-ui;font-weight:'+(wd.isToday?'700':'400')+';">'+esc(wd.d)+'</span></div>';}
+  h+='</div></div></div>';
+  // recent activity
   if(recentComps.length>0){
-    html+='<div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 20px;margin:22px 0 10px;"><h3 style="margin:0;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-family:Space Grotesk,system-ui;">Posledni aktivita</h3></div>';
-    html+='<div style="padding:0 16px;"><div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;">';
-    for(var ac=0;ac<recentComps.length;ac++){var comp=recentComps[ac];var isPen=comp.points<0;var ptsTxt=comp.points<0?String(comp.points):'+'+comp.points;var ptsCol=comp.points<0?'oklch(0.65 0.20 25)':'var(--accent)';var isLast=ac===recentComps.length-1;html+='<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:'+(isLast?'none':'1px solid var(--border)')+'"><div style="width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;color:'+(isPen?'oklch(0.65 0.20 25)':'var(--accent)')+';font-size:14px;font-weight:700;flex-shrink:0;">'+(isPen?'!':'+')+' </div><div style="flex:1;min-width:0;"><div style="font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(comp.title)+'</div><div style="font-size:11px;color:var(--dim);margin-top:2px;">'+esc(comp.date)+(comp.scope==='personal'?' - osobni':comp.scope==='both'?' - osobni + tym':'')+'</div></div><div style="font-family:Space Grotesk,system-ui;font-weight:700;color:'+ptsCol+';font-size:14px;flex-shrink:0;">'+ptsTxt+'</div></div>';}
-    html+='</div></div>';
+    h+='<div style="padding:0 20px;margin:20px 0 10px;"><h3 style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-family:Space Grotesk,system-ui;">Poslední aktivita</h3></div>';
+    h+='<div style="padding:0 16px 0;"><div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;">';
+    for(var ac=0;ac<recentComps.length;ac++){var comp=recentComps[ac];var isPen=comp.points<0;var isLast=ac===recentComps.length-1;
+    h+='<div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:'+(isLast?'none':'1px solid var(--border)')+'">';
+    h+='<div style="width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">'+(isPen?'⚠️':'⚡')+'</div>';
+    h+='<div style="flex:1;min-width:0;"><div style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(comp.title)+'</div><div style="font-size:11px;color:var(--dim);margin-top:1px;">'+esc(comp.date)+'</div></div>';
+    h+='<div style="font-family:Space Grotesk,system-ui;font-weight:700;color:'+(isPen?'var(--down)':'var(--up)')+';font-size:14px;flex-shrink:0;">'+(comp.points>=0?'+':'')+comp.points+'</div>';
+    h+='</div>';}
+    h+='</div></div>';
   }
-  // LOG BUTTON
-  html+='<div style="padding:16px;"><button onclick="openLogSheet()" style="width:100%;padding:16px;background:var(--accent);color:#0A0A0D;border:none;border-radius:16px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 28px color-mix(in oklab,var(--accent) 40%,transparent);">\u26A1 Zaznamenat akci</button></div>';
-  document.getElementById('storeContent').innerHTML=html;
-  animateCounter('ptsCounter',userPts);
+  h+='<div style="height:20px;"></div>';
+  document.getElementById('pageContent').innerHTML=h;
+  animCounter('ptsAnim',userPts);
 }
-function animateCounter(elId,target){var el=document.getElementById(elId);if(!el)return;var dur=700;var t0=performance.now();function tick(t){var p=Math.min(1,(t-t0)/dur);var e=1-Math.pow(1-p,3);el.textContent=fmtNum(Math.round(target*e));if(p<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);}
+function animCounter(id,target){var el=document.getElementById(id);if(!el||target===0)return;var dur=600,t0=performance.now();function tick(t){var p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3);el.textContent=fmtNum(Math.round(target*e));if(p<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);}
 
-function renderFeaturedChallengeCard(ch,sid){
+// ── CHALLENGES ───────────────────────────────────────────────
+function renderChallenges(){
+  var sid=SESSION.storeId,f=UI.chFilter;
   var catColors={marketing:'oklch(0.78 0.14 85)',vykon:'oklch(0.75 0.16 150)',provoz:'oklch(0.72 0.15 220)',tym:'oklch(0.72 0.16 300)'};
-  var catColor=catColors[ch.category]||'var(--accent)';
-  var maxPts=ch.type==='quiz'?(ch.questions.length*ch.pointsEach):ch.points;
-  var prog=ch.type==='progress'?getProgress(sid,ch.id):0;var progMax=ch.type==='progress'?ch.target:1;
-  var typeLabel=ch.type==='quiz'?'Kviz':ch.type==='progress'?'Průběžná':'Jednorázová';
-  var cid=ch.id;
-  var html='<div onclick="openChallengeDetail(\''+cid+'\')" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;cursor:pointer;position:relative;overflow:hidden;" onmouseenter="this.style.background=\'var(--surface2)\'" onmouseleave="this.style.background=\'var(--surface)\'">';
-  html+='<div style="position:absolute;top:14px;right:14px;font-size:10px;letter-spacing:1.2px;font-weight:700;color:var(--accent);text-transform:uppercase;">\uD83D\uDD25 hot</div>';
-  html+='<div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;"><div style="width:42px;height:42px;border-radius:12px;flex-shrink:0;background:color-mix(in oklab,'+catColor+' 18%,transparent);border:1px solid color-mix(in oklab,'+catColor+' 30%,transparent);display:flex;align-items:center;justify-content:center;font-size:20px;">'+esc(ch.emoji)+'</div>';
-  html+='<div style="flex:1;padding-right:48px;"><div style="font-size:16px;font-weight:600;letter-spacing:-0.2px;">'+esc(ch.title)+'</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">'+esc((ch.description||'').substring(0,70))+'</div></div></div>';
-  html+=progressBarHtml(prog,progMax,catColor,6);
-  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;"><span style="color:var(--muted);">'+typeLabel+'</span><span style="color:'+catColor+';font-weight:700;">+'+maxPts+' bodu</span></div></div>';
-  return html;
-}
-
-// ====================== CHALLENGES ======================
-function renderChallengesTab(){
-  var sid=SESSION.storeId;var f=UI.challengeFilter;
-  var html='<div style="padding:12px 20px 0;"><h1 style="font-family:Space Grotesk,system-ui;font-size:28px;font-weight:700;letter-spacing:-0.8px;margin-bottom:4px;">Vyzvy</h1><div style="color:var(--muted);font-size:13px;margin-bottom:14px;">Pln ukoly, sbírej body</div></div>';
-  html+='<div style="display:flex;gap:6px;padding:0 16px 14px;overflow-x:auto;">';
-  var filters=[['all','Vše'],['vykon','\uD83D\uDCB0 Vykon'],['marketing','\uD83D\uDCE2 Marketing'],['provoz','\uD83C\uDFEA Provoz'],['tym','\uD83D\uDC65 Tym']];
-  for(var fi=0;fi<filters.length;fi++){var fk=filters[fi][0];var fl=filters[fi][1];var isActive=f===fk;html+='<button onclick="setChallengeFilter(\''+fk+'\')" style="white-space:nowrap;padding:7px 12px;border-radius:999px;border:1.5px solid '+(isActive?'var(--accent)':'var(--border)')+';background:'+(isActive?'color-mix(in oklab,var(--accent) 18%,transparent)':'var(--surface)')+';color:'+(isActive?'var(--accent)':'var(--muted)')+';font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;">'+fl+'</button>';}
-  html+='</div>';
-  var challenges=DATA.challenges.filter(function(c){return c.active&&(f==='all'||c.category===f);});
-  var quizzes=challenges.filter(function(c){return c.type==='quiz';});
-  var progress=challenges.filter(function(c){return c.type==='progress';});
-  var onetime=challenges.filter(function(c){return c.type==='onetime';});
-  html+='<div style="padding:0 16px;">';
-  if(quizzes.length>0){html+='<div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:8px 0 10px;">\uD83E\uDDE0 Kvízy</div>';for(var k=0;k<quizzes.length;k++)html+=renderChCard(quizzes[k],sid);}
-  if(progress.length>0){html+='<div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:16px 0 10px;">\uD83D\uDCCA Prubezne</div>';for(var m=0;m<progress.length;m++)html+=renderChCard(progress[m],sid);}
-  if(onetime.length>0){html+='<div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:16px 0 10px;">\u26A1 Jednorazove</div>';for(var n=0;n<onetime.length;n++)html+=renderChCard(onetime[n],sid);}
-  if(challenges.length===0)html+='<div style="text-align:center;padding:40px;color:var(--muted);">Zadne vyzvy v teto kategorii</div>';
-  html+='</div>';
-  document.getElementById('storeContent').innerHTML=html;
-}
-function setChallengeFilter(f){UI.challengeFilter=f;renderChallengesTab();}
-function renderChCard(ch,sid){
-  var done=isCompleteStore(sid,ch.id);
-  var catColors={marketing:'oklch(0.78 0.14 85)',vykon:'oklch(0.75 0.16 150)',provoz:'oklch(0.72 0.15 220)',tym:'oklch(0.72 0.16 300)'};
-  var catColor=catColors[ch.category]||'var(--accent)';
-  var maxPts=ch.type==='quiz'?(ch.questions.length*ch.pointsEach):ch.points;
-  var prog=ch.type==='progress'?getProgress(sid,ch.id):0;
-  var cid=ch.id;
-  var html='<div onclick="openChallengeDetail(\''+cid+'\')" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:10px;cursor:pointer;opacity:'+(done?'0.45':'1')+';pointer-events:'+(done?'none':'auto')+';transition:background 0.15s;" onmouseenter="this.style.background=\'var(--surface2)\'" onmouseleave="this.style.background=\'var(--surface)\'">';
-  if(done)html+='<div style="position:absolute;font-size:10px;font-weight:700;color:var(--up);">\u2713 hotovo</div>';
-  html+='<div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:10px;"><div style="width:42px;height:42px;border-radius:12px;flex-shrink:0;background:color-mix(in oklab,'+catColor+' 18%,transparent);border:1px solid color-mix(in oklab,'+catColor+' 30%,transparent);display:flex;align-items:center;justify-content:center;font-size:20px;">'+esc(ch.emoji)+'</div>';
-  html+='<div style="flex:1;"><div style="font-size:16px;font-weight:600;letter-spacing:-0.2px;">'+esc(ch.title)+'</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">'+esc((ch.description||'').substring(0,60))+'</div></div></div>';
-  if(ch.type==='progress'){html+=progressBarHtml(prog,ch.target,catColor,6);html+='<div style="display:flex;justify-content:space-between;font-size:12px;margin-top:6px;"><span style="color:var(--muted);">'+fmtNum(prog)+' / '+fmtNum(ch.target)+' '+esc(ch.targetLabel||'')+'</span><span style="color:'+catColor+';font-weight:700;">+'+maxPts+' b</span></div>';}
-  else{html+='<div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">'+(ch.type==='quiz'?'Kviz':'Jednorázová')+'</span><span style="color:'+catColor+';font-weight:700;">+'+maxPts+' bodu</span></div>';}
-  html+='</div>';return html;
-}
-function openChallengeDetail(chid){
-  var ch=getCh(chid);if(!ch)return;
-  var sid=SESSION.storeId;
-  var catColors={marketing:'oklch(0.78 0.14 85)',vykon:'oklch(0.75 0.16 150)',provoz:'oklch(0.72 0.15 220)',tym:'oklch(0.72 0.16 300)'};
-  var catColor=catColors[ch.category]||'var(--accent)';
-  var maxPts=ch.type==='quiz'?(ch.questions.length*ch.pointsEach):ch.points;
-  var done=isCompleteStore(sid,ch.id);
-  var body='<div style="text-align:center;padding:4px 0 16px;"><div style="font-size:52px;margin-bottom:8px;">'+esc(ch.emoji)+'</div><div style="font-family:Space Grotesk,system-ui;font-size:38px;font-weight:700;color:'+catColor+';">+'+maxPts+'</div><div style="font-size:13px;color:var(--muted);">bodu za splneni</div></div>';
-  body+='<div style="font-size:14px;color:var(--text);line-height:1.65;margin-bottom:14px;">'+esc(ch.description||'')+'</div>';
-  if(ch.rules){body+='<div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;"><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">\uD83D\uDCCB Pravidla</div><div style="font-size:13px;color:var(--text);line-height:1.7;">'+nl2br(esc(ch.rules))+'</div></div>';}
-  if(ch.type==='progress'&&!done){var prog=getProgress(sid,ch.id);var pct=Math.min(100,Math.round(prog/ch.target*100));body+='<div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;"><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;">\uD83D\uDCCA Vas pokrok</div>'+progressBarHtml(prog,ch.target,catColor,8)+'<div style="display:flex;justify-content:space-between;font-size:13px;margin-top:8px;font-weight:700;"><span style="color:var(--muted);">'+fmtNum(prog)+' / '+fmtNum(ch.target)+' '+esc(ch.targetLabel||'')+'</span><span style="color:'+catColor+';">'+pct+' %</span></div></div>';}
-  if(done){body+='<div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;background:color-mix(in oklab,var(--up) 10%,transparent);border:1px solid color-mix(in oklab,var(--up) 25%,transparent);border-radius:14px;margin-bottom:14px;"><span style="font-size:22px;">\u2705</span><span style="font-size:15px;font-weight:700;color:var(--up);">Splneno - body pridany!</span></div>';}
-  var cid=ch.id;
-  if(!done){
-    if(ch.type==='quiz'){body+='<button onclick="closeModal();startQuiz(\''+cid+'\')" style="width:100%;padding:14px;background:var(--accent);color:#0A0A0D;border:none;border-radius:14px;font-family:Inter,system-ui;font-size:15px;font-weight:700;cursor:pointer;">\uD83E\uDDE0 Spustit kviz</button>';}
-    else if(ch.type==='onetime'){body+='<button onclick="closeModal();confirmOnetime(\''+cid+'\')" style="width:100%;padding:14px;background:var(--up);color:white;border:none;border-radius:14px;font-family:Inter,system-ui;font-size:15px;font-weight:700;cursor:pointer;">\u2705 Splnit vyzvu</button>';}
-    else{body+='<div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:12px;font-size:13px;color:var(--muted);text-align:center;">\uD83D\uDCCA Pokrok aktualizuje admin kazdy tyden</div>';}
-  }
-  openModal(esc(ch.emoji)+' '+esc(ch.title),body);
-}
-
-// ====================== LEADERBOARD ======================
-function renderLeaderboardTab(){
-  var sid=SESSION.storeId;var uid=SESSION.userId;var showStores=UI.lbTab!=='users';
-  var html='<div style="padding:12px 20px 0;"><h1 style="font-family:Space Grotesk,system-ui;font-size:28px;font-weight:700;letter-spacing:-0.8px;margin-bottom:4px;">Zebricky</h1><div style="color:var(--muted);font-size:13px;margin-bottom:14px;">'+esc(DATA.season.title)+'</div></div>';
-  html+='<div style="display:flex;gap:8px;padding:0 16px 14px;"><button onclick="UI.lbTab=\'stores\';renderLeaderboardTab()" style="flex:1;padding:9px;border-radius:12px;border:1.5px solid '+(showStores?'var(--accent)':'var(--border)')+';background:'+(showStores?'color-mix(in oklab,var(--accent) 15%,transparent)':'var(--surface)')+';color:'+(showStores?'var(--accent)':'var(--muted)')+';font-size:13px;font-weight:700;cursor:pointer;">\uD83C\uDFEA Prodejny</button>';
-  html+='<button onclick="UI.lbTab=\'users\';renderLeaderboardTab()" style="flex:1;padding:9px;border-radius:12px;border:1.5px solid '+(!showStores?'var(--accent)':'var(--border)')+';background:'+(!showStores?'color-mix(in oklab,var(--accent) 15%,transparent)':'var(--surface)')+';color:'+(!showStores?'var(--accent)':'var(--muted)')+';font-size:13px;font-weight:700;cursor:pointer;">\uD83D\uDC64 Osobni</button></div>';
-  if(showStores){
-    var ranked=getRankedStores();
-    html+='<div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">';
-    for(var li=0;li<ranked.length;li++){var lu=ranked[li];var isMe=lu.id===sid;var lLeague=getLeague(lu.effPts);var lIdx=0;for(var lsi=0;lsi<DATA.stores.length;lsi++)if(DATA.stores[lsi].id===lu.id){lIdx=lsi;break;}
-    html+='<div style="background:var(--surface);border:1px solid '+(isMe?'color-mix(in oklab,var(--accent) 35%,transparent)':'var(--border)')+';border-radius:16px;padding:12px;display:flex;align-items:center;gap:12px;">';
-    html+='<div style="width:28px;text-align:center;font-family:Space Grotesk,system-ui;font-weight:700;font-size:14px;color:'+(isMe?'var(--accent)':'var(--muted)')+';">'+(li+1)+'</div>';
-    html+=avatarHtml(storeInitials(lu.name),storeColor(lIdx),38);
-    html+='<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(lu.name)+(isMe?' VAS TYM':'')+'</div><div style="font-size:11px;color:var(--dim);">'+leagueBadgeHtml(lLeague.name,'sm')+(lu.hcp>1?' x'+lu.hcp.toFixed(1):'')+'</div></div>';
-    html+='<div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:15px;">'+fmtNum(lu.effPts)+'</div></div>';}
-    html+='</div>';
-  }else{
-    var rankedU=getRankedUsers();
-    html+='<div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">';
-    for(var ui2=0;ui2<rankedU.length;ui2++){var ru=rankedU[ui2];var isMe2=ru.id===uid;var ruLeague=getLeague(ru.pts);var ruColor=ru.role==='provozni'?'oklch(0.72 0.16 300)':'oklch(0.78 0.14 85)';var ruStore=getStore(ru.storeId);
-    html+='<div style="background:var(--surface);border:1px solid '+(isMe2?'color-mix(in oklab,var(--accent) 35%,transparent)':'var(--border)')+';border-radius:16px;padding:12px;display:flex;align-items:center;gap:12px;">';
-    html+='<div style="width:28px;text-align:center;font-family:Space Grotesk,system-ui;font-weight:700;font-size:14px;color:'+(isMe2?'var(--accent)':'var(--muted)')+';">'+(ui2+1)+'</div>';
-    html+=avatarHtml(ru.name.split(' ').map(function(w){return w[0];}).slice(0,2).join('').toUpperCase(),ruColor,38);
-    html+='<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:600;">'+esc(ru.name)+(isMe2?' TY':'')+'</div><div style="font-size:11px;color:var(--dim);">'+(ru.role==='provozni'?'Provozní':'Prodavačka')+(ruStore?' - '+esc(ruStore.name.split('-')[0].trim()):'')+'</div></div>';
-    html+='<div style="text-align:right;"><div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:15px;">'+fmtNum(ru.pts)+'</div><div style="font-size:10px;">'+leagueBadgeHtml(ruLeague.name,'sm')+'</div></div></div>';}
-    html+='</div>';
-  }
-  document.getElementById('storeContent').innerHTML=html;
-}
-
-// ====================== REWARDS ======================
-function renderRewardsTab(){
-  var sid=SESSION.storeId;var uid=SESSION.userId;var role=SESSION.role;
-  var storePts=getStoreEffPts(sid);var userPts=getUserPoints(uid);
-  var sorted=DATA.prizes.slice().sort(function(a,b){return a.points-b.points;});
-  var html='<div style="padding:12px 20px 0;"><h1 style="font-family:Space Grotesk,system-ui;font-size:28px;font-weight:700;letter-spacing:-0.8px;margin-bottom:4px;">Odmeny</h1>';
-  html+='<div style="color:var(--muted);font-size:13px;margin-bottom:14px;">Tym: <span style="color:var(--accent);font-weight:700;">'+fmtNum(storePts)+' b</span> - Osobni: <span style="color:oklch(0.72 0.16 300);font-weight:700;">'+fmtNum(userPts)+' b</span></div></div>';
-  html+='<div style="padding:0 16px;">';
-  var tierGroups=[
-    {key:'Týmová',label:'\uD83C\uDFEA Tymove odmeny',sub:'Body celé prodejny',pts:storePts},
-    {key:'Osobní – prodavačka',label:'\uD83D\uDC9B Pro prodavacky',sub:'Tvoje osobní body',pts:userPts,roleOnly:'prodavacka'},
-    {key:'Osobní – provozní',label:'\uD83C\uDFC6 Pro provozni',sub:'Tvoje osobní body',pts:userPts,roleOnly:'provozni'}
-  ];
-  for(var t=0;t<tierGroups.length;t++){
-    var tg=tierGroups[t];
-    if(tg.roleOnly&&tg.roleOnly!==role)continue;
-    var tierPrizes=sorted.filter(function(p){return p.tier===tg.key;});
-    if(tierPrizes.length===0)continue;
-    html+='<div style="margin:16px 0 10px;"><div style="font-size:13px;font-weight:700;color:var(--text);">'+tg.label+'</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">'+esc(tg.sub)+' - '+fmtNum(tg.pts)+' bodu</div></div>';
-    for(var pi2=0;pi2<tierPrizes.length;pi2++){
-      var pr=tierPrizes[pi2];var avail=tg.pts>=pr.points;var pct=Math.min(100,Math.round(tg.pts/pr.points*100));
-      html+='<div onclick="openRewardDetail(\''+pr.id+'\')" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:14px;cursor:pointer;opacity:'+(avail?'1':'0.65')+';transition:background 0.15s;" onmouseenter="this.style.background=\'var(--surface2)\'" onmouseleave="this.style.background=\'var(--surface)\'">';
-      if(pr.imageUrl){html+='<div style="position:relative;height:140px;overflow:hidden;"><img src="'+esc(pr.imageUrl)+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(10,10,13,0.9) 100%);"></div><div style="position:absolute;bottom:12px;left:14px;right:14px;display:flex;align-items:flex-end;justify-content:space-between;"><div style="font-size:16px;font-weight:700;color:white;font-family:Space Grotesk,system-ui;">'+esc(pr.title)+'</div><div style="background:rgba(0,0,0,0.5);border:1px solid color-mix(in oklab,var(--accent) 50%,transparent);padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700;color:var(--accent);">'+fmtNum(pr.points)+' b</div></div></div><div style="padding:12px 14px 14px;">';}
-      else{html+='<div style="padding:16px 14px 0;display:flex;align-items:center;gap:12px;"><div style="width:46px;height:46px;border-radius:14px;flex-shrink:0;background:color-mix(in oklab,var(--accent) 14%,transparent);border:1px solid color-mix(in oklab,var(--accent) 25%,transparent);display:flex;align-items:center;justify-content:center;font-size:24px;">'+esc(pr.emoji)+'</div><div style="flex:1;"><div style="font-size:16px;font-weight:700;">'+esc(pr.title)+'</div><div style="font-size:12px;color:var(--muted);">'+esc(pr.inventory||'Dostupne')+'</div></div><div style="font-family:Space Grotesk,system-ui;font-weight:700;color:var(--accent);">'+fmtNum(pr.points)+'</div></div><div style="padding:10px 14px 14px;">';}
-      html+='<div style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:10px;">'+esc(pr.description)+'</div>';
-      html+='<div style="height:5px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;margin-bottom:6px;"><div style="width:'+pct+'%;height:100%;border-radius:999px;background:var(--accent);box-shadow:0 0 10px var(--accent);transition:width 0.6s;"></div></div>';
-      html+='<div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--muted);">'+fmtNum(Math.min(tg.pts,pr.points))+' / '+fmtNum(pr.points)+' bodu</span><span style="color:'+(avail?'var(--up)':'var(--muted)')+';font-weight:700;">'+(avail?'\u2713 Odemceno':'jeste '+fmtNum(pr.points-tg.pts)+' b')+'</span></div>';
-      if(pr.rules)html+='<div style="font-size:11px;color:var(--dim);margin-top:6px;">\uD83D\uDCCB Pravidla - klepni pro detail</div>';
-      html+='</div></div>';
+  var h='<div style="padding:16px 20px 0;"><h1 style="font-family:Space Grotesk,system-ui;font-size:28px;font-weight:700;letter-spacing:-0.8px;margin-bottom:4px;">Výzvy</h1><div style="font-size:13px;color:var(--muted);margin-bottom:14px;">Splňte výzvy a sbírejte body</div></div>';
+  h+='<div style="display:flex;gap:6px;padding:0 16px 14px;overflow-x:auto;">';
+  var filters=[['all','Vše'],['vykon','💰'],['marketing','📢'],['provoz','🏪'],['tym','👥']];
+  for(var fi=0;fi<filters.length;fi++){var fk=filters[fi][0],fl=filters[fi][1],isA=f===fk;h+='<button onclick="UI.chFilter=\''+fk+'\';renderChallenges()" style="white-space:nowrap;padding:7px 14px;border-radius:999px;border:1.5px solid '+(isA?'var(--accent)':'var(--border)')+';background:'+(isA?'color-mix(in oklab,var(--accent) 15%,transparent)':'var(--surface)')+';color:'+(isA?'var(--accent)':'var(--muted)')+';font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;">'+fl+'</button>';}
+  h+='</div><div style="padding:0 16px;">';
+  var chs=DATA.challenges.filter(function(c){return c.active&&(f==='all'||c.category===f);});
+  if(chs.length===0){h+='<div style="text-align:center;padding:40px;color:var(--muted);">Žádné výzvy</div>';document.getElementById('pageContent').innerHTML=h+'</div>';return;}
+  var types=[['quiz','🧠 Kvízy'],['progress','📊 Průběžné'],['onetime','⚡ Jednorázové']];
+  for(var ti=0;ti<types.length;ti++){
+    var tchs=chs.filter(function(c){return c.type===types[ti][0];});if(!tchs.length)continue;
+    h+='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:16px 0 10px;font-family:Space Grotesk,system-ui;">'+types[ti][1]+'</div>';
+    for(var ci2=0;ci2<tchs.length;ci2++){
+      var ch=tchs[ci2];var done=isCompleteStore(sid,ch.id);var maxPts=ch.type==='quiz'?(ch.questions?ch.questions.length*ch.pointsEach:0):ch.points;
+      var cc=catColors[ch.category]||'var(--accent)';var prog=ch.type==='progress'?getProgress(sid,ch.id):0;
+      h+='<div onclick="openChDetail(\''+ch.id+'\')" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:10px;cursor:pointer;opacity:'+(done?'0.5':'1')+';transition:background 0.15s;" onmouseenter="this.style.background=\'var(--surface2)\'" onmouseleave="this.style.background=\'var(--surface)\'">';
+      h+='<div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;">';
+      h+='<div style="width:40px;height:40px;border-radius:12px;flex-shrink:0;background:color-mix(in oklab,'+cc+' 15%,transparent);border:1px solid color-mix(in oklab,'+cc+' 28%,transparent);display:flex;align-items:center;justify-content:center;font-size:18px;">'+esc(ch.emoji||'⚡')+'</div>';
+      h+='<div style="flex:1;"><div style="font-size:15px;font-weight:600;letter-spacing:-0.2px;">'+esc(ch.title)+'</div><div style="font-size:12px;color:var(--muted);margin-top:2px;">'+esc((ch.description||'').substring(0,60))+'</div></div>';
+      h+='<div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:14px;color:'+cc+';flex-shrink:0;">+'+maxPts+'</div></div>';
+      if(done){h+='<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--up);font-weight:700;">✓ Splněno</div>';}
+      else if(ch.type==='progress'){h+=progressBar(prog,ch.target,cc,5);h+='<div style="font-size:12px;color:var(--muted);margin-top:6px;font-family:Space Grotesk,system-ui;">'+fmtNum(prog)+' / '+fmtNum(ch.target)+' '+esc(ch.targetLabel||'')+'</div>';}
+      else{h+='<div style="font-size:12px;color:var(--muted);">'+(ch.type==='quiz'?'Kvíz':'Jednorázová')+'</div>';}
+      h+='</div>';
     }
   }
-  html+='</div>';
-  document.getElementById('storeContent').innerHTML=html;
+  h+='<div style="height:20px;"></div></div>';
+  document.getElementById('pageContent').innerHTML=h;
+}
+function openChDetail(chid){
+  var ch=getCh(chid);if(!ch)return;
+  var sid=SESSION.storeId;var done=isCompleteStore(sid,ch.id);
+  var catColors={marketing:'oklch(0.78 0.14 85)',vykon:'oklch(0.75 0.16 150)',provoz:'oklch(0.72 0.15 220)',tym:'oklch(0.72 0.16 300)'};
+  var cc=catColors[ch.category]||'var(--accent)';
+  var maxPts=ch.type==='quiz'?(ch.questions?ch.questions.length*ch.pointsEach:0):ch.points;
+  var b='<div style="text-align:center;padding:8px 0 20px;"><div style="font-size:52px;margin-bottom:8px;">'+esc(ch.emoji||'⚡')+'</div>';
+  b+='<div style="font-family:Space Grotesk,system-ui;font-size:36px;font-weight:700;color:'+cc+';">+'+maxPts+'</div>';
+  b+='<div style="font-size:13px;color:var(--muted);">bodů za splnění</div></div>';
+  b+='<div style="font-size:14px;color:var(--text);line-height:1.65;margin-bottom:14px;">'+esc(ch.description||'')+'</div>';
+  if(ch.rules){b+='<div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;"><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">📋 Pravidla</div><div style="font-size:13px;color:var(--text);line-height:1.7;">'+nl2br(esc(ch.rules))+'</div></div>';}
+  if(ch.type==='progress'&&!done){
+    var prog=getProgress(sid,ch.id);var pct=Math.min(100,Math.round(prog/ch.target*100));
+    b+='<div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;"><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;">📊 Pokrok prodejny</div>';
+    b+=progressBar(prog,ch.target,cc,8);
+    b+='<div style="display:flex;justify-content:space-between;font-size:13px;margin-top:8px;font-weight:700;"><span style="color:var(--muted);">'+fmtNum(prog)+' / '+fmtNum(ch.target)+' '+esc(ch.targetLabel||'')+'</span><span style="color:'+cc+';">'+pct+' %</span></div></div>';}
+  if(done){b+='<div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;background:color-mix(in oklab,var(--up) 10%,transparent);border:1px solid color-mix(in oklab,var(--up) 25%,transparent);border-radius:14px;"><span style="font-size:22px;">✅</span><span style="font-size:15px;font-weight:700;color:var(--up);">Splněno – body přidány!</span></div>';}
+  else{b+='<div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;font-size:13px;color:var(--muted);">Body zadává admin po ověření splnění.</div>';}
+  openModal(esc(ch.emoji||'⚡')+' '+esc(ch.title),b);
+}
+
+// ── LEADERBOARD ──────────────────────────────────────────────
+function renderLeaderboard(){
+  var sid=SESSION.storeId,uid=SESSION.userId,showStores=UI.lbTab!=='users';
+  var h='<div style="padding:16px 20px 0;"><h1 style="font-family:Space Grotesk,system-ui;font-size:28px;font-weight:700;letter-spacing:-0.8px;margin-bottom:4px;">Žebříček</h1><div style="font-size:13px;color:var(--muted);margin-bottom:14px;">'+esc(DATA.season.title)+'</div></div>';
+  h+='<div style="display:flex;gap:8px;padding:0 16px 16px;">';
+  h+='<button onclick="UI.lbTab=\'stores\';renderLeaderboard()" style="flex:1;padding:9px;border-radius:12px;border:1.5px solid '+(showStores?'var(--accent)':'var(--border)')+';background:'+(showStores?'color-mix(in oklab,var(--accent) 14%,transparent)':'var(--surface)')+';color:'+(showStores?'var(--accent)':'var(--muted)')+';font-size:13px;font-weight:700;cursor:pointer;">🏪 Prodejny</button>';
+  h+='<button onclick="UI.lbTab=\'users\';renderLeaderboard()" style="flex:1;padding:9px;border-radius:12px;border:1.5px solid '+(!showStores?'var(--accent)':'var(--border)')+';background:'+(!showStores?'color-mix(in oklab,var(--accent) 14%,transparent)':'var(--surface)')+';color:'+(!showStores?'var(--accent)':'var(--muted)')+';font-size:13px;font-weight:700;cursor:pointer;">👤 Osobní</button>';
+  h+='</div><div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">';
+  if(showStores){
+    var ranked=DATA.stores.map(function(s,i){return{s:s,idx:i,eff:getStoreEff(s.id),raw:getStoreRaw(s.id)};}).sort(function(a,b){return b.eff-a.eff;});
+    for(var ri=0;ri<ranked.length;ri++){var rs=ranked[ri];var isMe=rs.s.id===sid;var l=getLeague(rs.eff);
+    h+='<div style="background:var(--surface);border:1px solid '+(isMe?'color-mix(in oklab,var(--accent) 35%,transparent)':'var(--border)')+';border-radius:16px;padding:12px;display:flex;align-items:center;gap:12px;">';
+    h+='<div style="width:28px;text-align:center;font-family:Space Grotesk,system-ui;font-weight:700;font-size:14px;color:'+(isMe?'var(--accent)':'var(--muted)')+';">'+(ri+1)+'</div>';
+    h+=avatar(rs.s.name.substring(0,2).toUpperCase(),storeColor(rs.idx),36);
+    h+='<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(rs.s.name)+(isMe?' <span style="font-size:9px;color:var(--accent);font-weight:700;">VY</span>':'')+'</div>';
+    h+='<div style="font-size:11px;color:var(--dim);margin-top:2px;">'+leagueBadge(l.name)+(rs.s.hcp>1?' · ×'+rs.s.hcp.toFixed(1):'')+'</div></div>';
+    h+='<div style="text-align:right;"><div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:15px;">'+fmtNum(rs.eff)+'</div>'+(rs.s.hcp>1?'<div style="font-size:10px;color:var(--dim);">'+fmtNum(rs.raw)+' raw</div>':'')+'</div></div>';}
+    h+='<div style="margin-top:10px;padding:12px 14px;background:rgba(255,255,255,0.03);border-radius:12px;font-size:12px;color:var(--muted);line-height:1.6;">🏌️ <strong>HCP:</strong> Kategorie A ×1.0 · B ×1.2 · C ×1.5 (mimopražské)</div>';
+  }else{
+    var rankedU=DATA.users.filter(function(u){return u.active;}).map(function(u){return{u:u,pts:getUserPts(u.id)};}).sort(function(a,b){return b.pts-a.pts;});
+    for(var ui2=0;ui2<rankedU.length;ui2++){var ru=rankedU[ui2];var isMe2=ru.u.id===uid;var l2=getLeague(ru.pts);var uStore=getStore(ru.u.storeId);var uColor=ru.u.role==='provozni'?'oklch(0.72 0.16 300)':'oklch(0.78 0.14 85)';
+    h+='<div style="background:var(--surface);border:1px solid '+(isMe2?'color-mix(in oklab,var(--accent) 35%,transparent)':'var(--border)')+';border-radius:16px;padding:12px;display:flex;align-items:center;gap:12px;">';
+    h+='<div style="width:28px;text-align:center;font-family:Space Grotesk,system-ui;font-weight:700;font-size:14px;color:'+(isMe2?'var(--accent)':'var(--muted)')+';">'+(ui2+1)+'</div>';
+    h+=avatar(initials(ru.u.name),uColor,36);
+    h+='<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:600;">'+esc(ru.u.name)+(isMe2?' <span style="font-size:9px;color:var(--accent);font-weight:700;">VY</span>':'')+'</div>';
+    h+='<div style="font-size:11px;color:var(--dim);">'+(ru.u.role==='provozni'?'Provozní':'Prodavačka')+(uStore?' · '+esc(uStore.name.split('-')[0].trim()):'')+'</div></div>';
+    h+='<div style="text-align:right;"><div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:15px;">'+fmtNum(ru.pts)+'</div><div>'+leagueBadge(l2.name)+'</div></div></div>';}
+  }
+  h+='<div style="height:20px;"></div></div>';
+  document.getElementById('pageContent').innerHTML=h;
+}
+
+// ── REWARDS ──────────────────────────────────────────────────
+function renderRewards(){
+  var sid=SESSION.storeId,uid=SESSION.userId,role=SESSION.role;
+  var storePts=getStoreEff(sid),userPts=getUserPts(uid);
+  var sorted=DATA.prizes.slice().sort(function(a,b){return a.points-b.points;});
+  var h='<div style="padding:16px 20px 0;"><h1 style="font-family:Space Grotesk,system-ui;font-size:28px;font-weight:700;letter-spacing:-0.8px;margin-bottom:4px;">Odměny</h1>';
+  h+='<div style="font-size:13px;color:var(--muted);margin-bottom:14px;">Tým: <span style="color:var(--accent);font-weight:700;">'+fmtNum(storePts)+' b</span> · Osobní: <span style="color:oklch(0.72 0.16 300);font-weight:700;">'+fmtNum(userPts)+' b</span></div></div>';
+  h+='<div style="padding:0 16px;">';
+  var tgroups=[
+    {key:'Týmová',label:'🏪 Týmové odměny',pts:storePts,show:true},
+    {key:'Osobní – prodavačka',label:'💛 Pro prodavačky',pts:userPts,show:role==='prodavacka'},
+    {key:'Osobní – provozní',label:'🏆 Pro provozní',pts:userPts,show:role==='provozni'}
+  ];
+  // also handle old tier names without diacritics (backwards compat)
+  var tierMap={'Tymova':'Týmová','Osobni - prodavacka':'Osobní – prodavačka','Osobni - provozni':'Osobní – provozní'};
+  var prizes2=sorted.map(function(p){var t=tierMap[p.tier]||p.tier;return Object.assign({},p,{tier:t});});
+  for(var tg=0;tg<tgroups.length;tg++){
+    if(!tgroups[tg].show)continue;
+    var tPrizes=prizes2.filter(function(p){return p.tier===tgroups[tg].key;});
+    if(!tPrizes.length)continue;
+    var avPts=tgroups[tg].pts;
+    h+='<div style="margin:16px 0 10px;"><div style="font-size:13px;font-weight:700;color:var(--text);">'+tgroups[tg].label+'</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">'+fmtNum(avPts)+' bodů k dispozici</div></div>';
+    for(var pi2=0;pi2<tPrizes.length;pi2++){
+      var pr=tPrizes[pi2];var avail=avPts>=pr.points;var pct=Math.min(100,Math.round(avPts/pr.points*100));
+      h+='<div onclick="openRewardDetail(\''+pr.id+'\')" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:14px;cursor:pointer;opacity:'+(avail?'1':'0.6')+';transition:background 0.15s;" onmouseenter="this.style.background=\'var(--surface2)\'" onmouseleave="this.style.background=\'var(--surface)\'">';
+      if(pr.imageUrl){
+        h+='<div style="position:relative;height:140px;overflow:hidden;"><img src="'+esc(pr.imageUrl)+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'">';
+        h+='<div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(10,10,13,0.9) 100%);"></div>';
+        h+='<div style="position:absolute;bottom:12px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:flex-end;"><div style="font-size:16px;font-weight:700;color:white;font-family:Space Grotesk,system-ui;">'+esc(pr.title)+'</div><div style="background:rgba(0,0,0,0.5);border:1px solid color-mix(in oklab,var(--accent) 50%,transparent);padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700;color:var(--accent);">'+fmtNum(pr.points)+' b</div></div></div>';
+        h+='<div style="padding:12px 14px 14px;">';
+      }else{
+        h+='<div style="padding:16px 14px 0;display:flex;align-items:center;gap:10px;"><div style="width:44px;height:44px;border-radius:14px;flex-shrink:0;background:color-mix(in oklab,var(--accent) 12%,transparent);display:flex;align-items:center;justify-content:center;font-size:22px;">'+esc(pr.emoji)+'</div>';
+        h+='<div style="flex:1;"><div style="font-size:16px;font-weight:700;">'+esc(pr.title)+'</div><div style="font-size:12px;color:var(--muted);">'+fmtNum(pr.points)+' bodů</div></div></div>';
+        h+='<div style="padding:10px 14px 14px;">';
+      }
+      h+='<div style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:10px;">'+esc(pr.description||'')+'</div>';
+      h+=progressBar(Math.min(avPts,pr.points),pr.points,'var(--accent)',5);
+      h+='<div style="display:flex;justify-content:space-between;font-size:12px;margin-top:6px;"><span style="color:var(--muted);">'+fmtNum(Math.min(avPts,pr.points))+' / '+fmtNum(pr.points)+' bodů</span><span style="color:'+(avail?'var(--up)':'var(--muted)')+';font-weight:700;">'+(avail?'✓ Odemčeno':'ještě '+fmtNum(pr.points-avPts)+' b')+'</span></div>';
+      if(pr.rules)h+='<div style="font-size:11px;color:var(--dim);margin-top:6px;">📋 Pravidla · klepni pro detail</div>';
+      h+='</div></div>';
+    }
+  }
+  h+='<div style="height:20px;"></div></div>';
+  document.getElementById('pageContent').innerHTML=h;
 }
 function openRewardDetail(pid){
   var pr=null;for(var i=0;i<DATA.prizes.length;i++)if(DATA.prizes[i].id===pid)pr=DATA.prizes[i];if(!pr)return;
-  var role=SESSION.role;var storePts=getStoreEffPts(SESSION.storeId);var userPts=getUserPoints(SESSION.userId);
-  var pts=pr.tier==='Týmová'?storePts:userPts;
+  var tierMap={'Tymova':'Týmová','Osobni - prodavacka':'Osobní – prodavačka','Osobni - provozni':'Osobní – provozní'};
+  var tier=tierMap[pr.tier]||pr.tier;
+  var sid=SESSION.storeId,uid=SESSION.userId;
+  var pts=tier==='Týmová'?getStoreEff(sid):getUserPts(uid);
   var avail=pts>=pr.points;var pct=Math.min(100,Math.round(pts/pr.points*100));
-  var body='';
-  if(pr.imageUrl){body+='<div style="margin:-22px -18px 16px;height:180px;overflow:hidden;border-radius:12px 12px 0 0;"><img src="'+esc(pr.imageUrl)+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.style.display=\'none\'"></div>';}
-  else{body+='<div style="text-align:center;font-size:52px;margin-bottom:12px;">'+esc(pr.emoji)+'</div>';}
-  body+='<div style="font-size:14px;color:var(--text);line-height:1.65;margin-bottom:14px;">'+esc(pr.description)+'</div>';
-  if(pr.rules){body+='<div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;"><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">\uD83D\uDCCB Pravidla a podmínky</div><div style="font-size:13px;color:var(--text);line-height:1.7;">'+nl2br(esc(pr.rules))+'</div></div>';}
-  body+=progressBarHtml(Math.min(pts,pr.points),pr.points,'var(--accent)',6);
-  body+='<div style="font-size:12px;color:var(--muted);text-align:center;margin:8px 0 18px;">'+fmtNum(Math.min(pts,pr.points))+' / '+fmtNum(pr.points)+' bodu ('+pct+' %)</div>';
-  if(avail){body+='<button onclick="closeModal();openRedeemSheet(\''+pr.id+'\')" style="width:100%;padding:14px;background:var(--accent);color:#0A0A0D;border:none;border-radius:14px;font-family:Inter,system-ui;font-size:15px;font-weight:700;cursor:pointer;">\uD83C\uDF81 Ziskat odmenu</button>';}
-  else{body+='<div style="text-align:center;padding:14px;background:rgba(255,255,255,0.04);border-radius:12px;font-size:13px;color:var(--muted);">Jeste <strong>'+fmtNum(pr.points-pts)+' bodu</strong> do odemceni</div>';}
-  openModal(esc(pr.title),body);
+  var b='';
+  if(pr.imageUrl){b+='<div style="margin:-18px -18px 16px;height:160px;overflow:hidden;border-radius:8px 8px 0 0;"><img src="'+esc(pr.imageUrl)+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.style.display=\'none\'"></div>';}
+  else{b+='<div style="text-align:center;font-size:52px;margin-bottom:12px;">'+esc(pr.emoji)+'</div>';}
+  b+='<div style="font-size:14px;color:var(--text);line-height:1.65;margin-bottom:14px;">'+esc(pr.description||'')+'</div>';
+  if(pr.rules){b+='<div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;"><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">📋 Pravidla</div><div style="font-size:13px;color:var(--text);line-height:1.7;">'+nl2br(esc(pr.rules))+'</div></div>';}
+  b+=progressBar(Math.min(pts,pr.points),pr.points,'var(--accent)',6);
+  b+='<div style="font-size:12px;color:var(--muted);text-align:center;margin:8px 0 16px;">'+fmtNum(Math.min(pts,pr.points))+' / '+fmtNum(pr.points)+' bodů ('+pct+' %)</div>';
+  if(avail){b+='<div style="background:color-mix(in oklab,var(--up) 10%,transparent);border:1px solid color-mix(in oklab,var(--up) 25%,transparent);border-radius:12px;padding:14px;text-align:center;font-size:13px;color:var(--up);font-weight:700;">✓ Odemčeno – kontaktujte Jitku nebo Meggy pro uplatnění</div>';}
+  else{b+='<div style="text-align:center;padding:14px;background:rgba(255,255,255,0.04);border-radius:12px;font-size:13px;color:var(--muted);">Ještě <strong>'+fmtNum(pr.points-pts)+' bodů</strong> do odemčení</div>';}
+  openModal(esc(pr.title),b);
 }
 
-// ====================== QUIZ ======================
-function startQuiz(chid){var ch=getCh(chid);if(!ch)return;QUIZ.id=chid;QUIZ.qIdx=0;QUIZ.score=0;QUIZ.answered=false;renderQuestion();}
-function renderQuestion(){
-  var ch=getCh(QUIZ.id);var q=ch.questions[QUIZ.qIdx];var total=ch.questions.length;var letters=['A','B','C','D'];
-  var html='<div style="min-height:100vh;background:var(--bg);padding:20px 16px 40px;">';
-  html+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;"><button onclick="closeQuiz()" style="width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:18px;cursor:pointer;">\u2715</button>';
-  html+='<div style="flex:1;font-size:13px;color:var(--muted);font-weight:600;">'+esc(ch.title)+'</div><div style="font-family:Space Grotesk,system-ui;font-weight:700;color:var(--accent);">+'+QUIZ.score+'</div></div>';
-  html+='<div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px;margin-bottom:24px;overflow:hidden;"><div style="width:'+(QUIZ.qIdx/total*100)+'%;height:100%;background:var(--accent);border-radius:3px;box-shadow:0 0 12px var(--accent);"></div></div>';
-  html+='<div style="font-size:12px;color:var(--muted);font-weight:800;text-align:center;margin-bottom:8px;">Otazka '+(QUIZ.qIdx+1)+' z '+total+'</div>';
-  html+='<div style="font-size:19px;font-weight:700;text-align:center;margin-bottom:30px;line-height:1.4;">'+esc(q.q)+'</div>';
-  for(var i=0;i<q.opts.length;i++){html+='<button id="a'+i+'" onclick="answerQ('+i+')" style="width:100%;padding:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;color:var(--text);font-family:Inter,system-ui;font-size:15px;font-weight:600;text-align:left;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;gap:12px;"><div style="width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">'+letters[i]+'</div>'+esc(q.opts[i])+'</button>';}
-  html+='</div>';
-  document.getElementById('storeContent').innerHTML=html;document.getElementById('scrollContent').scrollTop=0;QUIZ.answered=false;
-}
-function answerQ(idx){
-  if(QUIZ.answered)return;QUIZ.answered=true;var ch=getCh(QUIZ.id);var q=ch.questions[QUIZ.qIdx];
-  document.querySelectorAll('[id^="a"]').forEach(function(b){b.disabled=true;});
-  if(idx===q.correct){document.getElementById('a'+idx).style.cssText+='border-color:var(--up);background:color-mix(in oklab,var(--up) 10%,transparent);color:var(--up);';QUIZ.score+=ch.pointsEach;}
-  else{document.getElementById('a'+idx).style.cssText+='border-color:var(--down);color:var(--down);';if(document.getElementById('a'+q.correct))document.getElementById('a'+q.correct).style.cssText+='border-color:var(--up);color:var(--up);';}
-  setTimeout(function(){QUIZ.qIdx++;if(QUIZ.qIdx<ch.questions.length)renderQuestion();else finishQuiz();},900);
-}
-function finishQuiz(){
-  var ch=getCh(QUIZ.id);var max=ch.questions.length*ch.pointsEach;var pct=QUIZ.score/max;
-  var emoji=pct===1?'\uD83C\uDF1F':pct>=0.6?'\uD83C\uDF89':'\uD83D\uDCAA';
-  var html='<div style="min-height:100vh;background:var(--bg);padding:60px 24px;text-align:center;"><div style="font-size:80px;">'+emoji+'</div>';
-  html+='<div style="font-family:Space Grotesk,system-ui;font-size:32px;font-weight:700;color:var(--accent);margin:18px 0 8px;">'+(pct===1?'Perfektní!':pct>=0.6?'Skvělá práce!':'Příště lépe!')+'</div>';
-  html+='<div style="font-family:Space Grotesk,system-ui;font-size:64px;font-weight:700;color:var(--up);line-height:1;">+'+QUIZ.score+'</div>';
-  html+='<div style="font-size:14px;color:var(--muted);margin:8px 0 36px;">bodu z '+max+' moznych - '+Math.round(pct*100)+' %</div>';
-  html+='<button onclick="closeQuizResult()" style="display:block;width:100%;padding:16px;background:var(--up);color:white;border:none;border-radius:14px;font-family:Inter,system-ui;font-size:16px;font-weight:700;cursor:pointer;max-width:300px;margin:0 auto;">Zpet na prehled</button></div>';
-  if(QUIZ.score>0){DATA.completions.push({storeId:SESSION.storeId,userId:SESSION.userId,challengeId:QUIZ.id,title:ch.title,category:ch.category,points:QUIZ.score,scope:'personal',date:today()});saveData(null);}
-  document.getElementById('storeContent').innerHTML=html;document.getElementById('scrollContent').scrollTop=0;
-  if(QUIZ.score>0)showToast(QUIZ.score);
-}
-function closeQuiz(){setTab('challenges',document.getElementById('tb1'));}
-function closeQuizResult(){setTab('home',document.getElementById('tb0'));}
-
-// ====================== ONETIME ======================
-function confirmOnetime(chid){
-  var ch=getCh(chid);if(!ch)return;
-  openModal('Splnit výzvu',
-    '<div style="text-align:center;margin-bottom:20px;"><div style="font-size:48px;margin-bottom:8px;">'+esc(ch.emoji)+'</div>'+
-    '<div style="font-size:17px;font-weight:700;margin-bottom:8px;">'+esc(ch.title)+'</div>'+
-    '<div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;">'+esc(ch.description||'')+'</div>'+
-    '<div style="font-family:Space Grotesk,system-ui;font-size:44px;font-weight:700;color:var(--up);">+'+ch.points+'</div>'+
-    '<div style="font-size:12px;color:var(--muted);margin-bottom:20px;">bodu za splneni</div></div>'+
-    '<button onclick="doOnetime(\''+chid+'\')" style="width:100%;padding:14px;background:var(--accent);color:#0A0A0D;border:none;border-radius:14px;font-family:Inter,system-ui;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:8px;">\u2705 Potvrdit splneni</button>'+
-    '<div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px;">Nezapomen odeslat dukaz pres WhatsApp adminu.</div>'+
-    '<button onclick="closeModal()" style="width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:14px;font-family:Inter,system-ui;font-size:14px;font-weight:600;cursor:pointer;">Zrusit</button>');
-}
-function doOnetime(chid){
-  var ch=getCh(chid);
-  DATA.completions.push({storeId:SESSION.storeId,userId:SESSION.userId,challengeId:chid,title:ch.title,category:ch.category,points:ch.points,scope:'both',date:today()});
-  saveData(null);closeModal();showToast(ch.points);setTab('home',document.getElementById('tb0'));
-}
-
-// ====================== LOG SHEET ======================
-function openLogSheet(){
-  var html='<div style="padding:4px 0 20px;"><div style="font-size:12px;color:var(--muted);padding:0 20px 14px;">Body se pridaji okamzite.</div><div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;">';
-  for(var i=0;i<LOG_ACTIONS.length;i++){
-    var a=LOG_ACTIONS[i];var scopeLabel=a.scope==='personal'?' - osobni':a.scope==='both'?' - osobni + tym':'';
-    html+='<button onclick="doLogAction(\''+a.id+'\')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--border);color:var(--text);cursor:pointer;text-align:left;width:100%;transition:background 0.12s;" onmouseenter="this.style.background=\'var(--surface2)\'" onmouseleave="this.style.background=\'var(--surface)\'">';
-    html+='<div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">'+a.icon+'</div>';
-    html+='<div style="flex:1;"><div style="font-size:14px;font-weight:500;">'+esc(a.label)+'</div><div style="font-size:11px;color:var(--muted);">'+esc(a.cat)+scopeLabel+'</div></div>';
-    html+='<div style="font-family:Space Grotesk,system-ui;font-weight:700;color:var(--accent);font-size:14px;">+'+a.points+'</div></button>';
-  }
-  html+='</div></div>';
-  document.getElementById('logSheetBody').innerHTML=html;
-  document.getElementById('logOverlay').classList.add('open');document.getElementById('logSheet').classList.add('open');
-}
-function closeSheet(){document.getElementById('logOverlay').classList.remove('open');document.getElementById('logSheet').classList.remove('open');}
-function doLogAction(actionId){
-  var action=null;for(var i=0;i<LOG_ACTIONS.length;i++)if(LOG_ACTIONS[i].id===actionId)action=LOG_ACTIONS[i];if(!action)return;
-  DATA.completions.push({storeId:SESSION.storeId,userId:SESSION.userId,challengeId:'log_'+Date.now(),title:action.label,category:action.cat,points:action.points,scope:action.scope,date:today()});
-  saveData(null);closeSheet();setTimeout(function(){showToast(action.points);renderDashboard();},200);
-}
-
-// ====================== REDEEM ======================
-function openRedeemSheet(prizeId){
-  var pr=null;for(var i=0;i<DATA.prizes.length;i++)if(DATA.prizes[i].id===prizeId)pr=DATA.prizes[i];if(!pr)return;
-  var html='<div style="padding:8px 20px 24px;text-align:center;"><div style="width:70px;height:70px;border-radius:20px;margin:10px auto 16px;background:color-mix(in oklab,var(--accent) 18%,transparent);display:flex;align-items:center;justify-content:center;font-size:32px;">'+esc(pr.emoji)+'</div>';
-  html+='<div style="font-size:18px;font-weight:700;margin-bottom:8px;">'+esc(pr.title)+'</div>';
-  html+='<div style="font-size:13px;color:var(--muted);margin-bottom:22px;">Admin bude informovan a odmenu pripravi.</div>';
-  html+='<div style="display:flex;gap:10px;"><button onclick="closeRedeemSheet()" style="flex:1;padding:14px;border-radius:14px;background:transparent;border:1px solid var(--border);color:var(--text);font-weight:600;font-size:14px;cursor:pointer;">Zrusit</button>';
-  html+='<button onclick="confirmRedeem(\''+prizeId+'\')" style="flex:2;padding:14px;border-radius:14px;background:var(--accent);border:none;color:#0a0a0d;font-weight:700;font-size:14px;cursor:pointer;">Ziskat za '+fmtNum(pr.points)+' bodu</button></div></div>';
-  document.getElementById('redeemSheetBody').innerHTML=html;
-  document.getElementById('redeemOverlay').classList.add('open');document.getElementById('redeemSheet').classList.add('open');
-}
-function closeRedeemSheet(){document.getElementById('redeemOverlay').classList.remove('open');document.getElementById('redeemSheet').classList.remove('open');}
-function confirmRedeem(prizeId){
-  var pr=null;for(var i=0;i<DATA.prizes.length;i++)if(DATA.prizes[i].id===prizeId)pr=DATA.prizes[i];if(!pr)return;
-  DATA.completions.push({storeId:SESSION.storeId,userId:SESSION.userId,challengeId:'redeem_'+Date.now(),title:'\uD83C\uDF81 UPLATNENI: '+pr.title,category:'reward',points:0,scope:'personal',date:today()});
-  saveData(null);closeRedeemSheet();alert('\u2705 Zadost o odmenu odeslana adminu!');
-}
-
-// ====================== TOAST / MODAL ======================
-function showToast(pts){var old=document.getElementById('ptsToast');if(old)old.remove();var el=document.createElement('div');el.id='ptsToast';el.style.cssText='position:fixed;top:100px;left:50%;transform:translateX(-50%);z-index:300;padding:12px 22px;border-radius:999px;background:var(--accent);color:#0A0A0D;font-family:Space Grotesk,system-ui;font-weight:700;font-size:18px;box-shadow:0 10px 40px color-mix(in oklab,var(--accent) 50%,transparent);animation:toastPop 1.8s ease-out forwards;pointer-events:none;';el.textContent='+'+pts+' bodu';document.body.appendChild(el);setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},1900);}
+// ── MODAL ────────────────────────────────────────────────────
 function openModal(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modalOv').classList.remove('hidden');}
 function closeModal(){document.getElementById('modalOv').classList.add('hidden');}
-function closeModalOv(e){if(e&&e.target!==document.getElementById('modalOv'))return;closeModal();}
 
-// ====================== ADMIN ======================
-function renderAdminTab(){if(UI.adminTab==='overview')renderAdminOverview();else if(UI.adminTab==='users')renderAdminUsers();else if(UI.adminTab==='challenges')renderAdminChallenges();else if(UI.adminTab==='stores')renderAdminStores();else if(UI.adminTab==='prizes')renderAdminPrizes();else if(UI.adminTab==='settings')renderAdminSettings();}
-
-function renderAdminOverview(){
-  var ranked=getRankedStores();var rankedU=getRankedUsers();
-  var html='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
-  html+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;"><div style="font-family:Space Grotesk,system-ui;font-size:32px;font-weight:700;color:var(--accent);">'+DATA.users.filter(function(u){return u.active;}).length+'</div><div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;">Uzivatelu</div></div>';
-  html+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;"><div style="font-family:Space Grotesk,system-ui;font-size:32px;font-weight:700;color:var(--accent);">'+DATA.completions.length+'</div><div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;">Akci</div></div>';
-  html+='</div>';
-  // User table
-  html+='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px;">\uD83D\uDC64 Přehled uživatelů</div>';
-  html+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px;">';
-  html+='<div style="display:grid;grid-template-columns:1fr 56px 56px;padding:10px 14px;border-bottom:1px solid var(--border);font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;"><div>Jmeno / Email</div><div style="text-align:right;">Osobni</div><div style="text-align:right;">Tym</div></div>';
-  for(var ui=0;ui<rankedU.length;ui++){
-    var ru=rankedU[ui];var ruStore=getStore(ru.storeId);var storePts=getStoreEffPts(ru.storeId);var roleCol=ru.role==='provozni'?'oklch(0.72 0.16 300)':'oklch(0.78 0.14 85)';
-    html+='<div style="display:grid;grid-template-columns:1fr 56px 56px;padding:10px 14px;border-bottom:1px solid var(--border);align-items:center;">';
-    html+='<div style="min-width:0;"><div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(ru.name)+'</div>';
-    html+='<div style="font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(ru.email)+'</div>';
-    html+='<div style="font-size:10px;margin-top:2px;"><span style="color:'+roleCol+';font-weight:700;">'+(ru.role==='provozni'?'Provozní':'Prodavačka')+'</span>'+(ruStore?' - <span style="color:var(--dim);">'+esc(ruStore.name.split('-')[0].trim())+'</span>':'')+'</div></div>';
-    html+='<div style="text-align:right;font-family:Space Grotesk,system-ui;font-weight:700;font-size:14px;color:var(--up);">'+fmtNum(ru.pts)+'</div>';
-    html+='<div style="text-align:right;font-family:Space Grotesk,system-ui;font-weight:700;font-size:14px;color:var(--accent);">'+fmtNum(storePts)+'</div></div>';
-  }
-  html+='</div>';
-  html+='<button onclick="exportUsersCSV()" style="width:100%;padding:13px;background:var(--up);color:white;border:none;border-radius:12px;font-family:Inter,system-ui;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:12px;">\u2B07\uFE0F Exportovat CSV</button>';
-  // Store ranking
-  html+='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px;">\uD83C\uDFEA Prodejny (HCP body)</div>';
-  html+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:12px;">';
-  for(var j=0;j<ranked.length;j++){var s=ranked[j];var medal=j===0?'\uD83E\uDD47':j===1?'\uD83E\uDD48':j===2?'\uD83E\uDD49':String(j+1)+'.';var sLeague=getLeague(s.effPts);
-  html+='<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);"><div style="font-size:18px;width:28px;text-align:center;">'+medal+'</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(s.name)+'</div><div style="font-size:11px;color:var(--muted);">'+leagueBadgeHtml(sLeague.name,'sm')+(s.hcp>1?' x'+s.hcp.toFixed(1):'')+'</div></div>';
-  html+='<div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:16px;color:var(--up);">'+fmtNum(s.effPts)+'</div>';
-  html+='<div style="display:flex;flex-direction:column;gap:4px;">';
-  html+='<button onclick="openBonusModal(\''+s.id+'\')" style="background:color-mix(in oklab,var(--accent) 12%,transparent);color:var(--accent);border:none;padding:5px 9px;border-radius:7px;cursor:pointer;font-size:11px;font-weight:700;">+body</button>';
-  html+='<button onclick="openPenaltyModal(\''+s.id+'\')" style="background:rgba(248,81,73,0.1);color:oklch(0.65 0.20 25);border:none;padding:5px 9px;border-radius:7px;cursor:pointer;font-size:11px;font-weight:700;">-sankce</button>';
-  html+='</div></div>';}
-  html+='</div>';
-  document.getElementById('adminContent').innerHTML=html;
-}
-
-function renderAdminUsers(){
-  var html='<button onclick="openUserModal(null)" style="width:100%;padding:13px;background:var(--up);color:white;border:none;border-radius:12px;font-family:Inter,system-ui;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px;">+ Novy uzivatel</button>';
-  html+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;">';
-  for(var i=0;i<DATA.users.length;i++){
-    var u=DATA.users[i];var s=getStore(u.storeId);var pts=getUserPoints(u.id);var roleCol=u.role==='provozni'?'oklch(0.72 0.16 300)':'oklch(0.78 0.14 85)';
-    html+='<div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);">';
-    html+='<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:700;">'+(u.active?'':'[neaktivni] ')+esc(u.name)+'</div>';
-    html+='<div style="font-size:12px;color:var(--muted);">'+esc(u.email)+'</div>';
-    html+='<div style="font-size:11px;margin-top:2px;"><span style="color:'+roleCol+';font-weight:700;">'+(u.role==='provozni'?'Provozní':'Prodavačka')+'</span>'+(s?' - '+esc(s.name.split('-')[0].trim()):'')+' - PIN: <strong>'+esc(u.pin)+'</strong></div></div>';
-    html+='<div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:16px;color:var(--up);">'+fmtNum(pts)+'</div>';
-    html+='<div style="display:flex;flex-direction:column;gap:5px;">';
-    html+='<button onclick="openUserModal(\''+u.id+'\')" style="background:color-mix(in oklab,var(--up) 12%,transparent);color:var(--up);border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;">Upravit</button>';
-    html+='<button onclick="toggleUser(\''+u.id+'\')" style="background:rgba(255,255,255,0.04);color:var(--muted);border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;">'+(u.active?'Deaktiv.':'Aktivovat')+'</button>';
-    html+='</div></div>';
-  }
-  html+='</div>';
-  document.getElementById('adminContent').innerHTML=html;
-}
-function openUserModal(uid){
-  var u=uid?getUser(uid):null;
-  var storeOpts='';for(var i=0;i<DATA.stores.length;i++){var s=DATA.stores[i];storeOpts+='<option value="'+s.id+'" '+(u&&u.storeId===s.id?'selected':'')+'>'+esc(s.name)+'</option>';}
-  openModal(u?'Upravit uživatele':'Nový uživatel',
-    '<div class="frow"><label class="flabel">Jmeno a prijmeni</label><input class="finput" id="uName" value="'+(u?esc(u.name):'')+'"></div>'+
-    '<div class="frow"><label class="flabel">Email (login)</label><input class="finput" id="uEmail" type="email" placeholder="jana@ll.cz" value="'+(u?esc(u.email):'')+'"></div>'+
-    '<div class="frow"><label class="flabel">PIN (4 cislice)</label><input class="finput" id="uPin" type="number" placeholder="1234" value="'+(u?esc(u.pin):'')+'"></div>'+
-    '<div class="frow"><label class="flabel">Role</label><select class="fsel" id="uRole"><option value="prodavacka" '+(u&&u.role==='prodavacka'?'selected':'')+'>Prodavacka</option><option value="provozni" '+(u&&u.role==='provozni'?'selected':'')+'>Provozni</option></select></div>'+
-    '<div class="frow"><label class="flabel">Prodejna</label><select class="fsel" id="uStore">'+storeOpts+'</select></div>'+
-    '<button class="btn-p" onclick="saveUser(\''+( uid||'')+'\')">Ulozit uzivatele</button><div class="msg" id="uMsg"></div>');
-}
-function saveUser(uid){
-  var name=document.getElementById('uName').value.trim();var email=document.getElementById('uEmail').value.trim().toLowerCase();
-  var pin=document.getElementById('uPin').value.trim();var role=document.getElementById('uRole').value;var storeId=document.getElementById('uStore').value;
-  if(!name||!email||pin.length!==4){showMsg('uMsg','Vyplňte jméno, email a 4místný PIN','oklch(0.65 0.20 25)');return;}
-  var exists=false;for(var i=0;i<DATA.users.length;i++){if(DATA.users[i].email.toLowerCase()===email&&DATA.users[i].id!==uid){exists=true;break;}}
-  if(exists){showMsg('uMsg','Tento email již existuje','oklch(0.65 0.20 25)');return;}
-  if(uid){for(var j=0;j<DATA.users.length;j++){if(DATA.users[j].id===uid){DATA.users[j].name=name;DATA.users[j].email=email;DATA.users[j].pin=pin;DATA.users[j].role=role;DATA.users[j].storeId=storeId;break;}}}
-  else DATA.users.push({id:'u_'+Date.now(),name:name,email:email,pin:pin,role:role,storeId:storeId,active:true});
-  saveData(function(){closeModal();renderAdminUsers();syncToSheets();});
-}
-function toggleUser(uid){for(var i=0;i<DATA.users.length;i++){if(DATA.users[i].id===uid){DATA.users[i].active=!DATA.users[i].active;break;}}saveData(null);renderAdminUsers();}
-
-function renderAdminChallenges(){
-  var html='<button onclick="openNewChallengeModal()" style="width:100%;padding:13px;background:var(--up);color:white;border:none;border-radius:12px;font-family:Inter,system-ui;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px;">+ Nova vyzva</button>';
-  var cats=[{key:'vykon',label:'\uD83D\uDCB0 Vykon'},{key:'marketing',label:'\uD83D\uDCE2 Marketing'},{key:'provoz',label:'\uD83C\uDFEA Provoz'},{key:'tym',label:'\uD83D\uDC65 Tym'}];
-  for(var ci=0;ci<cats.length;ci++){
-    var cat=cats[ci];var chs=DATA.challenges.filter(function(c){return c.category===cat.key;});if(chs.length===0)continue;
-    html+='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px;">'+cat.label+'</div>';
-    html+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:12px;">';
-    for(var i=0;i<chs.length;i++){var ch=chs[i];var maxPts=ch.type==='quiz'?ch.questions.length*ch.pointsEach:ch.points;
-    html+='<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);">';
-    html+='<div style="font-size:22px;flex-shrink:0;">'+esc(ch.emoji||'\u26A1')+'</div>';
-    html+='<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:700;">'+esc(ch.title)+'</div>';
-    html+='<div style="font-size:11px;color:var(--muted);margin-top:2px;">'+maxPts+' b - '+ch.type+' - '+(ch.active?'aktivní':'skrytá')+'</div>';
-    if(ch.type==='progress')html+='<button onclick="openProgressAdmin(\''+ch.id+'\')" style="margin-top:6px;background:color-mix(in oklab,var(--up) 12%,transparent);color:var(--up);border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;">\uD83D\uDCCA Pokrok</button>';
-    html+='</div><div style="display:flex;flex-direction:column;gap:5px;">';
-    html+='<button onclick="toggleCh(\''+ch.id+'\')" style="background:color-mix(in oklab,var(--accent) 12%,transparent);color:var(--accent);border:none;padding:5px 9px;border-radius:7px;cursor:pointer;font-size:11px;font-weight:700;">'+(ch.active?'Skrýt':'Aktivovat')+'</button>';
-    html+='<button onclick="deleteCh(\''+ch.id+'\')" style="background:rgba(248,81,73,0.1);color:oklch(0.65 0.20 25);border:none;padding:5px 9px;border-radius:7px;cursor:pointer;font-size:11px;font-weight:700;">\u2715</button>';
-    html+='</div></div>';}
-    html+='</div>';
-  }
-  document.getElementById('adminContent').innerHTML=html;
-}
-function toggleCh(id){var ch=getCh(id);if(ch)ch.active=!ch.active;saveData(null);renderAdminChallenges();}
-function deleteCh(id){DATA.challenges=DATA.challenges.filter(function(c){return c.id!==id;});saveData(null);renderAdminChallenges();}
-function openNewChallengeModal(){openModal('Typ výzvy','<div style="display:flex;flex-direction:column;gap:10px;"><button class="btn-s" onclick="openQuizModal()">\uD83E\uDDE0 Kviz (otazky)</button><button class="btn-s" onclick="openProgressChallengeModal()">\uD83D\uDCCA Prubezna</button><button class="btn-s" onclick="openOnetimeModal()">\u2705 Jednorazova</button></div>');}
-function openProgressAdmin(chid){
-  var ch=getCh(chid);if(!ch)return;
-  var html='<div style="margin-bottom:14px;font-size:13px;color:var(--muted);">Cil: '+ch.target+' '+esc(ch.targetLabel||'')+'</div><div>';
-  for(var i=0;i<DATA.stores.length;i++){var s=DATA.stores[i];var cur=getProgress(s.id,chid);var done=isCompleteStore(s.id,chid);
-  html+='<div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border);">';
-  html+='<div style="flex:1;font-size:13px;font-weight:700;">'+esc(s.name.split('-')[0].trim())+'</div>';
-  if(done)html+='<span style="font-size:11px;font-weight:700;color:var(--up);">\u2713 Splneno</span>';
-  else html+='<input id="pi_'+s.id+'" type="number" min="0" max="'+ch.target+'" value="'+cur+'" style="width:60px;padding:7px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-weight:700;text-align:center;outline:none;"><div style="font-size:12px;color:var(--muted);">/ '+ch.target+'</div>';
-  html+='</div>';}
-  html+='</div><button class="btn-p" style="margin-top:16px;" onclick="saveProgressAdmin(\''+chid+'\')">Ulozit pokrok</button><div class="msg" id="progMsg"></div>';
-  openModal('\uD83D\uDCCA '+esc(ch.title),html);
-}
-function saveProgressAdmin(chid){var ch=getCh(chid);for(var i=0;i<DATA.stores.length;i++){var s=DATA.stores[i];var inp=document.getElementById('pi_'+s.id);if(!inp)continue;var val=Math.max(0,Math.min(ch.target,parseInt(inp.value)||0));setProgress(s.id,chid,val);if(val>=ch.target&&!isCompleteStore(s.id,chid))DATA.completions.push({storeId:s.id,userId:null,challengeId:chid,title:ch.title,category:ch.category,points:ch.points,scope:'store',date:today()});}saveData(function(){showMsg('progMsg','\u2705 Ulozeno','var(--up)');});}
-function openQuizModal(){NEWQUIZ={title:'',emoji:'\uD83E\uDDE0',category:'marketing',pointsEach:10,questions:[{q:'',opts:['','','',''],correct:0}]};renderQuizModal();}
-function renderQuizModal(){
-  var letters=['A','B','C','D'];var qh='';
-  for(var i=0;i<NEWQUIZ.questions.length;i++){var q=NEWQUIZ.questions[i];qh+='<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;"><div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="font-size:11px;color:var(--muted);font-weight:700;">Otazka '+(i+1)+'</span>';
-  if(NEWQUIZ.questions.length>1)qh+='<button onclick="removeQ('+i+')" style="background:rgba(248,81,73,0.1);color:oklch(0.65 0.20 25);border:none;padding:4px 9px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700;">Odebrat</button>';
-  qh+='</div><input class="finput" placeholder="Text otazky" value="'+esc(q.q)+'" oninput="NEWQUIZ.questions['+i+'].q=this.value" style="margin-bottom:8px;">';
-  for(var j=0;j<4;j++)qh+='<input class="finput" placeholder="Moznost '+letters[j]+'" value="'+esc(q.opts[j])+'" oninput="NEWQUIZ.questions['+i+'].opts['+j+']=this.value" style="margin-bottom:6px;">';
-  qh+='<div style="margin-top:8px;"><div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;">Spravna odpoved:</div><div style="display:flex;gap:6px;">';
-  for(var k=0;k<4;k++)qh+='<button onclick="setQC('+i+','+k+')" style="padding:7px 13px;border-radius:8px;border:1.5px solid '+(q.correct===k?'var(--up)':'var(--border)')+';background:'+(q.correct===k?'color-mix(in oklab,var(--up) 12%,transparent)':'var(--surface)')+';color:'+(q.correct===k?'var(--up)':'var(--text)')+';font-size:13px;font-weight:700;cursor:pointer;">'+letters[k]+'</button>';
-  qh+='</div></div></div>';}
-  openModal('\uD83E\uDDE0 Novy kviz','<div class="frow"><label class="flabel">Nazev</label><input class="finput" id="nqTitle" value="'+esc(NEWQUIZ.title)+'" oninput="NEWQUIZ.title=this.value"></div>'+
-    '<div style="display:flex;gap:10px;"><div class="frow" style="flex:1;"><label class="flabel">Emoji</label><input class="finput" maxlength="2" value="'+esc(NEWQUIZ.emoji)+'" oninput="NEWQUIZ.emoji=this.value"></div>'+
-    '<div class="frow" style="flex:1;"><label class="flabel">Body/ot.</label><input class="finput" type="number" value="'+NEWQUIZ.pointsEach+'" oninput="NEWQUIZ.pointsEach=parseInt(this.value)||10"></div></div>'+
-    '<div class="frow"><label class="flabel">Kategorie</label><select class="fsel" onchange="NEWQUIZ.category=this.value"><option value="vykon">\uD83D\uDCB0 Vykon</option><option value="marketing">\uD83D\uDCE2 Marketing</option><option value="provoz">\uD83C\uDFEA Provoz</option><option value="tym">\uD83D\uDC65 Tym</option></select></div>'+
-    qh+'<button class="btn-s" onclick="addQ()" style="margin-bottom:12px;">+ Otazka</button>'+
-    '<button class="btn-p" onclick="saveQuizCh()">Ulozit kviz</button><div class="msg" id="qsMsg"></div>');
-}
-function setQC(i,k){NEWQUIZ.questions[i].correct=k;renderQuizModal();}
-function addQ(){NEWQUIZ.questions.push({q:'',opts:['','','',''],correct:0});renderQuizModal();}
-function removeQ(i){NEWQUIZ.questions.splice(i,1);renderQuizModal();}
-function saveQuizCh(){if(!NEWQUIZ.title.trim()){showMsg('qsMsg','Název','oklch(0.65 0.20 25)');return;}DATA.challenges.push({id:'ch'+Date.now(),type:'quiz',category:NEWQUIZ.category,title:NEWQUIZ.title,emoji:NEWQUIZ.emoji||'\uD83E\uDDE0',description:'',rules:'',pointsEach:NEWQUIZ.pointsEach||10,active:true,questions:NEWQUIZ.questions});saveData(function(){closeModal();renderAdminChallenges();});}
-function openProgressChallengeModal(){openModal('\uD83D\uDCCA Prubezna vyzva','<div class="frow"><label class="flabel">Nazev</label><input class="finput" id="npTitle"></div><div style="display:flex;gap:10px;"><div class="frow" style="flex:1;"><label class="flabel">Emoji</label><input class="finput" id="npEmoji" maxlength="2" value="\uD83D\uDCCA"></div><div class="frow" style="flex:1;"><label class="flabel">Body</label><input class="finput" id="npPts" type="number" value="100"></div></div><div class="frow"><label class="flabel">Kategorie</label><select class="fsel" id="npCat"><option value="vykon">Vykon</option><option value="marketing">Marketing</option><option value="provoz">Provoz</option><option value="tym">Tym</option></select></div><div style="display:flex;gap:10px;"><div class="frow" style="flex:1;"><label class="flabel">Cil</label><input class="finput" id="npTarget" type="number" value="10"></div><div class="frow" style="flex:1;"><label class="flabel">Jednotka</label><input class="finput" id="npUnit" placeholder="recenzi"></div></div><div class="frow"><label class="flabel">Popis</label><textarea class="ftarea" id="npDesc"></textarea></div><div class="frow"><label class="flabel">Pravidla</label><textarea class="ftarea" id="npRules" style="min-height:80px;"></textarea></div><button class="btn-p" onclick="saveProgCh()">Ulozit</button><div class="msg" id="npMsg"></div>');}
-function saveProgCh(){var title=document.getElementById('npTitle').value.trim();if(!title){showMsg('npMsg','Název','oklch(0.65 0.20 25)');return;}DATA.challenges.push({id:'ch'+Date.now(),type:'progress',category:document.getElementById('npCat').value,title:title,emoji:document.getElementById('npEmoji').value||'\uD83D\uDCCA',description:document.getElementById('npDesc').value.trim(),rules:document.getElementById('npRules').value.trim(),points:parseInt(document.getElementById('npPts').value)||100,target:parseInt(document.getElementById('npTarget').value)||10,targetLabel:document.getElementById('npUnit').value.trim()||'kroku',active:true});saveData(function(){closeModal();renderAdminChallenges();});}
-function openOnetimeModal(){openModal('\u2705 Jednorazova','<div class="frow"><label class="flabel">Nazev</label><input class="finput" id="noTitle"></div><div style="display:flex;gap:10px;"><div class="frow" style="flex:1;"><label class="flabel">Emoji</label><input class="finput" id="noEmoji" maxlength="2" value="\u2705"></div><div class="frow" style="flex:1;"><label class="flabel">Body</label><input class="finput" id="noPts" type="number" value="30"></div></div><div class="frow"><label class="flabel">Kategorie</label><select class="fsel" id="noCat"><option value="vykon">Vykon</option><option value="marketing">Marketing</option><option value="provoz">Provoz</option><option value="tym">Tym</option></select></div><div class="frow"><label class="flabel">Popis</label><textarea class="ftarea" id="noDesc"></textarea></div><div class="frow"><label class="flabel">Pravidla</label><textarea class="ftarea" id="noRules" style="min-height:80px;"></textarea></div><button class="btn-p" onclick="saveOnceCh()">Ulozit</button><div class="msg" id="noMsg"></div>');}
-function saveOnceCh(){var title=document.getElementById('noTitle').value.trim();if(!title){showMsg('noMsg','Název','oklch(0.65 0.20 25)');return;}DATA.challenges.push({id:'ch'+Date.now(),type:'onetime',category:document.getElementById('noCat').value,title:title,emoji:document.getElementById('noEmoji').value||'\u2705',description:document.getElementById('noDesc').value.trim(),rules:document.getElementById('noRules').value.trim(),points:parseInt(document.getElementById('noPts').value)||30,active:true});saveData(function(){closeModal();renderAdminChallenges();});}
-
-function renderAdminStores(){
-  var html='<button onclick="openStoreModal(null)" style="width:100%;padding:13px;background:var(--up);color:white;border:none;border-radius:12px;font-family:Inter,system-ui;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;">+ Pridat prodejnu</button>';
-  html+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;">';
-  for(var i=0;i<DATA.stores.length;i++){var s=DATA.stores[i];var effPts=getStoreEffPts(s.id);
-  html+='<div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);">';
-  html+='<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(s.name)+'</div>';
-  html+='<div style="font-size:11px;color:var(--muted);">PIN: <strong>'+esc(s.pin)+'</strong> - Kat. '+s.category+' - HCP x'+s.hcp.toFixed(1)+'</div></div>';
-  html+='<div style="font-family:Space Grotesk,system-ui;font-weight:700;font-size:16px;color:var(--up);">'+fmtNum(effPts)+'</div>';
-  html+='<button onclick="openStoreModal(\''+s.id+'\')" style="background:color-mix(in oklab,var(--up) 12%,transparent);color:var(--up);border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;">Upravit</button>';
-  html+='<button onclick="openBonusModal(\''+s.id+'\')" style="background:color-mix(in oklab,var(--accent) 12%,transparent);color:var(--accent);border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;">+body</button>';
-  html+='<button onclick="openPenaltyModal(\''+s.id+'\')" style="background:rgba(248,81,73,0.1);color:oklch(0.65 0.20 25);border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;">-sankce</button>';
-  html+='</div>';}
-  html+='</div>';
-  document.getElementById('adminContent').innerHTML=html;
-}
-function openStoreModal(sid){var s=sid?getStore(sid):null;openModal(s?'Upravit prodejnu':'Nová prodejna','<div class="frow"><label class="flabel">Nazev prodejny</label><input class="finput" id="nsName" value="'+(s?esc(s.name):'')+'"></div><div class="frow"><label class="flabel">PIN (4 cislice)</label><input class="finput" id="nsPin" type="number" value="'+(s?esc(s.pin):'')+'"></div><div class="frow"><label class="flabel">Kategorie HCP</label><select class="fsel" id="nsCat"><option value="A" '+(s&&s.category==="A"?'selected':'')+'>A - Velka / centrum (×1.0)</option><option value="B" '+(s&&s.category==="B"?'selected':'')+'>B - Stredni / poliklinika (×1.2)</option><option value="C" '+(s&&s.category==="C"?'selected':'')+'>C - Mala / mimoprazska (×1.5)</option></select></div><button class="btn-p" onclick="saveStore(\''+( sid||'')+'\')">Ulozit</button><div class="msg" id="storeSaveMsg"></div>');}
-function saveStore(sid){var name=document.getElementById('nsName').value.trim();var pin=document.getElementById('nsPin').value.trim();var cat=document.getElementById('nsCat').value;var hcp=cat==='A'?1.0:cat==='B'?1.2:1.5;if(!name||pin.length!==4){showMsg('storeSaveMsg','Název + 4místný PIN','oklch(0.65 0.20 25)');return;}var pinExists=false;for(var i=0;i<DATA.stores.length;i++){if(DATA.stores[i].pin===pin&&DATA.stores[i].id!==sid){pinExists=true;break;}}if(pinExists){showMsg('storeSaveMsg','PIN existuje','oklch(0.65 0.20 25)');return;}if(sid){for(var j=0;j<DATA.stores.length;j++){if(DATA.stores[j].id===sid){DATA.stores[j].name=name;DATA.stores[j].pin=pin;DATA.stores[j].category=cat;DATA.stores[j].hcp=hcp;break;}}}else DATA.stores.push({id:'s'+Date.now(),name:name,pin:pin,category:cat,hcp:hcp,reviews:0,avgRating:0});saveData(function(){closeModal();renderAdminStores();});}
-
-function renderAdminPrizes(){
-  var html='<button onclick="openPrizeModal(null)" style="width:100%;padding:13px;background:var(--up);color:white;border:none;border-radius:12px;font-family:Inter,system-ui;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px;">+ Nova odmena</button>';
-  var tiers=['Týmová','Osobní – prodavačka','Osobní – provozní'];
-  var tierLabels=['\uD83C\uDFEA Tymove','\uD83D\uDC9B Prodavacky','\uD83C\uDFC6 Provozni'];
-  for(var t=0;t<tiers.length;t++){
-    var tierPrizes=DATA.prizes.filter(function(p){return p.tier===tiers[t];}).sort(function(a,b){return a.points-b.points;});
-    if(tierPrizes.length===0)continue;
-    html+='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px;">'+tierLabels[t]+'</div>';
-    html+='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:12px;">';
-    for(var i=0;i<tierPrizes.length;i++){var pr=tierPrizes[i];
-    html+='<div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);"><div style="font-size:26px;">'+esc(pr.emoji)+'</div>';
-    html+='<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:700;">'+esc(pr.title)+'</div><div style="font-size:11px;color:var(--muted);">'+fmtNum(pr.points)+' bodu - '+esc(pr.inventory||'Dostupne')+'</div></div>';
-    html+='<button onclick="openPrizeModal(\''+pr.id+'\')" style="background:color-mix(in oklab,var(--up) 12%,transparent);color:var(--up);border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;">Upravit</button>';
-    html+='<button onclick="deletePrize(\''+pr.id+'\')" style="background:rgba(248,81,73,0.1);color:oklch(0.65 0.20 25);border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;">\u2715</button></div>';}
-    html+='</div>';
-  }
-  document.getElementById('adminContent').innerHTML=html;
-}
-function openPrizeModal(pid){
-  var pr=pid?DATA.prizes.find(function(p){return p.id===pid;}):null;
-  openModal(pr?'Upravit odměnu':'Nová odměna',
-    '<div style="display:flex;gap:10px;"><div class="frow" style="flex:1;"><label class="flabel">Emoji</label><input class="finput" id="prEmoji" maxlength="2" value="'+(pr?esc(pr.emoji):'\uD83C\uDFC6')+'"></div>'+
-    '<div class="frow" style="flex:2;"><label class="flabel">Body</label><input class="finput" id="prPts" type="number" value="'+(pr?pr.points:200)+'"></div></div>'+
-    '<div class="frow"><label class="flabel">Nazev</label><input class="finput" id="prTitle" value="'+(pr?esc(pr.title):'')+'"></div>'+
-    '<div class="frow"><label class="flabel">Kratky popis</label><input class="finput" id="prDesc" value="'+(pr?esc(pr.description):'')+'"></div>'+
-    '<div class="frow"><label class="flabel">Pravidla</label><textarea class="ftarea" id="prRules" style="min-height:90px;">'+( pr?esc(pr.rules||''):'')+'</textarea></div>'+
-    '<div class="frow"><label class="flabel">URL fotky</label><input class="finput" id="prImg" value="'+(pr?esc(pr.imageUrl||''):'')+'"></div>'+
-    '<div class="frow"><label class="flabel">Kategorie odmeny</label><select class="fsel" id="prTier">'+
-    '<option value="Týmová" '+(pr&&pr.tier==="Týmová"?'selected':'')+'>Týmová (body prodejny)</option>'+
-    '<option value="Osobní – prodavačka" '+(pr&&pr.tier==="Osobní – prodavačka"?'selected':'')+'>Osobní – prodavačka</option>'+
-    '<option value="Osobní – provozní" '+(pr&&pr.tier==="Osobní – provozní"?'selected':'')+'>Osobní – provozní</option>'+
-    '</select></div>'+
-    '<div class="frow"><label class="flabel">Dostupnost</label><input class="finput" id="prInv" value="'+(pr?esc(pr.inventory||'Dostupne'):'Dostupne')+'"></div>'+
-    '<button class="btn-p" onclick="savePrize(\''+( pid||'')+'\')">Ulozit odmenu</button><div class="msg" id="prMsg"></div>');
-}
-function savePrize(pid){
-  var title=document.getElementById('prTitle').value.trim();var pts=parseInt(document.getElementById('prPts').value)||200;
-  if(!title){showMsg('prMsg','Název','oklch(0.65 0.20 25)');return;}
-  var data={id:pid||'p'+Date.now(),emoji:document.getElementById('prEmoji').value||'\uD83C\uDFC6',title:title,description:document.getElementById('prDesc').value.trim(),rules:document.getElementById('prRules').value.trim(),imageUrl:document.getElementById('prImg').value.trim(),points:pts,tier:document.getElementById('prTier').value,inventory:document.getElementById('prInv').value.trim()};
-  if(pid){for(var i=0;i<DATA.prizes.length;i++){if(DATA.prizes[i].id===pid){DATA.prizes[i]=data;break;}}}
-  else DATA.prizes.push(data);
-  saveData(function(){closeModal();renderAdminPrizes();});
-}
-function deletePrize(id){DATA.prizes=DATA.prizes.filter(function(p){return p.id!==id;});saveData(null);renderAdminPrizes();}
-
-function openBonusModal(sid){var s=getStore(sid);openModal('+body: '+esc(s.name),'<div class="frow"><label class="flabel">Pocet bodu</label><input class="finput" id="bonusPts" type="number" placeholder="50" min="1"></div><div class="frow"><label class="flabel">Kategorie</label><select class="fsel" id="bonusCat"><option value="vykon">Vykon</option><option value="marketing">Marketing</option><option value="provoz">Provoz</option><option value="tym">Tym</option></select></div><div class="frow"><label class="flabel">Duvod</label><input class="finput" id="bonusReason" placeholder="Jiskra v oku, nejlepsi foto..."></div><button class="btn-p" onclick="doBonus(\''+sid+'\')">Pridat body</button><div class="msg" id="bonusMsg"></div>');}
-function doBonus(sid){var pts=parseInt(document.getElementById('bonusPts').value)||0;var cat=document.getElementById('bonusCat').value;var reason=document.getElementById('bonusReason').value.trim()||'Bonus';if(pts<=0){showMsg('bonusMsg','Kladné číslo','oklch(0.65 0.20 25)');return;}DATA.completions.push({storeId:sid,userId:null,challengeId:'bonus_'+Date.now(),title:'\uD83C\uDF81 '+reason,category:cat,points:pts,scope:'store',date:today()});saveData(function(){closeModal();renderAdminOverview();});}
-function openPenaltyModal(sid){var s=getStore(sid);var opts='<option value="custom">Vlastni sankce</option>';for(var i=0;i<PENALTY_PRESETS.length;i++){var p=PENALTY_PRESETS[i];opts+='<option value="'+p.id+'">'+p.icon+' '+esc(p.label)+' ('+p.points+' b)</option>';}openModal('Sankce: '+esc(s.name),'<div class="frow"><label class="flabel">Typ sankce</label><select class="fsel" id="penType" onchange="penTypeChanged()">'+opts+'</select></div><div class="frow"><label class="flabel">Bodu k odecitani</label><input class="finput" id="penPts" type="number" placeholder="25" min="1"></div><div class="frow"><label class="flabel">Popis</label><input class="finput" id="penReason" placeholder="Upresnni co se stalo..."></div><button class="btn-p" style="background:oklch(0.65 0.20 25);" onclick="doPenalty(\''+sid+'\')">Strnout body</button><div class="msg" id="penMsg"></div>');}
-function penTypeChanged(){var sel=document.getElementById('penType').value;if(sel==='custom')return;for(var i=0;i<PENALTY_PRESETS.length;i++){if(PENALTY_PRESETS[i].id===sel){document.getElementById('penPts').value=Math.abs(PENALTY_PRESETS[i].points);document.getElementById('penReason').value=PENALTY_PRESETS[i].reason;break;}}}
-function doPenalty(sid){var ptsRaw=parseInt(document.getElementById('penPts').value)||0;var reason=document.getElementById('penReason').value.trim();var sel=document.getElementById('penType').value;var icon='\u26A0\uFE0F';if(sel!=='custom'){for(var i=0;i<PENALTY_PRESETS.length;i++){if(PENALTY_PRESETS[i].id===sel){icon=PENALTY_PRESETS[i].icon;break;}}}if(ptsRaw<=0){showMsg('penMsg','Zadej počet bodů','oklch(0.65 0.20 25)');return;}if(!reason){showMsg('penMsg','Zadej důvod','oklch(0.65 0.20 25)');return;}DATA.completions.push({storeId:sid,userId:null,challengeId:'penalty_'+Date.now(),title:icon+' SANKCE: '+reason,category:'penalty',points:-ptsRaw,scope:'store',date:today()});saveData(function(){closeModal();renderAdminOverview();});}
-
-function renderAdminSettings(){
-  var adminPin=localStorage.getItem(ADMIN_PIN_KEY)||'0000';var snapshots=getSnapshots();var lastSave=localStorage.getItem('ll_v4_last_save')||'---';
-  var html='<div class="adm-card"><div class="adm-sec-title">Sezona</div><div class="frow"><label class="flabel">Nazev sezony</label><input class="finput" id="sTitle" value="'+esc(DATA.season.title)+'"></div><button class="btn-p" onclick="saveSeason()" style="margin-bottom:8px;">Ulozit</button><button class="btn-s" onclick="confirmReset()">Reset bodu (nova sezona)</button><div class="msg" id="seasonMsg"></div></div>';
-  html+='<div class="adm-card"><div class="adm-sec-title">Admin PIN (aktualni: '+adminPin+')</div><div class="frow"><input class="finput" id="sAdminPin" type="number" placeholder="Novy 4mistny PIN"></div><button class="btn-p" onclick="saveAdminPin()">Zmenit PIN</button><div class="msg" id="pinMsg"></div></div>';
-  html+='<div class="adm-card"><div class="adm-sec-title">Google Sheets sync</div>';
-  html+='<div class="frow"><label class="flabel">Apps Script Web App URL</label><input class="finput" id="sSheetsUrl" placeholder="https://script.google.com/macros/s/.../exec" value="'+esc(DATA.sheetsUrl||localStorage.getItem('ll_v4_sheets')||'')+'"></div>';
-  html+='<button class="btn-p" onclick="saveSheetsUrl()" style="margin-bottom:8px;">Ulozit a testovat</button><button class="btn-s" onclick="syncToSheets();showMsg(\'sheetsMsg\',\'Sync odeslan\',\'var(--up)\')">Synchronizovat ted</button>';
-  html+='<div class="msg" id="sheetsMsg"></div>';
-  html+='<div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:10px;font-size:13px;color:var(--muted);line-height:1.6;">\uD83D\uDCCB Jak nastavit:<br>1. Otevri Google Sheets<br>2. Rozsireni - Apps Script<br>3. Vloz Apps Script kod (tlacitko nize)<br>4. Nasadit jako webovou aplikaci<br>5. URL vloz sem</div>';
-  html+='<button onclick="showSheetsScript()" style="margin-top:10px;width:100%;padding:10px;background:none;border:1px solid var(--border);color:var(--muted);border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;">Zobrazit Apps Script kod</button></div>';
-  html+='<div class="adm-card"><div class="adm-sec-title">GitHub Gist</div><div class="frow"><label class="flabel">Token</label><input class="finput" id="sToken" type="password" value="'+esc(GH.token)+'"></div><div class="frow"><label class="flabel">Gist ID</label><input class="finput" id="sGist" value="'+esc(GH.gistId)+'"></div><button class="btn-p" onclick="saveGH()">Ulozit</button><div class="msg" id="ghMsg"></div></div>';
-  html+='<div class="adm-card"><div class="adm-sec-title">Zaloha dat</div>';
-  html+='<div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Posledni zaloha: <strong>'+esc(lastSave)+'</strong> - Celkem zaloh: <strong>'+snapshots.length+'</strong></div>';
-  html+='<div style="display:flex;gap:8px;margin-bottom:10px;"><button class="btn-p" style="flex:1;" onclick="createSnapshot()">Zaloha ted</button><button class="btn-s" style="flex:1;margin:0;" onclick="exportJSON()">Stahnout JSON</button></div>';
-  html+='<div class="frow"><label class="flabel">Import JSON zalohy</label><div style="display:flex;gap:8px;"><label style="flex:1;padding:11px 13px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);text-align:center;">Soubor <input type="file" accept=".json" style="display:none;" onchange="loadJSONFile(this)"></label><button class="btn-p" style="flex:1;" onclick="importJSON()">Importovat</button></div></div>';
-  html+='<div class="msg" id="backupMsg"></div>';
-  if(snapshots.length>0){html+='<div style="margin-top:12px;">';for(var si=snapshots.length-1;si>=Math.max(0,snapshots.length-6);si--){var snap=snapshots[si];html+='<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);"><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:700;">'+esc(snap.label)+'</div><div style="font-size:11px;color:var(--muted);">'+(snap.users||0)+' uzivatelu - '+(snap.completions||0)+' akci</div></div><button onclick="restoreSnapshot('+si+')" style="background:color-mix(in oklab,var(--accent) 12%,transparent);color:var(--accent);border:none;padding:7px 11px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;">Obnovit</button></div>';}html+='</div>';}
-  html+='</div>';
-  document.getElementById('adminContent').innerHTML=html;
-}
-function saveSeason(){DATA.season.title=document.getElementById('sTitle').value.trim();saveData(function(ok){showMsg('seasonMsg',ok?'Uloženo':'Lokalne');});}
-function confirmReset(){openModal('Reset sezony?','<p style="color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.6;">Smazou se vsechny body. Nevratna akce.</p><button class="btn-p" style="background:oklch(0.65 0.20 25);" onclick="doReset()">Ano, resetovat</button><button class="btn-s" onclick="closeModal()">Zrusit</button>');}
-function doReset(){DATA.completions=[];DATA.progress=[];saveData(null);closeModal();renderAdminOverview();}
-function saveAdminPin(){var v=document.getElementById('sAdminPin').value.trim();if(v.length!==4||isNaN(v)){showMsg('pinMsg','4 cislice','oklch(0.65 0.20 25)');return;}localStorage.setItem(ADMIN_PIN_KEY,v);document.getElementById('sAdminPin').value='';showMsg('pinMsg','PIN změněn');}
-function saveGH(){GH.token=document.getElementById('sToken').value.trim();GH.gistId=document.getElementById('sGist').value.trim();localStorage.setItem(GH_TOKEN_KEY,GH.token);localStorage.setItem(GH_GIST_KEY,GH.gistId);showMsg('ghMsg','Uloženo');}
-function saveSheetsUrl(){var url=document.getElementById('sSheetsUrl').value.trim();DATA.sheetsUrl=url;localStorage.setItem('ll_v4_sheets',url);saveData(null);syncToSheets();showMsg('sheetsMsg','Ulozeno, sync odeslan','var(--up)');}
-function showSheetsScript(){
-  var code='// LL Vyzva v4 - Apps Script\n// 1. Otevri Google Sheets\n// 2. Rozsireni > Apps Script\n// 3. Vloz tento kod\n// 4. Nasadit > Jako webovou aplikaci (pristup: vsichni)\n// 5. URL vloz do Nastaveni v appce\n\nfunction doPost(e) {\n  try {\n    var data = JSON.parse(e.postData.contents);\n    var rows = data.rows || [];\n    \n    var ss = SpreadsheetApp.getActiveSpreadsheet();\n    var sheet = ss.getSheetByName("LL-Prehled") || ss.insertSheet("LL-Prehled");\n    \n    sheet.clearContents();\n    \n    // Hlavicka\n    var header = ["Jmeno","Email","Role","Prodejna","Osobní body","Body prodejny","Sankce","Celkem","Liga","Poslední aktivita","Sezóna","Aktualizovano"];\n    sheet.appendRow(header);\n    \n    // Data\n    for (var i = 0; i < rows.length; i++) {\n      var r = rows[i];\n      sheet.appendRow([r.jmeno,r.email,r.role,r.prodejna,r.body_osobni,r.body_prodejna,r.sankce,r.celkem,r.liga,r.posledni_aktivita,r.sezona,data.updated]);\n    }\n    \n    // Format\n    sheet.setFrozenRows(1);\n    var headerRange = sheet.getRange(1, 1, 1, 12);\n    headerRange.setFontWeight("bold");\n    headerRange.setBackground("#1a1a2e");\n    headerRange.setFontColor("#ffffff");\n    sheet.autoResizeColumns(1, 12);\n    \n    return ContentService\n      .createTextOutput(JSON.stringify({status:"ok",rows:rows.length}))\n      .setMimeType(ContentService.MimeType.JSON);\n  } catch(err) {\n    return ContentService\n      .createTextOutput(JSON.stringify({status:"error",message:err.toString()}))\n      .setMimeType(ContentService.MimeType.JSON);\n  }\n}\n\nfunction doGet(e) {\n  return ContentService\n    .createTextOutput(JSON.stringify({status:"LL Vyzva v4 API ready"}))\n    .setMimeType(ContentService.MimeType.JSON);\n}';
-  openModal('Apps Script kód','<div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Zkopiruj a vloz do Apps Script. Pak nasad jako webovou aplikaci.</div><textarea style="width:100%;height:280px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text);font-family:monospace;font-size:11px;line-height:1.5;resize:vertical;">'+esc(code)+'</textarea><button class="btn-p" style="margin-top:10px;" onclick="try{navigator.clipboard.writeText(document.querySelector(\'textarea\').value);}catch(e){}showMsg(\'csMsg\',\'Zkopirovan\',\'var(--up)\')">Zkopirovat</button><div class="msg" id="csMsg"></div>');
-}
-
-function exportUsersCSV(){
-  var rows=[['Jmeno','Email','Role','Prodejna','Kategorie','Osobní body','Body prodejny','Liga','Sankce','Poslední aktivita','Sezóna']];
-  var rankedU=getRankedUsers();
-  for(var i=0;i<rankedU.length;i++){
-    var ru=rankedU[i];var s=getStore(ru.storeId);var storePts=getStoreEffPts(ru.storeId);
-    var pen=0;for(var j=0;j<DATA.completions.length;j++){var c=DATA.completions[j];if(c.userId===ru.id&&c.points<0)pen+=c.points;}
-    var lastAct='';for(var k=DATA.completions.length-1;k>=0;k--){if(DATA.completions[k].userId===ru.id){lastAct=DATA.completions[k].date;break;}}
-    rows.push([ru.name,ru.email,ru.role==='provozni'?'Provozní':'Prodavačka',s?s.name:'',s?s.category+' x'+s.hcp.toFixed(1):'',ru.pts,storePts,getLeague(ru.pts).name,pen,lastAct,DATA.season.title]);
-  }
-  var csv=rows.map(function(r){return r.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});var now=new Date();var pad=function(n){return n<10?'0'+n:String(n);};
-  var fname='LL-prehled-'+now.getFullYear()+pad(now.getMonth()+1)+pad(now.getDate())+'.csv';
-  var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=fname;a.click();URL.revokeObjectURL(url);
-}
-
-function getSnapshots(){try{return JSON.parse(localStorage.getItem('ll_v4_snapshots')||'[]');}catch(e){return[];}}
-function saveSnapshots(arr){localStorage.setItem('ll_v4_snapshots',JSON.stringify(arr));}
-function createSnapshot(silent){var now=new Date();var pad=function(n){return n<10?'0'+n:String(n);};var label=pad(now.getDate())+'.'+pad(now.getMonth()+1)+'.'+now.getFullYear()+' '+pad(now.getHours())+':'+pad(now.getMinutes());var snap={label:label,data:JSON.parse(JSON.stringify(DATA)),users:DATA.users.length,completions:DATA.completions.length};var arr=getSnapshots();arr.push(snap);if(arr.length>20)arr=arr.slice(arr.length-20);saveSnapshots(arr);localStorage.setItem('ll_v4_last_save',label);if(!silent){showMsg('backupMsg','Zaloha: '+label,'var(--up)');setTimeout(function(){renderAdminSettings();},1500);}}
-function restoreSnapshot(idx){var arr=getSnapshots();if(!arr[idx])return;if(!confirm('Obnovit zalohu z '+arr[idx].label+'?'))return;DATA=JSON.parse(JSON.stringify(arr[idx].data));saveData(null);renderAdminSettings();}
-function exportJSON(){var json=JSON.stringify(DATA,null,2);var now=new Date();var pad=function(n){return n<10?'0'+n:String(n);};var fname='LL-vyzva-backup-'+now.getFullYear()+pad(now.getMonth()+1)+pad(now.getDate())+'-'+pad(now.getHours())+pad(now.getMinutes())+'.json';var blob=new Blob([json],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=fname;a.click();URL.revokeObjectURL(url);}
-function loadJSONFile(input){var file=input.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){var ta=document.getElementById('importJsonArea');if(ta)ta.value=e.target.result;};reader.readAsText(file);}
-function importJSON(){var raw='';var ta=document.getElementById('importJsonArea');if(ta)raw=ta.value.trim();if(!raw){showMsg('backupMsg','Zvolte soubor nebo vložte JSON','oklch(0.65 0.20 25)');return;}try{var parsed=JSON.parse(raw);if(!parsed.stores||!parsed.challenges){showMsg('backupMsg','Neplatný formát','oklch(0.65 0.20 25)');return;}if(!confirm('Importovat? Prepise vsechna aktualni data.'))return;DATA=parsed;saveData(null);showMsg('backupMsg','Importováno','var(--up)');setTimeout(renderAdminOverview,800);}catch(e){showMsg('backupMsg','Chyba JSON','oklch(0.65 0.20 25)');}}
-
-if(!Array.prototype.find){Array.prototype.find=function(fn){for(var i=0;i<this.length;i++)if(fn(this[i]))return this[i];return undefined;};}
 if(!Array.prototype.filter){Array.prototype.filter=function(fn){var r=[];for(var i=0;i<this.length;i++)if(fn(this[i]))r.push(this[i]);return r;};}
+if(!Array.prototype.find){Array.prototype.find=function(fn){for(var i=0;i<this.length;i++)if(fn(this[i]))return this[i];return undefined;};}
+if(!Object.assign){Object.assign=function(t){for(var i=1;i<arguments.length;i++){var s=arguments[i];for(var k in s)if(s.hasOwnProperty(k))t[k]=s[k];}return t;};}
 
 init();
-
 </script>
 </body>
 </html>
